@@ -38,7 +38,7 @@ export function PhoneFrame({ children, className }: { children: React.ReactNode;
         </div>
 
         {/* Scrollable content */}
-        <div className="h-full pt-16 overflow-y-auto phone-scroll">
+        <div id="scroll-container" className="h-full pt-16 overflow-y-auto phone-scroll">
           {children}
         </div>
 

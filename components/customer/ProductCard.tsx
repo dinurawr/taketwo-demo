@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
+import { motion } from "framer-motion";
 import { useFavorites } from "@/lib/favorites-store";
 import type { Product } from "@/data/products";
 import { getBrand } from "@/data/brands";
@@ -13,7 +14,12 @@ export function ProductCard({ product }: { product: Product }) {
   const fav = isFavorite(product.id);
 
   return (
-    <div className="relative bg-white rounded-2xl overflow-hidden shadow-sm border border-[#F0F0F0]">
+    <motion.div
+      className="relative bg-white rounded-2xl overflow-hidden shadow-sm border border-[#F0F0F0]"
+      whileTap={{ scale: 0.96, opacity: 0.85 }}
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.15 }}
+    >
       <Link href={`/customer/product/${product.id}`}>
         <div className="aspect-[3/4] relative bg-[#F0F3EC]">
           <Image
@@ -51,6 +57,6 @@ export function ProductCard({ product }: { product: Product }) {
           LKR {product.price.toLocaleString()}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }

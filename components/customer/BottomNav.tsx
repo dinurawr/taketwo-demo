@@ -18,7 +18,7 @@ export function BottomNav() {
 
   return (
     <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-40px)]">
-      <div className="bg-[#111111] rounded-[28px] px-2 py-2 flex items-center justify-around shadow-xl">
+      <div className="bg-black/75 backdrop-blur-xl border border-white/10 shadow-2xl rounded-[28px] px-2 py-2 flex items-center justify-around">
         {links.map(({ href, icon: Icon, label, badge }) => {
           const isActive = pathname === href || (href !== "/customer/home" && pathname.startsWith(href));
           return (
