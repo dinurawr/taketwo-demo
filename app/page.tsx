@@ -1,103 +1,84 @@
+import Link from "next/link";
 import Image from "next/image";
 
-export default function Home() {
+export default function RolePicker() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <main className="min-h-screen bg-white flex flex-col items-center justify-center px-6">
+      {/* Logo */}
+      <div className="mb-8 text-center">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
+          src="/logo.png"
+          alt="Take Two"
+          width={280}
+          height={164}
+          className="mx-auto"
           priority
         />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+        <p className="mt-1 text-[#666666] text-xs tracking-widest uppercase font-medium">
+          Sri Lanka&apos;s First Collaborative Fashion Platform
+        </p>
+      </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      {/* Demo badge */}
+      <div className="mb-8 px-4 py-1.5 bg-[#859365] rounded-full text-white text-xs tracking-widest uppercase font-semibold">
+        Vendor Demo · 2026
+      </div>
+
+      {/* Role cards */}
+      <div className="flex flex-col sm:flex-row gap-4 w-full max-w-lg">
+        {/* Customer card */}
+        <Link
+          href="/customer"
+          className="flex-1 group bg-white rounded-3xl p-8 shadow-sm border-2 border-[#E8E8E8] hover:border-[#859365] hover:shadow-lg transition-all duration-200 flex flex-col items-center gap-4 text-center"
+        >
+          <div className="w-14 h-14 rounded-full bg-[#F0F3EC] flex items-center justify-center text-2xl group-hover:bg-[#859365] transition-colors">
+            🛍️
+          </div>
+          <div>
+            <p className="text-[10px] text-[#859365] uppercase tracking-widest mb-1 font-semibold">View as</p>
+            <h2 className="text-xl font-bold text-[#111111]">Customer</h2>
+            <p className="text-sm text-[#666666] mt-1">
+              Browse, discover &amp; shop across all brands
+            </p>
+          </div>
+          <span className="mt-2 text-sm font-semibold text-[#ED832B] group-hover:underline">
+            Enter app →
+          </span>
+        </Link>
+
+        {/* Vendor card */}
+        <Link
+          href="/vendor"
+          className="flex-1 group bg-[#111111] rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col items-center gap-4 text-center"
+        >
+          <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-2xl group-hover:bg-[#859365] transition-colors">
+            📦
+          </div>
+          <div>
+            <p className="text-[10px] text-[#859365] uppercase tracking-widest mb-1 font-semibold">View as</p>
+            <h2 className="text-xl font-bold text-white">Vendor</h2>
+            <p className="text-sm text-white/60 mt-1">
+              Orders, returns &amp; brand analytics
+            </p>
+          </div>
+          <span className="mt-2 text-sm font-semibold text-[#ED832B] group-hover:underline">
+            Enter dashboard →
+          </span>
+        </Link>
+      </div>
+
+      {/* Brands strip */}
+      <div className="mt-14 flex flex-wrap justify-center gap-3 max-w-lg">
+        {["Valley", "North Lane", "Halcyon", "Nilo", "Ember"].map((brand) => (
+          <span
+            key={brand}
+            className="px-3 py-1 bg-[#F8F8F6] rounded-full text-xs text-[#666666] border border-[#E8E8E8] font-medium"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+            {brand}
+          </span>
+        ))}
+      </div>
+      <p className="mt-3 text-xs text-[#999999]">5 partner brands · 16 products · Sri Lanka 🇱🇰</p>
+    </main>
   );
 }
