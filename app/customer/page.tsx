@@ -36,9 +36,9 @@ const callouts: Callout[] = [
   },
   {
     brand: "Valley",
-    item: "Knit Polo",
+    item: "Summer Shirt",
     color: "#859365",
-    productId: "valley-knit-polo",
+    productId: "valley-summer-shirt",
     label: { top: "72%", left: "3%" },
     lineStart: { x: 22, y: 77 },
     lineEnd: { x: 44, y: 63 },
