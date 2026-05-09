@@ -3,15 +3,18 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Search } from "lucide-react";
 import { motion } from "framer-motion";
 import { CategoryPills } from "@/components/customer/CategoryPills";
 import { ProductCard } from "@/components/customer/ProductCard";
+import { useMenu } from "@/lib/menu-store";
 import { products } from "@/data/products";
 
 const PAGE_SIZE = 8;
 const LOAD_MORE = 4;
 
 export default function CustomerHome() {
+  const { open: openMenu } = useMenu();
   const featured = products[0];
   const allGrid = products.slice(1);
 
@@ -42,6 +45,26 @@ export default function CustomerHome() {
 
   return (
     <div className="flex flex-col bg-white">
+      {/* Home header — always visible, static */}
+      <div className="flex items-center justify-between px-5 pt-4 pb-2">
+        <button
+          onClick={openMenu}
+          className="w-9 h-9 flex flex-col items-center justify-center gap-[5px]"
+          aria-label="Open menu"
+        >
+          <span className="w-5 h-0.5 bg-[#111111] rounded-full" />
+          <span className="w-3 h-0.5 bg-[#111111] rounded-full self-start" />
+        </button>
+        <Image src="/logo.png" alt="Take Two" width={68} height={40} priority />
+        <Link
+          href="/customer/search"
+          className="w-9 h-9 flex items-center justify-center"
+          aria-label="Search"
+        >
+          <Search size={20} strokeWidth={1.5} className="text-[#111111]" />
+        </Link>
+      </div>
+
       {/* Hero card */}
       <div className="px-5 pt-4 mb-5">
         <motion.div whileTap={{ scale: 0.98 }}>
