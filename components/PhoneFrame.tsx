@@ -16,7 +16,8 @@ export function PhoneFrame({ children, className }: { children: React.ReactNode;
         {/* Status bar */}
         <div className="absolute top-0 left-0 right-0 z-50 flex items-center justify-between px-8 pt-4 pb-2 bg-white/95 backdrop-blur-sm">
           <span className="text-[11px] font-semibold text-[#111111]">9:41</span>
-          <div className="w-24 h-5 bg-[#111111] rounded-full" />
+          {/* Dynamic island — absolutely centred */}
+          <div className="absolute left-1/2 -translate-x-1/2 w-24 h-5 bg-[#111111] rounded-full" />
           <div className="flex items-center gap-1">
             <svg width="16" height="12" viewBox="0 0 16 12" fill="none">
               <rect x="0" y="8" width="3" height="4" rx="0.5" fill="#111" />
