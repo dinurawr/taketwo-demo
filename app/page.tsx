@@ -37,9 +37,6 @@ export default function RolePicker() {
           <div>
             <p className="text-[10px] text-[#859365] uppercase tracking-widest mb-1 font-semibold">View as</p>
             <h2 className="text-xl font-bold text-[#111111]">Customer</h2>
-            <p className="text-sm text-[#666666] mt-1">
-              Browse, discover &amp; shop across all brands
-            </p>
           </div>
           <span className="mt-2 text-sm font-semibold text-[#ED832B] group-hover:underline">
             Enter app →
@@ -49,36 +46,20 @@ export default function RolePicker() {
         {/* Vendor card */}
         <Link
           href="/vendor"
-          className="flex-1 group bg-[#111111] rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-200 flex flex-col items-center gap-4 text-center"
+          className="flex-1 group bg-white rounded-3xl p-8 shadow-sm border-2 border-[#E8E8E8] hover:border-[#859365] hover:shadow-lg transition-all duration-200 flex flex-col items-center gap-4 text-center"
         >
-          <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center text-2xl group-hover:bg-[#859365] transition-colors">
+          <div className="w-14 h-14 rounded-full bg-[#F0F3EC] flex items-center justify-center text-2xl group-hover:bg-[#859365] transition-colors">
             📦
           </div>
           <div>
             <p className="text-[10px] text-[#859365] uppercase tracking-widest mb-1 font-semibold">View as</p>
-            <h2 className="text-xl font-bold text-white">Vendor</h2>
-            <p className="text-sm text-white/60 mt-1">
-              Orders, returns &amp; brand analytics
-            </p>
+            <h2 className="text-xl font-bold text-[#111111]">Vendor</h2>
           </div>
           <span className="mt-2 text-sm font-semibold text-[#ED832B] group-hover:underline">
             Enter dashboard →
           </span>
         </Link>
       </div>
-
-      {/* Brands strip */}
-      <div className="mt-14 flex flex-wrap justify-center gap-3 max-w-lg">
-        {["Valley", "North Lane", "Halcyon", "Nilo", "Ember"].map((brand) => (
-          <span
-            key={brand}
-            className="px-3 py-1 bg-[#F8F8F6] rounded-full text-xs text-[#666666] border border-[#E8E8E8] font-medium"
-          >
-            {brand}
-          </span>
-        ))}
-      </div>
-      <p className="mt-3 text-xs text-[#999999]">5 partner brands · 16 products · Sri Lanka 🇱🇰</p>
     </main>
   );
 }
