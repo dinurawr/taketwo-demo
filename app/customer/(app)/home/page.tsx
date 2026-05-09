@@ -45,24 +45,26 @@ export default function CustomerHome() {
 
   return (
     <div className="flex flex-col bg-white">
-      {/* Home header — always visible, static */}
-      <div className="flex items-center justify-between px-5 pt-4 pb-2">
-        <button
-          onClick={openMenu}
-          className="w-9 h-9 flex flex-col items-center justify-center gap-[5px]"
-          aria-label="Open menu"
-        >
-          <span className="w-5 h-0.5 bg-[#111111] rounded-full" />
-          <span className="w-3 h-0.5 bg-[#111111] rounded-full self-start" />
-        </button>
-        <Image src="/logo.png" alt="Take Two" width={68} height={40} priority />
-        <Link
-          href="/customer/search"
-          className="w-9 h-9 flex items-center justify-center"
-          aria-label="Search"
-        >
-          <Search size={20} strokeWidth={1.5} className="text-[#111111]" />
-        </Link>
+      {/* Sticky top bar — always visible, no scroll trigger */}
+      <div className="sticky top-0 z-40 backdrop-blur-md bg-white/90 border-b border-black/5">
+        <div className="flex items-center justify-between px-4 py-2.5">
+          <button
+            onClick={openMenu}
+            className="w-9 h-9 flex flex-col items-center justify-center gap-[5px]"
+            aria-label="Open menu"
+          >
+            <span className="w-5 h-0.5 bg-[#111111] rounded-full" />
+            <span className="w-3 h-0.5 bg-[#111111] rounded-full self-start" />
+          </button>
+          <Image src="/logo.png" alt="Take Two" width={72} height={42} priority />
+          <Link
+            href="/customer/search"
+            className="w-9 h-9 flex items-center justify-center"
+            aria-label="Search"
+          >
+            <Search size={20} strokeWidth={1.5} className="text-[#111111]" />
+          </Link>
+        </div>
       </div>
 
       {/* Hero card */}

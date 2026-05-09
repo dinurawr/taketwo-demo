@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingBag, Heart, User, Grid2x2 } from "lucide-react";
@@ -9,21 +8,9 @@ import { useCart } from "@/lib/cart-store";
 export function BottomNav() {
   const pathname = usePathname();
   const { totalItems } = useCart();
-  const [shown, setShown] = useState(false);
 
-  useEffect(() => {
-    const container = document.getElementById("scroll-container");
-    if (!container) return;
-
-    function onScroll() {
-      setShown(container!.scrollTop > 60);
-    }
-
-    container.addEventListener("scroll", onScroll, { passive: true });
-    // Check immediately in case the page is already scrolled
-    onScroll();
-    return () => container.removeEventListener("scroll", onScroll);
-  }, []);
+  // Hide on the full-bleed OOTD splash — show everywhere else
+  const hidden = pathname === "/customer";
 
   const links = [
     { href: "/customer/home", icon: Grid2x2, label: "Explore" },
@@ -36,14 +23,16 @@ export function BottomNav() {
     <div
       className="absolute bottom-8 left-1/2 w-[calc(100%-40px)] transition-all duration-300 ease-out"
       style={{
-        transform: `translateX(-50%) translateY(${shown ? "0px" : "20px"})`,
-        opacity: shown ? 1 : 0,
-        pointerEvents: shown ? "auto" : "none",
+        transform: `translateX(-50%) translateY(${hidden ? "20px" : "0px"})`,
+        opacity: hidden ? 0 : 1,
+        pointerEvents: hidden ? "none" : "auto",
       }}
     >
       <div className="bg-black/75 backdrop-blur-xl border border-white/10 shadow-2xl rounded-[28px] px-2 py-2 flex items-center justify-around">
         {links.map(({ href, icon: Icon, label, badge }) => {
-          const isActive = pathname === href || (href !== "/customer/home" && pathname.startsWith(href));
+          const isActive =
+            pathname === href ||
+            (href !== "/customer/home" && pathname.startsWith(href));
           return (
             <Link
               key={href}
@@ -58,7 +47,11 @@ export function BottomNav() {
                   </span>
                 )}
               </div>
-              <span className={`text-[9px] font-medium ${isActive ? "text-[#ED832B]" : "text-white/40"}`}>
+              <span
+                className={`text-[9px] font-medium ${
+                  isActive ? "text-[#ED832B]" : "text-white/40"
+                }`}
+              >
                 {label}
               </span>
             </Link>
