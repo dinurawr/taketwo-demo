@@ -12,7 +12,7 @@ export function BottomNav() {
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
-    // Always show immediately on pages other than home & category (short pages with no deep scroll)
+    // Always visible immediately on short pages (not home/category)
     const alwaysShow =
       pathname !== "/customer/home" && !pathname.startsWith("/customer/category");
     if (alwaysShow) {
@@ -20,21 +20,19 @@ export function BottomNav() {
       return;
     }
 
-    // On home / category pages: reveal after scrolling 60 px
+    // Home & category: reveal after scrolling 60 px
     setShown(false);
-    const container = document.getElementById("scroll-container");
-    if (!container) return;
 
     function onScroll() {
-      setShown(container!.scrollTop > 60);
+      setShown(window.scrollY > 60);
     }
 
-    container.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-    return () => container.removeEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
-  // Never show on the full-bleed OOTD splash
+  // Never show on the OOTD splash
   const hidden = pathname === "/customer";
 
   const links = [
@@ -46,7 +44,7 @@ export function BottomNav() {
 
   return (
     <div
-      className="absolute bottom-8 left-1/2 w-[calc(100%-40px)] transition-all duration-300 ease-out"
+      className="fixed bottom-4 left-1/2 w-[calc(100%-32px)] max-w-[398px] z-50 transition-all duration-300 ease-out"
       style={{
         transform: `translateX(-50%) translateY(${shown && !hidden ? "0px" : "20px"})`,
         opacity: shown && !hidden ? 1 : 0,
@@ -72,7 +70,11 @@ export function BottomNav() {
                   </span>
                 )}
               </div>
-              <span className={`text-[9px] font-medium ${isActive ? "text-[#ED832B]" : "text-white/40"}`}>
+              <span
+                className={`text-[9px] font-medium ${
+                  isActive ? "text-[#ED832B]" : "text-white/40"
+                }`}
+              >
                 {label}
               </span>
             </Link>

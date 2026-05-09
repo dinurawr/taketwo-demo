@@ -56,7 +56,7 @@ const callouts: Callout[] = [
 
 export default function OOTDSplash() {
   return (
-    <div className="relative h-full w-full overflow-hidden bg-[#F5F2EE]">
+    <div className="relative h-[calc(100dvh-28px)] w-full overflow-hidden bg-[#F5F2EE]">
 
       {/* Flat-lay outfit photo */}
       <Image
