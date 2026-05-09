@@ -6,7 +6,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { CategoryPills } from "@/components/customer/CategoryPills";
 import { ProductCard } from "@/components/customer/ProductCard";
-import { TopBar } from "@/components/customer/TopBar";
 import { products } from "@/data/products";
 
 const PAGE_SIZE = 8;
@@ -43,9 +42,6 @@ export default function CustomerHome() {
 
   return (
     <div className="flex flex-col bg-white">
-      {/* Scroll-aware sticky TopBar */}
-      <TopBar />
-
       {/* Hero card */}
       <div className="px-5 pt-4 mb-5">
         <motion.div whileTap={{ scale: 0.98 }}>

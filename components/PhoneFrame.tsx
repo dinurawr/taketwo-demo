@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 
-export function PhoneFrame({ children, className }: { children: React.ReactNode; className?: string }) {
+export function PhoneFrame({ children, nav, className }: { children: React.ReactNode; nav?: React.ReactNode; className?: string }) {
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#E8E8E8] p-8">
       {/* Phone shell */}
@@ -42,6 +42,9 @@ export function PhoneFrame({ children, className }: { children: React.ReactNode;
         <div id="scroll-container" className="h-full pt-16 overflow-y-auto phone-scroll">
           {children}
         </div>
+
+        {/* Bottom nav overlay — rendered outside scroll container so it stays fixed */}
+        {nav}
 
         {/* Home indicator */}
         <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-[#111111]/20 rounded-full" />

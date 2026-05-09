@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { BottomNav } from "@/components/customer/BottomNav";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -20,7 +19,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           {children}
         </motion.div>
       </AnimatePresence>
-      <BottomNav />
     </div>
   );
 }
