@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// Flat-lay fashion editorial — no model, clothes arranged on cream background
+// Flat-lay fashion editorial — no model, clothes arranged on neutral background
 const OUTFIT_IMAGE =
-  "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85";
+  "https://images.unsplash.com/photo-1739384879592-79903b12b2a6?w=900&q=85";
 
 type Callout = {
   brand: string;
