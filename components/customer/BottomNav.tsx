@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingBag, Heart, User, Grid2x2 } from "lucide-react";
@@ -8,8 +9,32 @@ import { useCart } from "@/lib/cart-store";
 export function BottomNav() {
   const pathname = usePathname();
   const { totalItems } = useCart();
+  const [shown, setShown] = useState(false);
 
-  // Hide on the full-bleed OOTD splash — show everywhere else
+  useEffect(() => {
+    // Always show immediately on pages other than home & category (short pages with no deep scroll)
+    const alwaysShow =
+      pathname !== "/customer/home" && !pathname.startsWith("/customer/category");
+    if (alwaysShow) {
+      setShown(true);
+      return;
+    }
+
+    // On home / category pages: reveal after scrolling 60 px
+    setShown(false);
+    const container = document.getElementById("scroll-container");
+    if (!container) return;
+
+    function onScroll() {
+      setShown(container!.scrollTop > 60);
+    }
+
+    container.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => container.removeEventListener("scroll", onScroll);
+  }, [pathname]);
+
+  // Never show on the full-bleed OOTD splash
   const hidden = pathname === "/customer";
 
   const links = [
@@ -23,9 +48,9 @@ export function BottomNav() {
     <div
       className="absolute bottom-8 left-1/2 w-[calc(100%-40px)] transition-all duration-300 ease-out"
       style={{
-        transform: `translateX(-50%) translateY(${hidden ? "20px" : "0px"})`,
-        opacity: hidden ? 0 : 1,
-        pointerEvents: hidden ? "none" : "auto",
+        transform: `translateX(-50%) translateY(${shown && !hidden ? "0px" : "20px"})`,
+        opacity: shown && !hidden ? 1 : 0,
+        pointerEvents: shown && !hidden ? "auto" : "none",
       }}
     >
       <div className="bg-black/75 backdrop-blur-xl border border-white/10 shadow-2xl rounded-[28px] px-2 py-2 flex items-center justify-around">
@@ -47,11 +72,7 @@ export function BottomNav() {
                   </span>
                 )}
               </div>
-              <span
-                className={`text-[9px] font-medium ${
-                  isActive ? "text-[#ED832B]" : "text-white/40"
-                }`}
-              >
+              <span className={`text-[9px] font-medium ${isActive ? "text-[#ED832B]" : "text-white/40"}`}>
                 {label}
               </span>
             </Link>

@@ -45,8 +45,8 @@ export default function CustomerHome() {
 
   return (
     <div className="flex flex-col bg-white">
-      {/* Sticky top bar — always visible, no scroll trigger */}
-      <div className="sticky top-0 z-40 backdrop-blur-md bg-white/90 border-b border-black/5">
+      {/* Top bar — fixed in place, scrolls away with content */}
+      <div className="backdrop-blur-md bg-white/90 border-b border-black/5">
         <div className="flex items-center justify-between px-4 py-2.5">
           <button
             onClick={openMenu}
