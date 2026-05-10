@@ -12,7 +12,7 @@ export function BottomNav() {
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
-    // Always visible immediately on short pages (not home/category)
+    // Always show immediately on short pages (not home/category)
     const alwaysShow =
       pathname !== "/customer/home" && !pathname.startsWith("/customer/category");
     if (alwaysShow) {
@@ -20,16 +20,18 @@ export function BottomNav() {
       return;
     }
 
-    // Home & category: reveal after scrolling 60 px
+    // Home & category: reveal after scrolling 60 px inside the phone frame
     setShown(false);
+    const container = document.getElementById("scroll-container");
+    if (!container) return;
 
     function onScroll() {
-      setShown(window.scrollY > 60);
+      setShown(container!.scrollTop > 60);
     }
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    container.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => container.removeEventListener("scroll", onScroll);
   }, [pathname]);
 
   // Never show on the OOTD splash
@@ -44,7 +46,7 @@ export function BottomNav() {
 
   return (
     <div
-      className="fixed bottom-4 left-1/2 w-[calc(100%-32px)] max-w-[398px] z-50 transition-all duration-300 ease-out"
+      className="absolute bottom-8 left-1/2 w-[calc(100%-40px)] transition-all duration-300 ease-out"
       style={{
         transform: `translateX(-50%) translateY(${shown && !hidden ? "0px" : "20px"})`,
         opacity: shown && !hidden ? 1 : 0,

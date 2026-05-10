@@ -40,10 +40,10 @@ export function MenuDrawer({ isOpen, onClose }: Props) {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop — fixed so it stays inside the phone shell */}
+          {/* Backdrop — absolute so it stays inside the phone shell */}
           <motion.div
             key="backdrop"
-            className="fixed inset-0 z-50 bg-black/40"
+            className="absolute inset-0 z-50 bg-black/40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -51,10 +51,10 @@ export function MenuDrawer({ isOpen, onClose }: Props) {
             onClick={onClose}
           />
 
-          {/* Drawer panel — fixed inside phone shell */}
+          {/* Drawer panel — absolute inside phone shell */}
           <motion.div
             key="drawer"
-            className="fixed top-0 left-0 bottom-0 z-50 w-[280px] bg-white/95 backdrop-blur-xl shadow-2xl flex flex-col"
+            className="absolute top-0 left-0 bottom-0 z-50 w-[280px] bg-white/95 backdrop-blur-xl shadow-2xl flex flex-col"
             initial={{ x: -300 }}
             animate={{ x: 0 }}
             exit={{ x: -300 }}
