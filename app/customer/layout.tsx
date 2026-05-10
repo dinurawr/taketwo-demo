@@ -9,7 +9,7 @@ import { MenuDrawer } from "@/components/customer/MenuDrawer";
 function CustomerShell({ children }: { children: React.ReactNode }) {
   const { isOpen, close } = useMenu();
   return (
-    <div className="pt-7">
+    <div>
       <PhoneFrame
         nav={<BottomNav />}
         overlay={<MenuDrawer isOpen={isOpen} onClose={close} />}
