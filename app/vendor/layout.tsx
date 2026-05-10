@@ -9,8 +9,8 @@ export default function VendorLayout({ children }: { children: React.ReactNode }
     <>
       <DemoBanner />
 
-      {/* Mobile top bar — logo + home link */}
-      <div className="md:hidden fixed top-7 left-0 right-0 z-40 bg-[#111111] h-12 px-4 flex items-center justify-between border-b border-white/10">
+      {/* Mobile top bar — logo + home link (no top-7 offset; DemoBanner is now floating) */}
+      <div className="md:hidden fixed top-0 left-0 right-0 z-30 bg-[#111111] h-12 px-4 flex items-center justify-between border-b border-white/10">
         <Image
           src="/logo.png"
           alt="Take Two"
@@ -23,7 +23,7 @@ export default function VendorLayout({ children }: { children: React.ReactNode }
         </Link>
       </div>
 
-      <div className="flex min-h-screen bg-[#F5F5F3] pt-7">
+      <div className="flex min-h-screen bg-[#F5F5F3]">
         {/* Sidebar — desktop only */}
         <div className="hidden md:block shrink-0">
           <Sidebar />
