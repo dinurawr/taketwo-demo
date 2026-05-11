@@ -123,7 +123,7 @@ export default function CustomerHome() {
   const currentTiles = TILES[activeTab];
 
   return (
-    <div className="flex flex-col bg-black -mt-16" style={{ minHeight: "100%" }}>
+    <div className="flex flex-col bg-black -mt-16" style={{ height: 844, overflow: "hidden" }}>
       {/* ── Hero block ──────────────────────────────────────── */}
       <div className="relative" style={{ height: "62vh", minHeight: 340 }}>
         {/* Hero image with cross-fade (skipped when prefers-reduced-motion) */}
@@ -238,8 +238,6 @@ export default function CustomerHome() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Bottom padding for fixed nav */}
-      <div className="h-16" />
     </div>
   );
 }
