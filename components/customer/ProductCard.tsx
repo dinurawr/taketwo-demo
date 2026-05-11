@@ -15,14 +15,14 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <motion.div
-      className="relative bg-white rounded-[18px] overflow-hidden shadow-sm border border-[#F0F0F0]"
+      className="relative bg-white overflow-hidden shadow-sm border border-[#F0F0F0]"
       whileTap={{ scale: 0.96, opacity: 0.85 }}
       whileHover={{ y: -2 }}
       transition={{ duration: 0.15 }}
     >
       <Link href={`/customer/product/${product.id}`}>
         {/* Image area — light-grey background */}
-        <div className="aspect-[3/4] relative bg-[#F5F5F3] rounded-t-[18px] overflow-hidden">
+        <div className="aspect-[3/4] relative bg-[#F5F5F3] overflow-hidden">
           <Image
             src={product.image}
             alt={product.name}

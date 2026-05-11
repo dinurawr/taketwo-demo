@@ -3,8 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Bell, Search } from "lucide-react";
-import { CategoryPills } from "@/components/customer/CategoryPills";
+import { ChevronLeft } from "lucide-react";
 import { ProductCard } from "@/components/customer/ProductCard";
 import { products } from "@/data/products";
 
@@ -51,62 +50,30 @@ export default function CategoryPage() {
   }, [loading, visible, filtered.length]);
 
   return (
-    <div className="flex flex-col bg-white">
-
-      {/* ── Greeting header (mirrors home) ───────────────── */}
-      <div className="flex items-center justify-between px-5 pt-4 pb-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-[#859365] flex items-center justify-center shrink-0">
-            <span className="text-white font-bold text-sm">P</span>
-          </div>
-          <div>
-            <p className="text-[11px] text-[#888888] leading-none mb-0.5">
-              {cat === "all" ? "All Products" : `${label} · ${filtered.length} items`}
-            </p>
-            <p
-              className="text-[18px] text-[#111111] leading-none font-semibold"
-              style={{ fontFamily: "var(--font-cormorant)", fontStyle: "italic" }}
-            >
-              {cat === "all" ? "Everything" : label}
-            </p>
-          </div>
-        </div>
-
-        <button
-          className="relative w-10 h-10 flex items-center justify-center rounded-full bg-black/5"
-          aria-label="Notifications"
-        >
-          <Bell size={18} strokeWidth={1.5} className="text-[#111111]" />
-          <span className="absolute top-2 right-2 w-2 h-2 bg-[#ED832B] rounded-full" />
-        </button>
-      </div>
-
-      {/* ── Search pill ──────────────────────────────────── */}
-      <div className="px-5 mb-4">
-        <Link
-          href="/customer/search"
-          className="flex items-center gap-2.5 bg-black/[0.05] rounded-full px-4 py-2.5"
-        >
-          <Search size={15} strokeWidth={1.5} className="text-[#888888]" />
-          <span className="text-sm text-[#999999]">Search styles, brands…</span>
+    <div className="flex flex-col bg-white min-h-full pb-20">
+      {/* Header */}
+      <div className="flex items-center gap-3 px-5 pt-4 pb-4 border-b border-[#F0F0F0]">
+        <Link href="/customer/home">
+          <ChevronLeft size={20} strokeWidth={1.5} className="text-[#111111]" />
         </Link>
+        <h1
+          className="text-sm font-bold text-[#111111] uppercase tracking-[0.15em]"
+          style={{ fontFamily: "var(--font-barlow)" }}
+        >
+          {cat === "all" ? "Shop All" : label}
+        </h1>
+        <span className="ml-auto text-xs text-[#999999] font-light">{filtered.length} items</span>
       </div>
 
-      {/* ── Category pills ───────────────────────────────── */}
-      <div className="mb-4">
-        <CategoryPills active={cat === "all" ? "All" : label} />
-      </div>
-
-      {/* ── Product grid ─────────────────────────────────── */}
-      <div className="px-5 grid grid-cols-2 gap-3">
+      {/* Product grid */}
+      <div className="px-4 pt-4 grid grid-cols-2 gap-3">
         {filtered.slice(0, visible).map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-16 text-[#999999]">
-          <p className="text-4xl mb-4">👗</p>
+        <div className="text-center py-16 text-[#999999] px-5">
           <p className="font-medium text-[#111111]">No products in this category yet</p>
         </div>
       )}

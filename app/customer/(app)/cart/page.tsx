@@ -19,15 +19,15 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-[calc(100vh-160px)] px-5 text-center bg-white">
-        <p className="text-5xl mb-4">🛍️</p>
-        <h2 className="text-lg font-bold text-[#111111] mb-2">Your bag is empty</h2>
-        <p className="text-sm text-[#666666] mb-6">Add some pieces you love</p>
+      <div className="flex flex-col items-center justify-center min-h-full px-5 text-center bg-white">
+        <h2 className="text-lg font-bold text-[#111111] mb-2">Your bag is empty.</h2>
+        <p className="text-sm text-[#666666] font-light mb-6">Add some pieces you love</p>
         <Link
-          href="/customer"
-          className="px-6 py-3 bg-[#859365] text-white rounded-full text-sm font-semibold"
+          href="/customer/shop"
+          className="px-8 py-3 bg-[#111111] text-white text-sm font-bold uppercase tracking-widest"
+          style={{ fontFamily: "var(--font-barlow)" }}
         >
-          Start Exploring
+          Shop Now
         </Link>
       </div>
     );
