@@ -63,7 +63,7 @@ export default function Splash() {
           className="text-[13px] text-[#859365] font-semibold uppercase tracking-[0.18em] mb-2"
           style={{ fontFamily: "var(--font-barlow)" }}
         >
-          Sri Lanka's Fashion Platform
+          Sri Lanka&apos;s Fashion Platform
         </p>
 
         <h1 className="leading-tight">
