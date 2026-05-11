@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const HERO =
-  "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80";
+const HERO = "/products/pexels-tima-miroshnichenko-7202792.jpg";
 
 export default function Splash() {
   const router = useRouter();

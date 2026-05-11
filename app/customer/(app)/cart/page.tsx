@@ -19,7 +19,11 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-full px-5 text-center bg-white">
+      /* 844px phone − 64px status bar − 64px bottom nav = 716px visible area */
+      <div
+        className="flex flex-col items-center justify-center px-5 text-center bg-white"
+        style={{ height: 716 }}
+      >
         <h2 className="text-lg font-bold text-[#111111] mb-2">Your bag is empty.</h2>
         <p className="text-sm text-[#666666] font-light mb-6">Add some pieces you love</p>
         <Link

@@ -10,14 +10,14 @@ type Tab = "WOMEN" | "MEN" | "SWIM";
 // ── Hero images (3 per tab, cycle every 4 s) ─────────────────────────────
 const HERO_IMAGES: Record<Tab, string[]> = {
   WOMEN: [
-    "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80",
+    "/products/pexels-tima-miroshnichenko-7202792.jpg",   // three women blazers editorial
     "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80",
     "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80",
   ],
   MEN: [
-    "https://images.unsplash.com/photo-1617196034183-421b4040d20d?w=800&q=80",
-    "https://images.unsplash.com/photo-1552374196-1ab2a1c593e8?w=800&q=80",
-    "https://images.unsplash.com/photo-1516826957135-700dedea698c?w=800&q=80",
+    "/products/pexels-cottonbro-6626418.jpg",              // man in cream overshirt studio
+    "/products/pexels-cottonbro-6616673.jpg",              // two men in linen overshirts
+    "/products/pexels-prayoon-sajeev-1486107-2897529.jpg", // black ribbed turtleneck
   ],
   SWIM: [
     "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80",
@@ -31,7 +31,7 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
   WOMEN: [
     {
       label: "New In",
-      image: "https://images.unsplash.com/photo-1548624313-0396c75e4b1a?w=400&q=80",
+      image: "/products/pexels-tima-miroshnichenko-7202792.jpg",
       cat: "new-in",
     },
     {
@@ -58,12 +58,12 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
     },
     {
       label: "Bottoms",
-      image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&q=80",
+      image: "/products/pexels-ron-lach-9464625.jpg",
       cat: "bottoms",
     },
     {
       label: "Tops",
-      image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&q=80",
+      image: "/products/pexels-cottonbro-6616673.jpg",
       cat: "tops",
     },
     {

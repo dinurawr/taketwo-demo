@@ -8,7 +8,7 @@ export const mockUser = {
   rewardsPoints: 240,
   rewardsTier: "Silver" as const,
   memberSince: "2026-01-15",
-  favoriteIds: ["valley-summer-shirt", "halcyon-sundress", "nilo-trench-coat"],
+  favoriteIds: ["valley-cream-overshirt", "halcyon-sundress", "nilo-trench-coat"],
 };
 
 export const rewardsTiers = [

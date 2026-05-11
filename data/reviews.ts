@@ -14,7 +14,7 @@ export type Review = {
 export const reviews: Review[] = [
   {
     id: "r1",
-    productId: "valley-summer-shirt",
+    productId: "valley-cream-overshirt",
     authorName: "Kavindu S.",
     authorHeight: "5'10\"",
     rating: 5,
@@ -27,7 +27,7 @@ export const reviews: Review[] = [
   },
   {
     id: "r2",
-    productId: "valley-summer-shirt",
+    productId: "valley-cream-overshirt",
     authorName: "Dasun R.",
     authorHeight: "6'1\"",
     rating: 4,
