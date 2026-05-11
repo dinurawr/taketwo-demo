@@ -7,7 +7,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <div className="relative pb-32 bg-white">
+    <div className="relative pt-16 pb-32 bg-white">
       <AnimatePresence mode="wait">
         <motion.div
           key={pathname}

@@ -120,7 +120,7 @@ export default function CustomerHome() {
   const currentTiles = TILES[activeTab];
 
   return (
-    <div className="flex flex-col bg-black" style={{ minHeight: "100%" }}>
+    <div className="flex flex-col bg-black -mt-16" style={{ minHeight: "100%" }}>
       {/* ── Hero block ──────────────────────────────────────── */}
       <div className="relative" style={{ height: "62vh", minHeight: 340 }}>
         {/* Hero image with cross-fade (skipped when prefers-reduced-motion) */}
