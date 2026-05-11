@@ -58,7 +58,7 @@ function ShopGrid() {
     <div className="flex flex-col bg-white min-h-full pb-24">
 
       {/* ── Search bar ─────────────────────────────────────── */}
-      <div className="px-4 pt-5 pb-3">
+      <div className="px-4 pt-1 pb-2">
         <div className="flex items-center gap-2 bg-[#F2F2F2] rounded-full px-4 py-3">
           <Search size={15} strokeWidth={2} className="text-[#999] flex-shrink-0" />
           <input

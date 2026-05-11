@@ -124,9 +124,9 @@ export default function CustomerHome() {
 
   return (
     // -mt-16 cancels layout pt-16; pb-20 gives tiles room to scroll above the nav bar; marginBottom cancels layout pb-32
-    <div className="flex flex-col bg-black -mt-16 pb-20" style={{ marginBottom: "-8rem" }}>
+    <div className="flex flex-col -mt-16 pb-20" style={{ marginBottom: "-8rem" }}>
       {/* ── Hero block ──────────────────────────────────────── */}
-      <div className="relative" style={{ height: 600 }}>
+      <div className="relative bg-black" style={{ height: 600 }}>
         {/* Hero image with cross-fade (skipped when prefers-reduced-motion) */}
         <AnimatePresence mode="wait">
           <motion.div
