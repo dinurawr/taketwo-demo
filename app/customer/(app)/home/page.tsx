@@ -92,11 +92,23 @@ export default function CustomerHome() {
         <CategoryPills active="All" />
       </div>
 
-      {/* ── Featured promo card ──────────────────────────── */}
-      <div className="px-5 mb-5">
-        <motion.div whileTap={{ scale: 0.98 }} transition={{ duration: 0.15 }}>
+      {/* ── Featured promo card — stacked deck ──────────── */}
+      <div className="relative px-5 mb-5 h-[380px]">
+        {/* Behind card #2 — furthest back */}
+        <div
+          className="absolute inset-x-5 top-0 h-[340px] rounded-[24px] bg-[#F4EDE6] shadow-md"
+          style={{ transform: "rotate(-6deg) translate(-14px, 8px) scale(0.94)", transformOrigin: "center" }}
+        />
+        {/* Behind card #1 — closer */}
+        <div
+          className="absolute inset-x-5 top-0 h-[340px] rounded-[24px] bg-[#E8E0D2] shadow-md"
+          style={{ transform: "rotate(-3deg) translate(-6px, 4px) scale(0.97)", transformOrigin: "center" }}
+        />
+
+        {/* Main card */}
+        <motion.div whileTap={{ scale: 0.98 }} transition={{ duration: 0.15 }} className="relative">
           <Link href={`/customer/product/${FEATURED.id}`}>
-            <div className="relative h-[340px] rounded-[24px] overflow-hidden bg-[#F0F3EC]">
+            <div className="relative h-[340px] rounded-[24px] overflow-hidden bg-[#F0F3EC] shadow-xl">
               <Image
                 src={FEATURED.image}
                 alt={FEATURED.name}
@@ -104,36 +116,32 @@ export default function CustomerHome() {
                 className="object-cover object-top"
                 priority
               />
-              {/* Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+              {/* Vignette */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/30" />
 
-              {/* Top-left discount badge */}
-              <div className="absolute top-3 left-3 bg-[#ED832B] text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                Up to 35% off
+              {/* Top-left typographic discount */}
+              <div className="absolute top-4 left-4 text-white drop-shadow-md">
+                <p className="text-[10px] uppercase tracking-[0.18em] font-semibold leading-none mb-1 opacity-90">
+                  Up to
+                </p>
+                <p
+                  className="text-[44px] leading-none font-black"
+                  style={{ fontFamily: "var(--font-barlow)" }}
+                >
+                  35%
+                </p>
               </div>
 
               {/* Top-right star + rating */}
-              <div className="absolute top-3 right-3 flex items-center gap-1 bg-white text-[#111111] text-[11px] font-bold px-2.5 py-1 rounded-full">
+              <div className="absolute top-4 right-4 flex items-center gap-1 bg-white text-[#111111] text-[11px] font-bold px-2.5 py-1 rounded-full">
                 <Star size={11} className="fill-[#ED832B] text-[#ED832B]" />
                 {FEATURED.rating}
               </div>
 
-              {/* Bottom info */}
-              <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-                <div>
-                  <p className="text-white/70 text-[11px] uppercase tracking-wider font-semibold">
-                    Valley
-                  </p>
-                  <p className="text-white text-base font-semibold leading-tight mt-0.5">
-                    {FEATURED.name}
-                  </p>
-                  <p className="text-white/80 text-sm font-bold mt-1">
-                    LKR {FEATURED.price.toLocaleString()}
-                  </p>
-                </div>
-                {/* Shop Now pill */}
-                <div className="bg-white text-[#111111] text-xs font-bold px-4 py-2 rounded-full shrink-0 ml-3">
-                  Shop Now
+              {/* Centred See More pill */}
+              <div className="absolute bottom-5 left-1/2 -translate-x-1/2">
+                <div className="bg-white text-[#111111] text-xs font-bold px-6 py-2.5 rounded-full shadow-lg whitespace-nowrap">
+                  See More
                 </div>
               </div>
             </div>
