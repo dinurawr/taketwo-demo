@@ -123,10 +123,10 @@ export default function CustomerHome() {
   const currentTiles = TILES[activeTab];
 
   return (
-    // height:844 = full phone frame; -mt-16 cancels layout pt-16; marginBottom cancels pb-32 so nothing scrolls past the tiles
-    <div className="flex flex-col bg-black -mt-16" style={{ height: 844, overflow: "hidden", marginBottom: "-8rem" }}>
+    // -mt-16 cancels layout pt-16; pb-20 gives tiles room to scroll above the nav bar; marginBottom cancels layout pb-32
+    <div className="flex flex-col bg-black -mt-16 pb-20" style={{ marginBottom: "-8rem" }}>
       {/* ── Hero block ──────────────────────────────────────── */}
-      <div className="relative" style={{ height: "72vh", minHeight: 380 }}>
+      <div className="relative" style={{ height: 600 }}>
         {/* Hero image with cross-fade (skipped when prefers-reduced-motion) */}
         <AnimatePresence mode="wait">
           <motion.div
@@ -203,7 +203,6 @@ export default function CustomerHome() {
         <motion.div
           key={activeTab}
           className="grid grid-cols-2"
-          style={{ flex: 1 }}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}

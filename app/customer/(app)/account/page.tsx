@@ -35,42 +35,31 @@ export default function AccountPage() {
       </div>
 
       {/* Rewards card — hard corners */}
-      <div className="mx-5 mb-4 overflow-hidden bg-[#111111] p-4 text-white">
-        <div className="flex items-start justify-between mb-1">
-          {/* Wordmark — brand cream on black card */}
-          <p
-            className="leading-none uppercase text-[#F4EDE6]/80"
-            style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: 22, letterSpacing: "-0.02em" }}
-          >
-            taketwo
-          </p>
-          <div className="text-right">
-            <p className="text-2xl font-bold">{mockUser.rewardsPoints}</p>
-            <p className="text-xs text-white/50">points</p>
-          </div>
-        </div>
-        <div className="flex items-center justify-between mb-3">
+      <div className="mx-5 mb-4 overflow-hidden bg-[#F0EBE3] p-4">
+        <div className="flex items-end justify-between mb-3">
           <div>
-            <p className="text-xs text-white/50 uppercase tracking-widest">Membership</p>
-            <p className="text-xl font-bold mt-0.5 text-white">
-              {tier.name}
-            </p>
+            <p className="text-[10px] text-[#999999] uppercase tracking-widest mb-0.5">Membership</p>
+            <p className="text-2xl font-bold text-[#111111]">{tier.name}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-2xl font-bold text-[#111111]">{mockUser.rewardsPoints}</p>
+            <p className="text-xs text-[#999999]">points</p>
           </div>
         </div>
-        <div className="h-1.5 bg-white/20 overflow-hidden">
+        <div className="h-1.5 bg-[#111111]/10 overflow-hidden">
           <div
             className="h-full transition-all"
             style={{ width: `${Math.min(progress, 100)}%`, backgroundColor: "#ED832B" }}
           />
         </div>
         {nextTier && (
-          <p className="mt-1.5 text-[10px] text-white/40">
+          <p className="mt-1.5 text-[10px] text-[#999999]">
             {nextTier.minPoints - mockUser.rewardsPoints} pts to {nextTier.name}
           </p>
         )}
         <div className="mt-3 flex flex-wrap gap-1.5">
           {tier.perks.map((perk) => (
-            <span key={perk} className="text-[10px] bg-white/10 px-2 py-0.5 text-white/70">
+            <span key={perk} className="text-[10px] bg-[#111111]/8 border border-[#111111]/10 px-2 py-0.5 text-[#555555]">
               {perk}
             </span>
           ))}
