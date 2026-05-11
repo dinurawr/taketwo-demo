@@ -36,6 +36,15 @@ body {
   display: none;
 }
 
+/* Hide scrollbar on any overflow element */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 /* Condensed uppercase utility */
 .font-display {
   font-family: var(--font-barlow), Arial, sans-serif;
