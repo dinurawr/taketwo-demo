@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 type Tab = "WOMEN" | "MEN" | "SWIM";
 
@@ -101,18 +101,20 @@ const TABS: Tab[] = ["WOMEN", "MEN", "SWIM"];
 export default function CustomerHome() {
   const [activeTab, setActiveTab] = useState<Tab>("WOMEN");
   const [heroIndex, setHeroIndex] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
 
-  // Cycle hero image every 4 s
+  // Cycle hero image every 4 s (skip if user prefers reduced motion)
   useEffect(() => {
     setHeroIndex(0); // reset on tab change
   }, [activeTab]);
 
   useEffect(() => {
+    if (prefersReducedMotion) return;
     const interval = setInterval(() => {
       setHeroIndex((i) => (i + 1) % HERO_IMAGES[activeTab].length);
     }, 4000);
     return () => clearInterval(interval);
-  }, [activeTab]);
+  }, [activeTab, prefersReducedMotion]);
 
   const currentHero = HERO_IMAGES[activeTab][heroIndex];
   const currentTiles = TILES[activeTab];
@@ -121,15 +123,15 @@ export default function CustomerHome() {
     <div className="flex flex-col bg-black" style={{ minHeight: "100%" }}>
       {/* ── Hero block ──────────────────────────────────────── */}
       <div className="relative" style={{ height: "62vh", minHeight: 340 }}>
-        {/* Hero image with cross-fade */}
+        {/* Hero image with cross-fade (skipped when prefers-reduced-motion) */}
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activeTab}-${heroIndex}`}
             className="absolute inset-0"
-            initial={{ opacity: 0 }}
+            initial={{ opacity: prefersReducedMotion ? 1 : 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: "easeInOut" }}
+            exit={{ opacity: prefersReducedMotion ? 1 : 0 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.6, ease: "easeInOut" }}
           >
             <Image
               src={currentHero}
@@ -145,19 +147,19 @@ export default function CustomerHome() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/40 pointer-events-none" />
 
         {/* ── Tab row + wordmark ───────────────────────────── */}
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-5 pt-5">
-          {/* Left tabs */}
-          <div className="flex items-center gap-5">
+        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 pt-2">
+          {/* Left tabs — min-h-[44px] ensures WCAG touch target */}
+          <div className="flex items-center gap-2">
             {TABS.slice(0, 2).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`text-[11px] font-bold tracking-[0.18em] transition-all pb-0.5 ${
+                className={`min-h-[44px] px-2 flex items-center cursor-pointer text-[11px] font-bold tracking-[0.18em] transition-all ${
                   activeTab === tab
                     ? "text-white border-b-2 border-white"
                     : "text-white/50"
                 }`}
-                style={{ fontFamily: "var(--font-barlow)" }}
+                style={{ fontFamily: "var(--font-barlow)", touchAction: "manipulation" }}
               >
                 {tab}
               </button>
@@ -166,8 +168,8 @@ export default function CustomerHome() {
 
           {/* Centre wordmark */}
           <p
-            className="text-white text-[15px] font-bold tracking-tight absolute left-1/2 -translate-x-1/2 top-5"
-            style={{ fontFamily: "var(--font-barlow)", fontWeight: 900 }}
+            className="text-white text-[15px] font-bold tracking-tight absolute left-1/2 -translate-x-1/2 top-0 flex items-center"
+            style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, height: 44 }}
           >
             taketwo
           </p>
@@ -175,27 +177,31 @@ export default function CustomerHome() {
           {/* Right tab */}
           <button
             onClick={() => setActiveTab("SWIM")}
-            className={`text-[11px] font-bold tracking-[0.18em] transition-all pb-0.5 ${
+            className={`min-h-[44px] px-2 flex items-center cursor-pointer text-[11px] font-bold tracking-[0.18em] transition-all ${
               activeTab === "SWIM"
                 ? "text-white border-b-2 border-white"
                 : "text-white/50"
             }`}
-            style={{ fontFamily: "var(--font-barlow)" }}
+            style={{ fontFamily: "var(--font-barlow)", touchAction: "manipulation" }}
           >
             SWIM
           </button>
         </div>
 
-        {/* Hero image dots indicator */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+        {/* Hero image dots — padded for 44px hit area */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-1">
           {HERO_IMAGES[activeTab].map((_, i) => (
             <button
               key={i}
               onClick={() => setHeroIndex(i)}
-              className={`rounded-full transition-all ${
+              className="p-3 cursor-pointer"
+              aria-label={`Hero image ${i + 1}`}
+              style={{ touchAction: "manipulation" }}
+            >
+              <div className={`rounded-full transition-all ${
                 i === heroIndex ? "bg-white w-4 h-1.5" : "bg-white/40 w-1.5 h-1.5"
-              }`}
-            />
+              }`} />
+            </button>
           ))}
         </div>
       </div>

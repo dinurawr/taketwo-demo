@@ -33,17 +33,20 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       </Link>
 
-      {/* Heart button — top-right corner of image */}
+      {/* Heart button — 44px hit area, visual is 28px */}
       <button
         onClick={() => toggle(product.id)}
-        className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm"
+        className="absolute top-1 right-1 w-11 h-11 flex items-center justify-center cursor-pointer"
         aria-label="Toggle favorite"
+        style={{ touchAction: "manipulation" }}
       >
-        <Heart
-          size={14}
-          className={fav ? "fill-[#ED832B] text-[#ED832B]" : "text-[#666666]"}
-          strokeWidth={fav ? 0 : 1.5}
-        />
+        <div className="w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm">
+          <Heart
+            size={14}
+            className={fav ? "fill-[#ED832B] text-[#ED832B]" : "text-[#666666]"}
+            strokeWidth={fav ? 0 : 1.5}
+          />
+        </div>
       </button>
 
       {/* Info */}

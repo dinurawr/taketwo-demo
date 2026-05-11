@@ -64,22 +64,31 @@ export default function CartPage() {
                     <p className="text-sm font-bold text-[#4A89C2] mt-1">LKR {item.price.toLocaleString()}</p>
                   </div>
                   <div className="flex flex-col items-end justify-between shrink-0">
-                    <button onClick={() => removeItem(item.productId, item.size, item.color)}>
+                    <button
+                      onClick={() => removeItem(item.productId, item.size, item.color)}
+                      className="w-10 h-10 flex items-center justify-center cursor-pointer"
+                      aria-label="Remove item"
+                      style={{ touchAction: "manipulation" }}
+                    >
                       <Trash2 size={14} className="text-[#999999]" />
                     </button>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.productId, item.size, item.color, item.quantity - 1)}
-                        className="w-6 h-6 rounded-full bg-[#F8F8F6] flex items-center justify-center"
+                        className="w-10 h-10 rounded-full bg-[#F8F8F6] flex items-center justify-center cursor-pointer"
+                        style={{ touchAction: "manipulation" }}
+                        aria-label="Decrease quantity"
                       >
-                        <Minus size={10} className="text-[#111111]" />
+                        <Minus size={12} className="text-[#111111]" />
                       </button>
-                      <span className="text-xs font-semibold w-4 text-center">{item.quantity}</span>
+                      <span className="text-xs font-semibold w-5 text-center">{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.productId, item.size, item.color, item.quantity + 1)}
-                        className="w-6 h-6 rounded-full bg-[#F8F8F6] flex items-center justify-center"
+                        className="w-10 h-10 rounded-full bg-[#F8F8F6] flex items-center justify-center cursor-pointer"
+                        style={{ touchAction: "manipulation" }}
+                        aria-label="Increase quantity"
                       >
-                        <Plus size={10} className="text-[#111111]" />
+                        <Plus size={12} className="text-[#111111]" />
                       </button>
                     </div>
                   </div>

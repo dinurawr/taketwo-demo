@@ -19,7 +19,8 @@ function Accordion({ title, children }: { title: string; children: React.ReactNo
     <div className="border-t border-[#E8E8E8]">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between py-4 text-left"
+        className="w-full flex items-center justify-between py-4 text-left cursor-pointer min-h-[44px]"
+        style={{ touchAction: "manipulation" }}
       >
         <span
           className="text-[11px] font-bold tracking-[0.18em] text-[#111111] uppercase"
@@ -110,18 +111,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </div>
         ))}
 
-        {/* Back button */}
+        {/* Back button — min 44px touch target */}
         <Link
           href="/customer/home"
-          className="absolute top-4 left-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10"
+          className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10"
+          style={{ touchAction: "manipulation" }}
         >
           <ChevronLeft size={18} className="text-[#111111]" />
         </Link>
 
-        {/* Favourite button */}
+        {/* Favourite button — min 44px touch target */}
         <button
           onClick={() => toggle(product.id)}
-          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10"
+          className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10 cursor-pointer"
+          style={{ touchAction: "manipulation" }}
         >
           <Heart
             size={16}
@@ -161,7 +164,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {/* Clickable rating → scrolls to reviews */}
         <button
           onClick={scrollToReviews}
-          className="flex items-center gap-1.5 mb-5"
+          className="flex items-center gap-1.5 mb-5 cursor-pointer min-h-[44px]"
+          style={{ touchAction: "manipulation" }}
         >
           <div className="flex items-center gap-0.5">
             {[1, 2, 3, 4, 5].map((s) => (
@@ -193,11 +197,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
-                className={`w-12 h-12 text-sm font-semibold transition-all border ${
+                className={`w-12 h-12 text-sm font-semibold transition-all border cursor-pointer ${
                   selectedSize === size
                     ? "bg-[#111111] text-white border-[#111111]"
                     : "bg-white text-[#111111] border-[#E8E8E8]"
                 }`}
+                style={{ touchAction: "manipulation" }}
               >
                 {size}
               </button>
@@ -216,10 +221,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               <button
                 key={color.name}
                 onClick={() => setSelectedColor(i)}
-                className={`w-8 h-8 rounded-full border-2 transition-all ${
+                className={`w-11 h-11 rounded-full border-2 transition-all cursor-pointer ${
                   selectedColor === i ? "border-[#111111] scale-110" : "border-transparent"
                 }`}
-                style={{ backgroundColor: color.hex }}
+                style={{ backgroundColor: color.hex, touchAction: "manipulation" }}
                 aria-label={color.name}
               />
             ))}
