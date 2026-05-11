@@ -126,7 +126,7 @@ export default function CustomerHome() {
     {/* height:844 = full phone frame; -mt-16 cancels layout pt-16; mb cancels layout pb-32 so nothing scrolls past the tiles */}
     <div className="flex flex-col bg-black -mt-16" style={{ height: 844, overflow: "hidden", marginBottom: "-8rem" }}>
       {/* ── Hero block ──────────────────────────────────────── */}
-      <div className="relative" style={{ height: "62vh", minHeight: 340 }}>
+      <div className="relative" style={{ height: "72vh", minHeight: 380 }}>
         {/* Hero image with cross-fade (skipped when prefers-reduced-motion) */}
         <AnimatePresence mode="wait">
           <motion.div
