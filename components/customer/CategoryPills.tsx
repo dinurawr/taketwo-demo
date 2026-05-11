@@ -1,29 +1,38 @@
 "use client";
 
 import Link from "next/link";
+import { Sparkles, User, Heart, Baby } from "lucide-react";
 
-const categories = ["All", "Men", "Women", "Children"];
+const categories = [
+  { label: "All",      Icon: Sparkles, href: "/customer/home" },
+  { label: "Men",      Icon: User,     href: "/customer/category/men" },
+  { label: "Women",    Icon: Heart,    href: "/customer/category/women" },
+  { label: "Children", Icon: Baby,     href: "/customer/category/children" },
+];
 
 export function CategoryPills({ active }: { active?: string }) {
-  const current = active ?? "All";
+  const current = (active ?? "All").toLowerCase();
 
   return (
     <div className="flex gap-2 px-5 overflow-x-auto pb-1 phone-scroll">
-      {categories.map((cat) => {
-        const isActive = current === cat;
-        const href =
-          cat === "All" ? "/customer" : `/customer/category/${cat.toLowerCase()}`;
+      {categories.map(({ label, Icon, href }) => {
+        const isActive = current === label.toLowerCase();
+        const isAll    = label === "All";
+
         return (
           <Link
-            key={cat}
+            key={label}
             href={href}
-            className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
+            className={`shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold transition-all ${
               isActive
-                ? "bg-[#859365] text-white"
-                : "bg-white text-[#111111] border border-[#E8E8E8]"
+                ? isAll
+                  ? "bg-[#111111] text-white"
+                  : "bg-[#4A89C2] text-white"
+                : "bg-white text-[#111111] border border-black/10 shadow-sm"
             }`}
           >
-            {cat}
+            <Icon size={13} strokeWidth={isActive ? 2.5 : 1.5} />
+            {label}
           </Link>
         );
       })}

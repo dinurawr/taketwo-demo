@@ -3,20 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { Bell, Search, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import { CategoryPills } from "@/components/customer/CategoryPills";
 import { ProductCard } from "@/components/customer/ProductCard";
-import { useMenu } from "@/lib/menu-store";
 import { products } from "@/data/products";
 
 const PAGE_SIZE = 8;
 const LOAD_MORE = 4;
 
+// Featured promo — Valley Summer Shirt
+const FEATURED = products.find((p) => p.id === "valley-summer-shirt") ?? products[0];
+
 export default function CustomerHome() {
-  const { open: openMenu } = useMenu();
-  const featured = products[0];
-  const allGrid = products.slice(1);
+  const allGrid = products.filter((p) => p.id !== FEATURED.id);
 
   const [visible, setVisible] = useState(PAGE_SIZE);
   const [loading, setLoading] = useState(false);
@@ -45,54 +45,95 @@ export default function CustomerHome() {
 
   return (
     <div className="flex flex-col bg-white">
-      {/* Top bar — fixed in place, scrolls away with content */}
-      <div className="backdrop-blur-md bg-white/90 border-b border-black/5">
-        <div className="flex items-center justify-between px-4 py-2.5">
-          <button
-            onClick={openMenu}
-            className="w-9 h-9 flex flex-col items-center justify-center gap-[5px]"
-            aria-label="Open menu"
-          >
-            <span className="w-5 h-0.5 bg-[#111111] rounded-full" />
-            <span className="w-3 h-0.5 bg-[#111111] rounded-full self-start" />
-          </button>
-          <Image src="/logo.png" alt="Take Two" width={72} height={42} priority />
-          <Link
-            href="/customer/search"
-            className="w-9 h-9 flex items-center justify-center"
-            aria-label="Search"
-          >
-            <Search size={20} strokeWidth={1.5} className="text-[#111111]" />
-          </Link>
+
+      {/* ── Greeting header ──────────────────────────────── */}
+      <div className="flex items-center justify-between px-5 pt-4 pb-3">
+        <div className="flex items-center gap-3">
+          {/* Avatar */}
+          <div className="w-10 h-10 rounded-full bg-[#859365] flex items-center justify-center shrink-0">
+            <span className="text-white font-bold text-sm">P</span>
+          </div>
+          {/* Greeting text */}
+          <div>
+            <p className="text-[11px] text-[#888888] leading-none mb-0.5">Good afternoon,</p>
+            <p
+              className="text-[18px] text-[#111111] leading-none font-semibold"
+              style={{ fontFamily: "var(--font-cormorant)", fontStyle: "italic" }}
+            >
+              Paul
+            </p>
+          </div>
         </div>
+
+        {/* Notification bell */}
+        <button
+          className="relative w-10 h-10 flex items-center justify-center rounded-full bg-black/5"
+          aria-label="Notifications"
+        >
+          <Bell size={18} strokeWidth={1.5} className="text-[#111111]" />
+          {/* Orange unread dot */}
+          <span className="absolute top-2 right-2 w-2 h-2 bg-[#ED832B] rounded-full" />
+        </button>
       </div>
 
-      {/* Hero card */}
-      <div className="px-5 pt-4 mb-5">
-        <motion.div whileTap={{ scale: 0.98 }}>
-          <Link href={`/customer/product/${featured.id}`}>
-            <div className="relative h-[420px] rounded-3xl overflow-hidden bg-[#859365]">
+      {/* ── Search pill ──────────────────────────────────── */}
+      <div className="px-5 mb-4">
+        <Link
+          href="/customer/search"
+          className="flex items-center gap-2.5 bg-black/[0.05] rounded-full px-4 py-2.5"
+        >
+          <Search size={15} strokeWidth={1.5} className="text-[#888888]" />
+          <span className="text-sm text-[#999999]">Search styles, brands…</span>
+        </Link>
+      </div>
+
+      {/* ── Category pills ───────────────────────────────── */}
+      <div className="mb-4">
+        <CategoryPills active="All" />
+      </div>
+
+      {/* ── Featured promo card ──────────────────────────── */}
+      <div className="px-5 mb-5">
+        <motion.div whileTap={{ scale: 0.98 }} transition={{ duration: 0.15 }}>
+          <Link href={`/customer/product/${FEATURED.id}`}>
+            <div className="relative h-[340px] rounded-[24px] overflow-hidden bg-[#F0F3EC]">
               <Image
-                src={featured.image}
-                alt={featured.name}
+                src={FEATURED.image}
+                alt={FEATURED.name}
                 fill
                 className="object-cover object-top"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-              <div className="absolute bottom-5 left-5 right-5">
-                <h2
-                  className="text-4xl font-bold text-white leading-none"
-                  style={{ fontFamily: "var(--font-barlow)", letterSpacing: "0.01em" }}
-                >
-                  VALLEY
-                </h2>
-                <div className="h-0.5 w-16 bg-[#ED832B] mt-2 mb-4" />
-                <div className="flex items-center justify-between">
-                  <p className="text-white/80 text-sm">{featured.name}</p>
-                  <div className="w-10 h-10 rounded-full bg-[#ED832B] flex items-center justify-center">
-                    <span className="text-white text-lg font-bold">→</span>
-                  </div>
+              {/* Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
+
+              {/* Top-left discount badge */}
+              <div className="absolute top-3 left-3 bg-[#ED832B] text-white text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                Up to 35% off
+              </div>
+
+              {/* Top-right star + rating */}
+              <div className="absolute top-3 right-3 flex items-center gap-1 bg-white text-[#111111] text-[11px] font-bold px-2.5 py-1 rounded-full">
+                <Star size={11} className="fill-[#ED832B] text-[#ED832B]" />
+                {FEATURED.rating}
+              </div>
+
+              {/* Bottom info */}
+              <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
+                <div>
+                  <p className="text-white/70 text-[11px] uppercase tracking-wider font-semibold">
+                    Valley
+                  </p>
+                  <p className="text-white text-base font-semibold leading-tight mt-0.5">
+                    {FEATURED.name}
+                  </p>
+                  <p className="text-white/80 text-sm font-bold mt-1">
+                    LKR {FEATURED.price.toLocaleString()}
+                  </p>
+                </div>
+                {/* Shop Now pill */}
+                <div className="bg-white text-[#111111] text-xs font-bold px-4 py-2 rounded-full shrink-0 ml-3">
+                  Shop Now
                 </div>
               </div>
             </div>
@@ -100,21 +141,20 @@ export default function CustomerHome() {
         </motion.div>
       </div>
 
-      {/* Section header */}
-      <div className="px-5 mb-3">
-        <h2 className="text-2xl font-bold text-[#111111] leading-tight">
-          Explore
-          <br />
-          <span className="text-[#4A89C2]">Your New Style</span>
+      {/* ── Popular section heading ───────────────────────── */}
+      <div className="px-5 mb-3 flex items-baseline justify-between">
+        <h2
+          className="text-[22px] font-bold text-[#111111]"
+          style={{ fontFamily: "var(--font-barlow)", letterSpacing: "0.02em" }}
+        >
+          POPULAR
         </h2>
+        <Link href="/customer/category/all" className="text-xs text-[#4A89C2] font-semibold">
+          See all
+        </Link>
       </div>
 
-      {/* Category pills */}
-      <div className="mb-4">
-        <CategoryPills active="All" />
-      </div>
-
-      {/* Product grid */}
+      {/* ── Product grid ─────────────────────────────────── */}
       <div className="px-5 grid grid-cols-2 gap-3">
         {allGrid.slice(0, visible).map((product) => (
           <ProductCard key={product.id} product={product} />

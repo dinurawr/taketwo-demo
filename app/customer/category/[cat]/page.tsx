@@ -3,7 +3,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { Bell, Search } from "lucide-react";
 import { CategoryPills } from "@/components/customer/CategoryPills";
 import { ProductCard } from "@/components/customer/ProductCard";
 import { products } from "@/data/products";
@@ -26,7 +26,6 @@ export default function CategoryPage() {
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Reset when cat changes
     setVisible(PAGE_SIZE);
   }, [cat]);
 
@@ -53,20 +52,52 @@ export default function CategoryPage() {
 
   return (
     <div className="flex flex-col bg-white">
-      <div className="flex items-center gap-3 px-5 pt-2 pb-4">
-        <Link href="/customer/home" className="w-8 h-8 flex items-center justify-center">
-          <ChevronLeft size={20} strokeWidth={1.5} className="text-[#111111]" />
-        </Link>
-        <h1 className="text-lg font-bold text-[#111111]">
-          {cat === "all" ? "All Products" : label}
-        </h1>
-        <span className="ml-auto text-sm text-[#666666]">{filtered.length} items</span>
+
+      {/* ── Greeting header (mirrors home) ───────────────── */}
+      <div className="flex items-center justify-between px-5 pt-4 pb-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-[#859365] flex items-center justify-center shrink-0">
+            <span className="text-white font-bold text-sm">P</span>
+          </div>
+          <div>
+            <p className="text-[11px] text-[#888888] leading-none mb-0.5">
+              {cat === "all" ? "All Products" : `${label} · ${filtered.length} items`}
+            </p>
+            <p
+              className="text-[18px] text-[#111111] leading-none font-semibold"
+              style={{ fontFamily: "var(--font-cormorant)", fontStyle: "italic" }}
+            >
+              {cat === "all" ? "Everything" : label}
+            </p>
+          </div>
+        </div>
+
+        <button
+          className="relative w-10 h-10 flex items-center justify-center rounded-full bg-black/5"
+          aria-label="Notifications"
+        >
+          <Bell size={18} strokeWidth={1.5} className="text-[#111111]" />
+          <span className="absolute top-2 right-2 w-2 h-2 bg-[#ED832B] rounded-full" />
+        </button>
       </div>
 
+      {/* ── Search pill ──────────────────────────────────── */}
+      <div className="px-5 mb-4">
+        <Link
+          href="/customer/search"
+          className="flex items-center gap-2.5 bg-black/[0.05] rounded-full px-4 py-2.5"
+        >
+          <Search size={15} strokeWidth={1.5} className="text-[#888888]" />
+          <span className="text-sm text-[#999999]">Search styles, brands…</span>
+        </Link>
+      </div>
+
+      {/* ── Category pills ───────────────────────────────── */}
       <div className="mb-4">
         <CategoryPills active={cat === "all" ? "All" : label} />
       </div>
 
+      {/* ── Product grid ─────────────────────────────────── */}
       <div className="px-5 grid grid-cols-2 gap-3">
         {filtered.slice(0, visible).map((product) => (
           <ProductCard key={product.id} product={product} />

@@ -1,178 +1,128 @@
 import Image from "next/image";
 import Link from "next/link";
 
-// Flat-lay fashion editorial — no model, clothes arranged on neutral background
-const OUTFIT_IMAGE =
-  "https://images.unsplash.com/photo-1739384879592-79903b12b2a6?w=900&q=85";
-
-type Callout = {
-  brand: string;
-  item: string;
-  color: string;
-  productId: string;
-  label: { top: string; left?: string; right?: string };
-  lineStart: { x: number; y: number };
-  lineEnd: { x: number; y: number };
-};
-
-const callouts: Callout[] = [
-  {
-    brand: "Nilo",
-    item: "Ribbed Tee",
-    color: "#4A89C2",
-    productId: "nilo-ribbed-tee",
-    label: { top: "6%", left: "3%" },
-    lineStart: { x: 23, y: 13 },
-    lineEnd: { x: 43, y: 28 },
-  },
-  {
-    brand: "Ember",
-    item: "Statement Jacket",
-    color: "#ED832B",
-    productId: "ember-red-jacket",
-    label: { top: "10%", right: "3%" },
-    lineStart: { x: 77, y: 17 },
-    lineEnd: { x: 60, y: 36 },
-  },
-  {
-    brand: "Valley",
-    item: "Summer Shirt",
-    color: "#859365",
-    productId: "valley-summer-shirt",
-    label: { top: "72%", left: "3%" },
-    lineStart: { x: 22, y: 77 },
-    lineEnd: { x: 44, y: 63 },
-  },
-  {
-    brand: "Halcyon",
-    item: "Wrap Top",
-    color: "#C49A6C",
-    productId: "halcyon-wrap-top",
-    label: { top: "76%", right: "3%" },
-    lineStart: { x: 78, y: 82 },
-    lineEnd: { x: 56, y: 72 },
-  },
+// 7 verified product images repurposed as lifestyle shots for the bento grid
+const BENTO = [
+  { src: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80", alt: "Linen co-ord" },
+  { src: "https://images.unsplash.com/photo-1572804013427-4d7ca7268217?w=600&q=80", alt: "Sundress" },
+  { src: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&q=80", alt: "Summer shirt" },
+  { src: "https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?w=600&q=80", alt: "Ribbed tee" },
+  { src: "https://images.unsplash.com/photo-1548624313-0396c75e4b1a?w=600&q=80", alt: "Trench coat" },
+  { src: "https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=600&q=80", alt: "Statement jacket" },
+  { src: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80", alt: "Graphic tee" },
 ];
 
-export default function OOTDSplash() {
+export default function Splash() {
   return (
-    <div className="relative h-full w-full overflow-hidden bg-[#F5F2EE]">
+    <div className="flex flex-col min-h-full bg-white pb-8">
 
-      {/* Flat-lay outfit photo */}
-      <Image
-        src={OUTFIT_IMAGE}
-        alt="Today's outfit"
-        fill
-        className="object-cover object-center"
-        priority
-      />
-
-      {/* Soft vignette so labels pop */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/15" />
-
-      {/* Techie straight arrows with sharp arrowheads */}
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
+      {/* ── Bento masonry grid ─────────────────────────────── */}
+      <div
+        className="px-3 pt-3"
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr",
+          gridTemplateRows: "140px 100px 100px",
+          gap: 6,
+        }}
       >
-        <defs>
-          <marker
-            id="tip"
-            markerWidth="5"
-            markerHeight="5"
-            refX="4"
-            refY="2.5"
-            orient="auto"
-          >
-            <polygon points="0 0.5, 4.5 2.5, 0 4.5" fill="white" />
-          </marker>
-          <marker
-            id="tip-dark"
-            markerWidth="5"
-            markerHeight="5"
-            refX="4"
-            refY="2.5"
-            orient="auto"
-          >
-            <polygon points="0 0.5, 4.5 2.5, 0 4.5" fill="rgba(0,0,0,0.7)" />
-          </marker>
-        </defs>
-        {callouts.map((c, i) => (
-          <g key={i}>
-            {/* Hair-thin line from label to item */}
-            <line
-              x1={c.lineStart.x}
-              y1={c.lineStart.y}
-              x2={c.lineEnd.x}
-              y2={c.lineEnd.y}
-              stroke="white"
-              strokeWidth="0.45"
-              markerEnd="url(#tip)"
-              vectorEffect="non-scaling-stroke"
-            />
-            {/* Tiny square tick at label origin */}
-            <rect
-              x={c.lineStart.x - 0.55}
-              y={c.lineStart.y - 0.55}
-              width="1.1"
-              height="1.1"
-              fill="white"
-            />
-          </g>
-        ))}
-      </svg>
+        {/* Tall left cell — rows 1-2 */}
+        <div style={{ gridColumn: "1", gridRow: "1 / 3" }} className="relative rounded-[16px] overflow-hidden">
+          <Image src={BENTO[0].src} alt={BENTO[0].alt} fill className="object-cover" sizes="120px" priority />
+        </div>
 
-      {/* Callout labels */}
-      {callouts.map((c) => (
-        <Link
-          key={c.productId}
-          href={`/customer/product/${c.productId}`}
-          className="absolute"
-          style={{ top: c.label.top, left: c.label.left, right: c.label.right }}
-        >
-          <div
-            className="text-[16px] font-bold text-white leading-none"
-            style={{
-              fontFamily: "var(--font-dancing)",
-              textShadow: "0 1px 6px rgba(0,0,0,0.55)",
-            }}
-          >
-            {c.brand}
-          </div>
-          <div
-            className="text-[8px] text-white/65 uppercase tracking-[0.12em] mt-0.5"
-            style={{
-              fontFamily: "var(--font-cormorant)",
-              fontStyle: "italic",
-              textShadow: "0 1px 4px rgba(0,0,0,0.45)",
-            }}
-          >
-            {c.item}
-          </div>
-        </Link>
-      ))}
+        {/* Top centre */}
+        <div style={{ gridColumn: "2", gridRow: "1" }} className="relative rounded-[16px] overflow-hidden">
+          <Image src={BENTO[1].src} alt={BENTO[1].alt} fill className="object-cover" sizes="120px" priority />
+        </div>
 
-      {/* OOTD label — top centre */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2">
-        <span
-          className="text-[11px] text-white/60 uppercase tracking-[0.2em] font-medium"
-          style={{ fontFamily: "var(--font-cormorant)" }}
-        >
-          OOTD
-        </span>
+        {/* Tall right cell — rows 1-2 */}
+        <div style={{ gridColumn: "3", gridRow: "1 / 3" }} className="relative rounded-[16px] overflow-hidden">
+          <Image src={BENTO[2].src} alt={BENTO[2].alt} fill className="object-cover" sizes="120px" priority />
+        </div>
+
+        {/* Centre middle */}
+        <div style={{ gridColumn: "2", gridRow: "2" }} className="relative rounded-[16px] overflow-hidden">
+          <Image src={BENTO[3].src} alt={BENTO[3].alt} fill className="object-cover" sizes="120px" />
+        </div>
+
+        {/* Wide bottom-left — cols 1-2 */}
+        <div style={{ gridColumn: "1 / 3", gridRow: "3" }} className="relative rounded-[16px] overflow-hidden">
+          <Image src={BENTO[4].src} alt={BENTO[4].alt} fill className="object-cover" sizes="240px" />
+        </div>
+
+        {/* Bottom right */}
+        <div style={{ gridColumn: "3", gridRow: "3" }} className="relative rounded-[16px] overflow-hidden">
+          <Image src={BENTO[5].src} alt={BENTO[5].alt} fill className="object-cover" sizes="120px" />
+        </div>
       </div>
 
-      {/* Enter arrow — bottom centre */}
-      <Link
-        href="/customer/home"
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-white/90 flex items-center justify-center shadow-xl"
-        style={{ cursor: "default" }}
-      >
-        <span className="text-[#111111] text-xl font-bold" style={{ lineHeight: 1 }}>
-          →
-        </span>
-      </Link>
+      {/* ── Hero typography ────────────────────────────────── */}
+      <div className="px-6 pt-7 pb-2">
+        <p
+          className="text-[13px] text-[#859365] font-semibold uppercase tracking-[0.18em] mb-2"
+          style={{ fontFamily: "var(--font-barlow)" }}
+        >
+          Sri Lanka's Fashion Platform
+        </p>
+
+        <h1 className="leading-tight">
+          <span
+            className="block text-[38px] text-[#111111]"
+            style={{ fontFamily: "var(--font-cormorant)", fontStyle: "italic", fontWeight: 600 }}
+          >
+            Discover the
+          </span>
+          <span
+            className="block text-[44px] text-[#111111] leading-none"
+            style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, letterSpacing: "0.01em" }}
+          >
+            ART
+          </span>
+          <span
+            className="block text-[38px] text-[#111111] leading-tight"
+            style={{ fontFamily: "var(--font-cormorant)", fontStyle: "italic", fontWeight: 600 }}
+          >
+            of Style
+          </span>
+        </h1>
+
+        <p className="text-sm text-[#666666] mt-3 leading-relaxed">
+          Discover independent Sri Lankan brands — curated in one place.
+        </p>
+      </div>
+
+      {/* ── CTA ────────────────────────────────────────────── */}
+      <div className="px-6 pt-5">
+        <Link
+          href="/customer/home"
+          className="w-full flex items-center justify-center gap-2 bg-[#859365] text-white rounded-full py-3.5 text-sm font-semibold shadow-md"
+        >
+          Get Started
+          <span className="text-base">→</span>
+        </Link>
+      </div>
+
+      {/* ── 7th photo strip below CTA ─────────────────────── */}
+      <div className="px-3 pt-5">
+        <div className="relative h-24 rounded-[16px] overflow-hidden">
+          <Image
+            src={BENTO[6].src}
+            alt={BENTO[6].alt}
+            fill
+            className="object-cover object-center"
+            sizes="360px"
+          />
+          <div className="absolute inset-0 bg-black/25 flex items-center justify-center">
+            <span
+              className="text-white text-[11px] uppercase tracking-[0.22em] font-semibold"
+              style={{ fontFamily: "var(--font-barlow)" }}
+            >
+              New Arrivals Every Week
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
