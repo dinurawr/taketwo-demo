@@ -1,7 +1,6 @@
 import { mockUser, rewardsTiers } from "@/data/user";
 import { orders } from "@/data/orders";
 import Link from "next/link";
-import Image from "next/image";
 import { ChevronRight, Package, Heart, Star } from "lucide-react";
 
 const CUSTOMER_ID = "u1";
@@ -38,7 +37,13 @@ export default function AccountPage() {
       {/* Rewards card — hard corners */}
       <div className="mx-5 mb-4 overflow-hidden bg-[#111111] p-4 text-white">
         <div className="flex items-start justify-between mb-1">
-          <Image src="/logo.png" alt="Take Two" width={60} height={35} className="brightness-0 invert opacity-80" />
+          {/* Wordmark — brand cream on black card */}
+          <p
+            className="leading-none uppercase text-[#F4EDE6]/80"
+            style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: 22, letterSpacing: "-0.02em" }}
+          >
+            taketwo
+          </p>
           <div className="text-right">
             <p className="text-2xl font-bold">{mockUser.rewardsPoints}</p>
             <p className="text-xs text-white/50">points</p>
@@ -47,7 +52,7 @@ export default function AccountPage() {
         <div className="flex items-center justify-between mb-3">
           <div>
             <p className="text-xs text-white/50 uppercase tracking-widest">Membership</p>
-            <p className="text-xl font-bold mt-0.5" style={{ color: tier.color }}>
+            <p className="text-xl font-bold mt-0.5 text-white">
               {tier.name}
             </p>
           </div>
