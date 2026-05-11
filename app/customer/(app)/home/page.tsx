@@ -30,8 +30,9 @@ const HERO_IMAGES: Record<Tab, string[]> = {
 const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
   WOMEN: [
     {
+      // Different from hero[0] (pexels-tima blazer) — trench coat editorial
       label: "New In",
-      image: "/products/pexels-tima-miroshnichenko-7202792.jpg",
+      image: "https://images.unsplash.com/photo-1548624313-0396c75e4b1a?w=400&q=80",
       cat: "new-in",
     },
     {
@@ -62,8 +63,9 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
       cat: "bottoms",
     },
     {
+      // Different from hero[1] (pexels-cottonbro-6616673 duo shot) — graphic tee
       label: "Tops",
-      image: "/products/pexels-cottonbro-6616673.jpg",
+      image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&q=80",
       cat: "tops",
     },
     {
@@ -80,7 +82,7 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
     },
     {
       label: "Beach Cover Ups",
-      image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80",
+      image: "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=400&q=80",
       cat: "beach-cover-up",
     },
     {
@@ -89,8 +91,9 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
       cat: "beach-dresses",
     },
     {
+      // Different from hero[1] (photo-1507525428034 beach) — aerial coast shot
       label: "Shop All",
-      image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=80",
+      image: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=400&q=80",
       cat: "all",
     },
   ],
@@ -147,7 +150,7 @@ export default function CustomerHome() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/40 pointer-events-none" />
 
         {/* ── Tab row + wordmark ───────────────────────────── */}
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 pt-2">
+        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4" style={{ height: 64 }}>
           {/* Left tabs — min-h-[44px] ensures WCAG touch target */}
           <div className="flex items-center gap-2">
             {TABS.slice(0, 2).map((tab) => (
@@ -166,10 +169,10 @@ export default function CustomerHome() {
             ))}
           </div>
 
-          {/* Centre wordmark */}
+          {/* Centre wordmark — large, prominent Barlow Condensed */}
           <p
-            className="text-white text-[15px] font-bold tracking-tight absolute left-1/2 -translate-x-1/2 top-0 flex items-center"
-            style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, height: 44 }}
+            className="text-white absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 leading-none tracking-tight uppercase"
+            style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: 34, letterSpacing: "-0.02em" }}
           >
             taketwo
           </p>
