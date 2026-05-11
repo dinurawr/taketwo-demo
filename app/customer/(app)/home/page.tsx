@@ -20,9 +20,9 @@ const HERO_IMAGES: Record<Tab, string[]> = {
     "/products/pexels-prayoon-sajeev-1486107-2897529.jpg", // black ribbed turtleneck
   ],
   SWIM: [
-    "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&q=80",
-    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&q=80",
-    "https://images.unsplash.com/photo-1506953823976-52e1e7dc8f2b?w=800&q=80",
+    "https://images.unsplash.com/photo-1570976447640-ac859083963f?w=800&q=80",   // bikini editorial
+    "https://images.unsplash.com/photo-1561677978-583a6c9b4b28?w=800&q=80",    // swimwear model
+    "https://images.unsplash.com/photo-1602752079071-f5d7f1ebb5d0?w=800&q=80", // beach fashion
   ],
 };
 
@@ -149,15 +149,16 @@ export default function CustomerHome() {
         {/* Gradient overlay top + bottom */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/40 pointer-events-none" />
 
-        {/* ── Tab row + wordmark ───────────────────────────── */}
-        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4" style={{ height: 64 }}>
-          {/* Left tabs — min-h-[44px] ensures WCAG touch target */}
-          <div className="flex items-center gap-2">
-            {TABS.slice(0, 2).map((tab) => (
+        {/* ── Tab row + wordmark — below dynamic island ───── */}
+        {/* top-[52px]: clears the 44px status bar + 8px breathing room */}
+        <div className="absolute left-0 right-0 flex items-center justify-between px-4" style={{ top: 52, height: 44 }}>
+          {/* Left: all 3 tabs in a row */}
+          <div className="flex items-center gap-3">
+            {TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`min-h-[44px] px-2 flex items-center cursor-pointer text-[11px] font-bold tracking-[0.18em] transition-all ${
+                className={`min-h-[44px] px-1 flex items-center cursor-pointer text-[11px] font-bold tracking-[0.18em] transition-all ${
                   activeTab === tab
                     ? "text-white border-b-2 border-white"
                     : "text-white/50"
@@ -169,26 +170,13 @@ export default function CustomerHome() {
             ))}
           </div>
 
-          {/* Centre wordmark — large, prominent Barlow Condensed */}
+          {/* Right: taketwo wordmark — large Barlow Condensed 900 */}
           <p
-            className="text-white absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 leading-none tracking-tight uppercase"
-            style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: 34, letterSpacing: "-0.02em" }}
+            className="text-white leading-none uppercase"
+            style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: 40, letterSpacing: "-0.02em" }}
           >
             taketwo
           </p>
-
-          {/* Right tab */}
-          <button
-            onClick={() => setActiveTab("SWIM")}
-            className={`min-h-[44px] px-2 flex items-center cursor-pointer text-[11px] font-bold tracking-[0.18em] transition-all ${
-              activeTab === "SWIM"
-                ? "text-white border-b-2 border-white"
-                : "text-white/50"
-            }`}
-            style={{ fontFamily: "var(--font-barlow)", touchAction: "manipulation" }}
-          >
-            SWIM
-          </button>
         </div>
 
         {/* Hero image dots — padded for 44px hit area */}
