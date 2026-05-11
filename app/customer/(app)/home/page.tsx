@@ -158,7 +158,7 @@ export default function CustomerHome() {
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`min-h-[44px] px-1 flex items-center cursor-pointer text-[11px] font-bold tracking-[0.18em] transition-all ${
+                className={`min-h-[44px] px-1 flex items-center cursor-pointer text-[14px] font-bold tracking-[0.18em] transition-all ${
                   activeTab === tab
                     ? "text-white border-b-2 border-white"
                     : "text-white/50"
@@ -227,7 +227,7 @@ export default function CustomerHome() {
               {/* Label — bottom-left, hard style */}
               <div className="absolute bottom-0 left-0 p-3">
                 <p
-                  className="text-white text-[11px] font-bold uppercase tracking-wide leading-tight"
+                  className="text-white text-[13px] font-bold uppercase tracking-wide leading-tight"
                   style={{ fontFamily: "var(--font-barlow)" }}
                 >
                   {tile.label}

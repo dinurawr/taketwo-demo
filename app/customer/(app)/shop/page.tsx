@@ -1,91 +1,125 @@
 "use client";
 
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { ChevronLeft } from "lucide-react";
+import { Suspense, useState, useMemo } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
+import { Search, Sparkles, User, Heart, Waves, Tag } from "lucide-react";
 import { products } from "@/data/products";
 import { ProductCard } from "@/components/customer/ProductCard";
 
+type Pill = "for-you" | "brands" | "men" | "women" | "swim";
+
+const PILLS: { id: Pill; label: string; icon: React.ReactNode }[] = [
+  { id: "for-you", label: "For you",  icon: <Sparkles size={13} strokeWidth={1.8} /> },
+  { id: "brands",  label: "Brands",   icon: <Tag       size={13} strokeWidth={1.8} /> },
+  { id: "men",     label: "Men",      icon: <User      size={13} strokeWidth={1.8} /> },
+  { id: "women",   label: "Women",    icon: <Heart     size={13} strokeWidth={1.8} /> },
+  { id: "swim",    label: "Swim",     icon: <Waves     size={13} strokeWidth={1.8} /> },
+];
+
+function deriveInitialPill(gender: string, cat: string): Pill {
+  if (gender === "men")   return "men";
+  if (gender === "women") return "women";
+  if (gender === "swim")  return "swim";
+  return "for-you";
+}
+
 function ShopGrid() {
-  const params = useSearchParams();
-  const cat = params.get("cat") ?? "";
-  const gender = params.get("gender") ?? "";
+  const params     = useSearchParams();
+  const router     = useRouter();
+  const initGender = params.get("gender") ?? "";
+  const initCat    = params.get("cat")    ?? "";
 
-  // Filter products
-  let filtered = products;
+  const [activePill, setActivePill] = useState<Pill>(() => deriveInitialPill(initGender, initCat));
+  const [query, setQuery]           = useState("");
 
-  // Filter by gender/category tab
-  if (gender && gender !== "all") {
-    const genderMap: Record<string, string> = {
-      women: "Women",
-      men: "Men",
-      swim: "Swim",
-      children: "Children",
-    };
-    const mappedCategory = genderMap[gender.toLowerCase()];
-    if (mappedCategory) {
-      filtered = filtered.filter((p) => p.category === mappedCategory);
+  const filtered = useMemo(() => {
+    let list = products;
+
+    // Gender filter from pill
+    if (activePill === "men")   list = list.filter(p => p.category === "Men");
+    if (activePill === "women") list = list.filter(p => p.category === "Women");
+    if (activePill === "swim")  list = list.filter(p => p.category === "Swim");
+    // "brands" + "for-you" → show all (could be extended later)
+
+    // Text search
+    if (query.trim()) {
+      const q = query.toLowerCase();
+      list = list.filter(p =>
+        p.name.toLowerCase().includes(q) ||
+        p.brand.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q)
+      );
     }
-  }
 
-  // Filter by categoryGroup
-  if (cat && cat !== "all") {
-    filtered = filtered.filter((p) => p.categoryGroup === cat);
-    // If nothing matches the group filter, show all from that gender
-    if (filtered.length === 0) {
-      if (gender && gender !== "all") {
-        const genderMap: Record<string, string> = { women: "Women", men: "Men", swim: "Swim", children: "Children" };
-        filtered = products.filter((p) => p.category === genderMap[gender.toLowerCase()]);
-      } else {
-        filtered = products;
-      }
-    }
-  }
-
-  // Build a heading
-  const catLabel = cat
-    ? cat.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
-    : "All";
-  const genderLabel = gender
-    ? gender.charAt(0).toUpperCase() + gender.slice(1).toLowerCase()
-    : "";
-  const heading = `${genderLabel}${genderLabel && catLabel ? " — " : ""}${catLabel !== "All" ? catLabel : ""}` || "Shop All";
+    return list;
+  }, [activePill, query]);
 
   return (
-    <div className="flex flex-col bg-white min-h-full pb-20">
-      {/* Header */}
-      <div className="flex items-center gap-3 px-5 pt-4 pb-4 border-b border-[#F0F0F0]">
-        <Link href="/customer/home">
-          <ChevronLeft size={20} strokeWidth={1.5} className="text-[#111111]" />
-        </Link>
-        <h1
-          className="text-sm font-bold text-[#111111] uppercase tracking-[0.15em]"
-          style={{ fontFamily: "var(--font-barlow)" }}
-        >
-          {heading}
-        </h1>
-        <span className="ml-auto text-xs text-[#999999] font-light">{filtered.length} items</span>
+    <div className="flex flex-col bg-white min-h-full pb-24">
+
+      {/* ── Search bar ─────────────────────────────────────── */}
+      <div className="px-4 pt-5 pb-3">
+        <div className="flex items-center gap-2 bg-[#F2F2F2] rounded-full px-4 py-3">
+          <Search size={15} strokeWidth={2} className="text-[#999] flex-shrink-0" />
+          <input
+            type="text"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Search styles, brands..."
+            className="flex-1 bg-transparent text-[13px] text-[#111] placeholder-[#AAA] outline-none font-light"
+          />
+          {query && (
+            <button
+              onClick={() => setQuery("")}
+              className="text-[#999] text-[11px] cursor-pointer"
+              style={{ touchAction: "manipulation" }}
+            >
+              ✕
+            </button>
+          )}
+        </div>
       </div>
 
-      {/* Product grid */}
+      {/* ── Filter pills ───────────────────────────────────── */}
+      <div className="flex items-center gap-2 px-4 pb-4 overflow-x-auto scrollbar-none">
+        {PILLS.map(pill => {
+          const active = activePill === pill.id;
+          return (
+            <button
+              key={pill.id}
+              onClick={() => setActivePill(pill.id)}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full flex-shrink-0 text-[12px] font-semibold transition-all cursor-pointer border ${
+                active
+                  ? "bg-[#111111] text-white border-[#111111]"
+                  : "bg-white text-[#333] border-[#E0E0E0]"
+              }`}
+              style={{ touchAction: "manipulation" }}
+            >
+              {pill.icon}
+              {pill.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* ── Results count ──────────────────────────────────── */}
+      <div className="px-4 pb-3">
+        <p className="text-[11px] text-[#AAA] font-light uppercase tracking-widest">
+          {filtered.length} item{filtered.length !== 1 ? "s" : ""}
+        </p>
+      </div>
+
+      {/* ── Product grid ───────────────────────────────────── */}
       {filtered.length > 0 ? (
-        <div className="px-4 pt-4 grid grid-cols-2 gap-3">
-          {filtered.map((product) => (
+        <div className="px-4 grid grid-cols-2 gap-3">
+          {filtered.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center flex-1 py-20 text-center px-5">
-          <p className="text-base font-bold text-[#111111] mb-2">Nothing here yet.</p>
-          <p className="text-sm text-[#999999] font-light">Check back soon for new arrivals.</p>
-          <Link
-            href="/customer/shop"
-            className="mt-6 px-6 py-3 bg-[#111111] text-white text-xs font-bold uppercase tracking-widest"
-            style={{ fontFamily: "var(--font-barlow)" }}
-          >
-            Shop All
-          </Link>
+        <div className="flex flex-col items-center justify-center py-20 text-center px-5">
+          <p className="text-base font-bold text-[#111111] mb-2">Nothing found.</p>
+          <p className="text-sm text-[#999999] font-light">Try a different search or filter.</p>
         </div>
       )}
     </div>
@@ -94,7 +128,11 @@ function ShopGrid() {
 
 export default function ShopPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center h-64"><div className="w-6 h-6 rounded-full border-2 border-[#859365] border-t-transparent animate-spin" /></div>}>
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <div className="w-6 h-6 rounded-full border-2 border-[#859365] border-t-transparent animate-spin" />
+      </div>
+    }>
       <ShopGrid />
     </Suspense>
   );
