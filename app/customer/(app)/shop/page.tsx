@@ -2,8 +2,11 @@
 
 import { Suspense, useState, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Search, Sparkles, User, Heart, Waves, Tag } from "lucide-react";
+import { Search, Sparkles, User, Heart, Waves, Tag, ChevronRight } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 import { products } from "@/data/products";
+import { brands } from "@/data/brands";
 import { ProductCard } from "@/components/customer/ProductCard";
 
 type Pill = "for-you" | "brands" | "men" | "women" | "swim";
@@ -21,6 +24,64 @@ function deriveInitialPill(gender: string, cat: string): Pill {
   if (gender === "women") return "women";
   if (gender === "swim")  return "swim";
   return "for-you";
+}
+
+// ── Brand directory ───────────────────────────────────────────────────────
+function BrandsView({ query }: { query: string }) {
+  const filtered = brands.filter((b) =>
+    query.trim() ? b.name.toLowerCase().includes(query.toLowerCase()) : true
+  );
+
+  return (
+    <div className="px-4 space-y-3">
+      <p className="text-[11px] text-[#AAA] font-light uppercase tracking-widest pb-1">
+        {filtered.length} brand{filtered.length !== 1 ? "s" : ""}
+      </p>
+      {filtered.map((brand) => {
+        const brandProductCount = products.filter(
+          (p) => p.brand === brand.id && p.category !== "Children"
+        ).length;
+
+        return (
+          <Link
+            key={brand.id}
+            href={`/customer/brand/${brand.id}`}
+            className="flex items-center gap-4 bg-white border border-[#F0F0F0] p-3 active:opacity-70 transition-opacity"
+          >
+            {/* Hero image thumbnail */}
+            <div className="w-16 h-16 overflow-hidden shrink-0 relative">
+              <Image
+                src={brand.heroImage}
+                alt={brand.name}
+                fill
+                className="object-cover"
+                sizes="64px"
+              />
+            </div>
+
+            {/* Info */}
+            <div className="flex-1 min-w-0">
+              {/* Brand colour dot + name */}
+              <div className="flex items-center gap-2 mb-0.5">
+                <div
+                  className="w-2 h-2 rounded-full shrink-0"
+                  style={{ backgroundColor: brand.color }}
+                />
+                <p className="text-sm font-bold text-[#111111] truncate">{brand.name}</p>
+              </div>
+              <p className="text-[11px] text-[#999999] truncate">{brand.tagline}</p>
+              <p className="text-[10px] text-[#BBBBBB] mt-1">
+                {brandProductCount} product{brandProductCount !== 1 ? "s" : ""} &middot;{" "}
+                {brand.followerCount.toLocaleString()} followers
+              </p>
+            </div>
+
+            <ChevronRight size={15} className="text-[#CCCCCC] shrink-0" />
+          </Link>
+        );
+      })}
+    </div>
+  );
 }
 
 function ShopGrid() {
@@ -102,25 +163,31 @@ function ShopGrid() {
         })}
       </div>
 
-      {/* ── Results count ──────────────────────────────────── */}
-      <div className="px-4 pb-3">
-        <p className="text-[11px] text-[#AAA] font-light uppercase tracking-widest">
-          {filtered.length} item{filtered.length !== 1 ? "s" : ""}
-        </p>
-      </div>
-
-      {/* ── Product grid ───────────────────────────────────── */}
-      {filtered.length > 0 ? (
-        <div className="px-4 grid grid-cols-2 gap-3">
-          {filtered.map(product => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+      {/* ── Brands directory or product grid ──────────────── */}
+      {activePill === "brands" ? (
+        <BrandsView query={query} />
       ) : (
-        <div className="flex flex-col items-center justify-center py-20 text-center px-5">
-          <p className="text-base font-bold text-[#111111] mb-2">Nothing found.</p>
-          <p className="text-sm text-[#999999] font-light">Try a different search or filter.</p>
-        </div>
+        <>
+          {/* Results count */}
+          <div className="px-4 pb-3">
+            <p className="text-[11px] text-[#AAA] font-light uppercase tracking-widest">
+              {filtered.length} item{filtered.length !== 1 ? "s" : ""}
+            </p>
+          </div>
+
+          {filtered.length > 0 ? (
+            <div className="px-4 grid grid-cols-2 gap-3">
+              {filtered.map(product => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-20 text-center px-5">
+              <p className="text-base font-bold text-[#111111] mb-2">Nothing found.</p>
+              <p className="text-sm text-[#999999] font-light">Try a different search or filter.</p>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
