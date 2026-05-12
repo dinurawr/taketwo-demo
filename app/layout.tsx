@@ -3,6 +3,7 @@ import { Inter, Barlow_Condensed, Cormorant_Garamond, Dancing_Script } from "nex
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-store";
 import { FavoritesProvider } from "@/lib/favorites-store";
+import { FollowsProvider } from "@/lib/follows-store";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -48,7 +49,9 @@ export default function RootLayout({
         className={`${inter.variable} ${barlowCondensed.variable} ${cormorantGaramond.variable} ${dancingScript.variable} font-sans antialiased`}
       >
         <CartProvider>
-          <FavoritesProvider>{children}</FavoritesProvider>
+          <FavoritesProvider>
+            <FollowsProvider>{children}</FollowsProvider>
+          </FavoritesProvider>
         </CartProvider>
       </body>
     </html>

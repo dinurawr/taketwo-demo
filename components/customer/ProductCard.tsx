@@ -51,10 +51,12 @@ export function ProductCard({ product }: { product: Product }) {
 
       {/* Info */}
       <div className="px-2.5 pt-2 pb-2.5">
-        {/* Brand label — small uppercase in brand colour */}
-        <p className="text-[10px] text-[#859365] font-bold uppercase tracking-wide">
-          {brand?.name}
-        </p>
+        {/* Brand label — links to brand storefront */}
+        <Link href={`/customer/brand/${brand?.id}`} className="block">
+          <p className="text-[10px] text-[#859365] font-bold uppercase tracking-wide hover:underline">
+            {brand?.name}
+          </p>
+        </Link>
 
         <Link href={`/customer/product/${product.id}`}>
           <p className="text-xs font-semibold text-[#111111] leading-tight mt-0.5 line-clamp-2">

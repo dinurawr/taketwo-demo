@@ -11,6 +11,8 @@ import {
   Package,
   BarChart2,
   Home,
+  Users,
+  Megaphone,
 } from "lucide-react";
 import { orders } from "@/data/orders";
 
@@ -25,6 +27,8 @@ const navItems = [
   { href: "/vendor/returning",  icon: RotateCcw,    label: "Returning",      badge: returningCount,color: "#ED832B" },
   { href: "/vendor/pending",    icon: AlertCircle,  label: "Pending Verdict",badge: pendingCount,  color: "#ED832B" },
   { href: "/vendor/products",   icon: Package,      label: "Products",       badge: null,          color: "#999999" },
+  { href: "/vendor/customers",  icon: Users,        label: "Customers",      badge: 5,             color: "#4A89C2" },
+  { href: "/vendor/marketing",  icon: Megaphone,    label: "Marketing",      badge: 2,             color: "#ED832B" },
   { href: "/vendor/analytics",  icon: BarChart2,    label: "Analytics",      badge: null,          color: "#999999" },
 ];
 
