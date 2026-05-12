@@ -2,7 +2,8 @@ export type Product = {
   id: string;
   name: string;
   brand: string;
-  category: "Men" | "Women" | "Children";
+  category: "Men" | "Women" | "Children" | "Swim";
+  categoryGroup: string; // "new-in" | "dresses" | "tops" | "bottoms" | "shorts" | "bikinis" | "beach-cover-up" | "beach-dresses" | "rock-revival" | etc.
   price: number; // LKR
   image: string;
   images: string[];
@@ -17,47 +18,90 @@ export type Product = {
 export const products: Product[] = [
   // ── Valley ──────────────────────────────────────────────
   {
-    id: "valley-summer-shirt",
-    name: "Valley Summer Shirt",
+    id: "valley-cream-overshirt",
+    name: "Valley Cream Overshirt",
     brand: "valley",
     category: "Men",
+    categoryGroup: "tops",
     price: 14545,
-    image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&q=80",
+    image: "/products/pexels-cottonbro-6626418.jpg",
     images: [
-      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&q=80",
-      "https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?w=600&q=80",
+      "/products/pexels-cottonbro-6626418.jpg",
+      "/products/pexels-cottonbro-6616673.jpg",
     ],
     sizes: ["S", "M", "L", "XL"],
     colors: [
-      { name: "Coral", hex: "#C97B63" },
-      { name: "Ocean", hex: "#4A90D9" },
-      { name: "Amber", hex: "#E8A020" },
+      { name: "Cream", hex: "#EDE8DC" },
+      { name: "Stone", hex: "#B5AA96" },
     ],
     description:
-      "Made from organic cotton with a lightly brushed finish, this regular-fit overshirt has a sharp pointed collar and fastens with tonal organic corozo buttons.",
+      "Relaxed-fit overshirt in a brushed cream cotton. Two chest patch pockets, corozo button placket, and a slightly longer back hem. Wear open over a tee or buttoned as a standalone top.",
     inStock: true,
     rating: 4.6,
     reviewCount: 38,
   },
+  {
+    id: "valley-linen-overshirt",
+    name: "Valley Linen Overshirt",
+    brand: "valley",
+    category: "Men",
+    categoryGroup: "tops",
+    price: 12800,
+    image: "/products/pexels-cottonbro-6616673.jpg",
+    images: ["/products/pexels-cottonbro-6616673.jpg"],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    colors: [
+      { name: "Natural", hex: "#D8CFBE" },
+      { name: "Slate", hex: "#6B7280" },
+    ],
+    description:
+      "Stone-washed linen overshirt with a relaxed drop shoulder. Available in Natural or Slate — both pair effortlessly with chinos or wide-leg denim.",
+    inStock: true,
+    rating: 4.5,
+    reviewCount: 27,
+  },
   // ── North Lane ──────────────────────────────────────────
   {
-    id: "northlane-black-shirt",
-    name: "North Lane Black Shirt",
+    id: "northlane-ribbed-turtleneck",
+    name: "North Lane Ribbed Turtleneck",
     brand: "north-lane",
     category: "Men",
+    categoryGroup: "tops",
     price: 12595,
-    image: "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=600&q=80",
-    images: ["https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=600&q=80"],
+    image: "/products/pexels-prayoon-sajeev-1486107-2897529.jpg",
+    images: ["/products/pexels-prayoon-sajeev-1486107-2897529.jpg"],
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: [
       { name: "Black", hex: "#111111" },
       { name: "Charcoal", hex: "#3A3A3A" },
+      { name: "Ivory", hex: "#F5F0E8" },
     ],
     description:
-      "A versatile long-sleeve shirt in a pinstripe weave. Sharp enough for evenings, relaxed enough for weekends.",
+      "Fine-rib merino-blend turtleneck with a close but not constricting fit. Minimal, versatile, and warm — the cornerstone of a considered wardrobe.",
     inStock: true,
     rating: 4.7,
     reviewCount: 52,
+  },
+  {
+    id: "northlane-slim-chinos",
+    name: "North Lane Slim Chinos",
+    brand: "north-lane",
+    category: "Men",
+    categoryGroup: "bottoms",
+    price: 16900,
+    image: "/products/pexels-ron-lach-9464625.jpg",
+    images: ["/products/pexels-ron-lach-9464625.jpg"],
+    sizes: ["28", "30", "32", "34", "36"],
+    colors: [
+      { name: "Sand", hex: "#C2B49A" },
+      { name: "Olive", hex: "#6B6B44" },
+      { name: "Navy", hex: "#1A2F5A" },
+    ],
+    description:
+      "Tapered slim chino in a stretch cotton twill. Clean front with a hidden waistband adjustment. Pairs equally well with a blazer or a simple overshirt.",
+    inStock: true,
+    rating: 4.6,
+    reviewCount: 41,
   },
   // ── Halcyon ─────────────────────────────────────────────
   {
@@ -65,6 +109,7 @@ export const products: Product[] = [
     name: "Halcyon Sundress",
     brand: "halcyon",
     category: "Women",
+    categoryGroup: "dresses",
     price: 16800,
     image: "https://images.unsplash.com/photo-1572804013427-4d7ca7268217?w=600&q=80",
     images: ["https://images.unsplash.com/photo-1572804013427-4d7ca7268217?w=600&q=80"],
@@ -84,6 +129,7 @@ export const products: Product[] = [
     name: "Halcyon Linen Co-ord Set",
     brand: "halcyon",
     category: "Women",
+    categoryGroup: "new-in",
     price: 24500,
     image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80",
     images: ["https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80"],
@@ -98,10 +144,32 @@ export const products: Product[] = [
     reviewCount: 43,
   },
   {
+    id: "halcyon-tailored-blazer",
+    name: "Halcyon Tailored Blazer",
+    brand: "halcyon",
+    category: "Women",
+    categoryGroup: "new-in",
+    price: 34500,
+    image: "/products/pexels-tima-miroshnichenko-7202792.jpg",
+    images: ["/products/pexels-tima-miroshnichenko-7202792.jpg"],
+    sizes: ["XS", "S", "M", "L"],
+    colors: [
+      { name: "Dusty Rose", hex: "#D4849A" },
+      { name: "Black", hex: "#111111" },
+      { name: "Blush", hex: "#E8B4B8" },
+    ],
+    description:
+      "A relaxed double-breasted blazer with an oversized silhouette and clean lapels. Crafted in a soft satin-faced fabric that moves with you. Effortless dressed up or worn with a simple white tee.",
+    inStock: true,
+    rating: 4.8,
+    reviewCount: 19,
+  },
+  {
     id: "halcyon-wrap-top",
     name: "Halcyon Wrap Top",
     brand: "halcyon",
     category: "Women",
+    categoryGroup: "tops",
     price: 9800,
     image: "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=600&q=80",
     images: ["https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=600&q=80"],
@@ -121,6 +189,7 @@ export const products: Product[] = [
     name: "Nilo Wide Leg Jeans",
     brand: "nilo",
     category: "Women",
+    categoryGroup: "bottoms",
     price: 19500,
     image: "https://images.unsplash.com/photo-1555689502-c4b22d76c56f?w=600&q=80",
     images: ["https://images.unsplash.com/photo-1555689502-c4b22d76c56f?w=600&q=80"],
@@ -139,6 +208,7 @@ export const products: Product[] = [
     name: "Nilo Ribbed Tee",
     brand: "nilo",
     category: "Women",
+    categoryGroup: "tops",
     price: 6500,
     image: "https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?w=600&q=80",
     images: ["https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?w=600&q=80"],
@@ -158,6 +228,7 @@ export const products: Product[] = [
     name: "Nilo Trench Coat",
     brand: "nilo",
     category: "Women",
+    categoryGroup: "new-in",
     price: 48000,
     image: "https://images.unsplash.com/photo-1548624313-0396c75e4b1a?w=600&q=80",
     images: ["https://images.unsplash.com/photo-1548624313-0396c75e4b1a?w=600&q=80"],
@@ -174,6 +245,7 @@ export const products: Product[] = [
     name: "Ember Statement Jacket",
     brand: "ember",
     category: "Men",
+    categoryGroup: "rock-revival",
     price: 42000,
     image: "https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=600&q=80",
     images: ["https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=600&q=80"],
@@ -192,6 +264,7 @@ export const products: Product[] = [
     name: "Ember Graphic Tee",
     brand: "ember",
     category: "Men",
+    categoryGroup: "tops",
     price: 8500,
     image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80",
     images: ["https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80"],
@@ -208,6 +281,7 @@ export const products: Product[] = [
     name: "Nilo Kids Play Set",
     brand: "nilo",
     category: "Children",
+    categoryGroup: "new-in",
     price: 8900,
     image: "https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?w=600&q=80",
     images: ["https://images.unsplash.com/photo-1514090458221-65bb69cf63e6?w=600&q=80"],
@@ -226,6 +300,7 @@ export const products: Product[] = [
     name: "Halcyon Mini Dress",
     brand: "halcyon",
     category: "Children",
+    categoryGroup: "dresses",
     price: 7500,
     image: "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=600&q=80",
     images: ["https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=600&q=80"],
@@ -239,6 +314,89 @@ export const products: Product[] = [
     rating: 4.9,
     reviewCount: 62,
   },
+  // ── Swim ─────────────────────────────────────────────────
+  {
+    id: "halcyon-bikini-set",
+    name: "Halcyon Bikini Set",
+    brand: "halcyon",
+    category: "Swim",
+    categoryGroup: "bikinis",
+    price: 13500,
+    image: "https://images.unsplash.com/photo-1570976447640-ac859083963f?w=600&q=80",
+    images: ["https://images.unsplash.com/photo-1570976447640-ac859083963f?w=600&q=80"],
+    sizes: ["XS", "S", "M", "L"],
+    colors: [
+      { name: "Coral", hex: "#E8785A" },
+      { name: "Sand", hex: "#D4B896" },
+      { name: "Black", hex: "#111111" },
+    ],
+    description:
+      "Adjustable triangle bikini set in a quick-dry fabric. UPF 50+ protection. Structured top with removable padding.",
+    inStock: true,
+    rating: 4.7,
+    reviewCount: 34,
+  },
+  {
+    id: "valley-beach-coverup",
+    name: "Valley Beach Cover Up",
+    brand: "valley",
+    category: "Swim",
+    categoryGroup: "beach-cover-up",
+    price: 9800,
+    image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80",
+    images: ["https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80"],
+    sizes: ["One Size", "S/M", "L/XL"],
+    colors: [
+      { name: "White", hex: "#FFFFFF" },
+      { name: "Terracotta", hex: "#C97B63" },
+    ],
+    description:
+      "Lightweight woven beach cover-up with deep V-neckline and tassel hem. Throw over a swimsuit or wear as a summer dress.",
+    inStock: true,
+    rating: 4.5,
+    reviewCount: 28,
+  },
+  {
+    id: "halcyon-beach-dress",
+    name: "Halcyon Beach Dress",
+    brand: "halcyon",
+    category: "Swim",
+    categoryGroup: "beach-dresses",
+    price: 17200,
+    image: "https://images.unsplash.com/photo-1572804013427-4d7ca7268217?w=600&q=80",
+    images: ["https://images.unsplash.com/photo-1572804013427-4d7ca7268217?w=600&q=80"],
+    sizes: ["XS", "S", "M", "L"],
+    colors: [
+      { name: "Ocean Blue", hex: "#4A90D9" },
+      { name: "Marigold", hex: "#F5A623" },
+    ],
+    description:
+      "Breezy midi beach dress with smocked bodice and tiered skirt. Perfect from the sand to the restaurant.",
+    inStock: true,
+    rating: 4.8,
+    reviewCount: 41,
+  },
+  {
+    id: "northlane-swim-shorts",
+    name: "North Lane Swim Shorts",
+    brand: "north-lane",
+    category: "Swim",
+    categoryGroup: "shorts",
+    price: 11000,
+    image: "https://images.unsplash.com/photo-1591195853828-11db59a44f43?w=600&q=80",
+    images: ["https://images.unsplash.com/photo-1591195853828-11db59a44f43?w=600&q=80"],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: [
+      { name: "Navy", hex: "#1A2F5A" },
+      { name: "Black", hex: "#111111" },
+      { name: "Olive", hex: "#5C6B3A" },
+    ],
+    description:
+      "Quick-dry board shorts with mesh lining and secure zip pocket. Longer length for a relaxed fit.",
+    inStock: true,
+    rating: 4.4,
+    reviewCount: 22,
+  },
 ];
 
 export function getProduct(id: string) {
@@ -247,9 +405,27 @@ export function getProduct(id: string) {
 
 export function getProductsByCategory(category: string) {
   if (category === "all") return products;
-  return products.filter((p) => p.category === category);
+  return products.filter((p) => p.category.toLowerCase() === category.toLowerCase());
 }
 
 export function getProductsByBrand(brandId: string) {
   return products.filter((p) => p.brand === brandId);
+}
+
+/** Strip the brand name prefix from a product name, e.g. "Nilo Trench Coat" → "Trench Coat" */
+export function getShortName(product: { name: string; brand: string }): string {
+  const brandWords: Record<string, string[]> = {
+    valley: ["Valley"],
+    "north-lane": ["North", "Lane"],
+    halcyon: ["Halcyon"],
+    nilo: ["Nilo"],
+    ember: ["Ember"],
+  };
+  const prefixes = brandWords[product.brand] ?? [];
+  if (prefixes.length === 0) return product.name;
+  const prefix = prefixes.join(" ");
+  if (product.name.startsWith(prefix + " ")) {
+    return product.name.slice(prefix.length + 1);
+  }
+  return product.name;
 }

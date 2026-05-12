@@ -42,14 +42,14 @@ export const orders: Order[] = [
     customerAddress: "45 Galle Road, Colombo 03",
     items: [
       {
-        productId: "valley-summer-shirt",
-        productName: "Valley Summer Shirt",
+        productId: "valley-cream-overshirt",
+        productName: "Valley Cream Overshirt",
         brand: "valley",
         size: "M",
-        color: "Coral",
+        color: "Cream",
         price: 14545,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=200&q=80",
+        image: "/products/pexels-cottonbro-6626418.jpg",
       },
     ],
     total: 14545,

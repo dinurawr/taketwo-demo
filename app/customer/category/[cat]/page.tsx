@@ -4,7 +4,6 @@ import { useParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
-import { CategoryPills } from "@/components/customer/CategoryPills";
 import { ProductCard } from "@/components/customer/ProductCard";
 import { products } from "@/data/products";
 
@@ -26,7 +25,6 @@ export default function CategoryPage() {
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Reset when cat changes
     setVisible(PAGE_SIZE);
   }, [cat]);
 
@@ -52,30 +50,30 @@ export default function CategoryPage() {
   }, [loading, visible, filtered.length]);
 
   return (
-    <div className="flex flex-col bg-white">
-      <div className="flex items-center gap-3 px-5 pt-2 pb-4">
-        <Link href="/customer/home" className="w-8 h-8 flex items-center justify-center">
+    <div className="flex flex-col bg-white min-h-full pb-20">
+      {/* Header */}
+      <div className="flex items-center gap-3 px-5 pt-4 pb-4 border-b border-[#F0F0F0]">
+        <Link href="/customer/home">
           <ChevronLeft size={20} strokeWidth={1.5} className="text-[#111111]" />
         </Link>
-        <h1 className="text-lg font-bold text-[#111111]">
-          {cat === "all" ? "All Products" : label}
+        <h1
+          className="text-sm font-bold text-[#111111] uppercase tracking-[0.15em]"
+          style={{ fontFamily: "var(--font-barlow)" }}
+        >
+          {cat === "all" ? "Shop All" : label}
         </h1>
-        <span className="ml-auto text-sm text-[#666666]">{filtered.length} items</span>
+        <span className="ml-auto text-xs text-[#999999] font-light">{filtered.length} items</span>
       </div>
 
-      <div className="mb-4">
-        <CategoryPills active={cat === "all" ? "All" : label} />
-      </div>
-
-      <div className="px-5 grid grid-cols-2 gap-3">
+      {/* Product grid */}
+      <div className="px-4 pt-4 grid grid-cols-2 gap-3">
         {filtered.slice(0, visible).map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-16 text-[#999999]">
-          <p className="text-4xl mb-4">👗</p>
+        <div className="text-center py-16 text-[#999999] px-5">
           <p className="font-medium text-[#111111]">No products in this category yet</p>
         </div>
       )}

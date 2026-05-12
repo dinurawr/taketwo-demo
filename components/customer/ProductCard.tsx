@@ -15,13 +15,14 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <motion.div
-      className="relative bg-white rounded-2xl overflow-hidden shadow-sm border border-[#F0F0F0]"
+      className="relative bg-white overflow-hidden shadow-sm border border-[#F0F0F0]"
       whileTap={{ scale: 0.96, opacity: 0.85 }}
       whileHover={{ y: -2 }}
       transition={{ duration: 0.15 }}
     >
       <Link href={`/customer/product/${product.id}`}>
-        <div className="aspect-[3/4] relative bg-[#F0F3EC]">
+        {/* Image area — light-grey background */}
+        <div className="aspect-[3/4] relative bg-[#F5F5F3] overflow-hidden">
           <Image
             src={product.image}
             alt={product.name}
@@ -31,31 +32,58 @@ export function ProductCard({ product }: { product: Product }) {
           />
         </div>
       </Link>
-      {/* Favorite button */}
+
+      {/* Heart button — 44px hit area, visual is 28px */}
       <button
         onClick={() => toggle(product.id)}
-        className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm"
+        className="absolute top-1 right-1 w-11 h-11 flex items-center justify-center cursor-pointer"
         aria-label="Toggle favorite"
+        style={{ touchAction: "manipulation" }}
       >
-        <Heart
-          size={14}
-          className={fav ? "fill-[#ED832B] text-[#ED832B]" : "text-[#666666]"}
-          strokeWidth={fav ? 0 : 1.5}
-        />
+        <div className="w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm">
+          <Heart
+            size={14}
+            className={fav ? "fill-[#ED832B] text-[#ED832B]" : "text-[#666666]"}
+            strokeWidth={fav ? 0 : 1.5}
+          />
+        </div>
       </button>
+
       {/* Info */}
-      <div className="p-2.5">
+      <div className="px-2.5 pt-2 pb-2.5">
+        {/* Brand label — small uppercase in brand colour */}
         <p className="text-[10px] text-[#859365] font-bold uppercase tracking-wide">
           {brand?.name}
         </p>
+
         <Link href={`/customer/product/${product.id}`}>
           <p className="text-xs font-semibold text-[#111111] leading-tight mt-0.5 line-clamp-2">
             {product.name}
           </p>
         </Link>
+
         <p className="text-sm font-bold text-[#111111] mt-1">
           LKR {product.price.toLocaleString()}
         </p>
+
+        {/* Colour dot row */}
+        {product.colors.length > 0 && (
+          <div className="flex items-center gap-1 mt-1.5">
+            {product.colors.slice(0, 4).map((color) => (
+              <div
+                key={color.hex}
+                className="w-3 h-3 rounded-full border border-black/10"
+                style={{ backgroundColor: color.hex }}
+                title={color.name}
+              />
+            ))}
+            {product.colors.length > 4 && (
+              <span className="text-[10px] text-[#999999]">
+                +{product.colors.length - 4}
+              </span>
+            )}
+          </div>
+        )}
       </div>
     </motion.div>
   );

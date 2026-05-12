@@ -19,15 +19,19 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-[calc(100vh-160px)] px-5 text-center bg-white">
-        <p className="text-5xl mb-4">🛍️</p>
-        <h2 className="text-lg font-bold text-[#111111] mb-2">Your bag is empty</h2>
-        <p className="text-sm text-[#666666] mb-6">Add some pieces you love</p>
+      /* 844px phone − 64px status bar − 64px bottom nav = 716px visible area */
+      <div
+        className="flex flex-col items-center justify-center px-5 text-center bg-white"
+        style={{ height: 716 }}
+      >
+        <h2 className="text-lg font-bold text-[#111111] mb-2">Your bag is empty.</h2>
+        <p className="text-sm text-[#666666] font-light mb-6">Add some pieces you love</p>
         <Link
-          href="/customer"
-          className="px-6 py-3 bg-[#859365] text-white rounded-full text-sm font-semibold"
+          href="/customer/shop"
+          className="px-8 py-3 bg-[#111111] text-white text-sm font-bold uppercase tracking-widest"
+          style={{ fontFamily: "var(--font-barlow)" }}
         >
-          Start Exploring
+          Shop Now
         </Link>
       </div>
     );
@@ -64,22 +68,31 @@ export default function CartPage() {
                     <p className="text-sm font-bold text-[#4A89C2] mt-1">LKR {item.price.toLocaleString()}</p>
                   </div>
                   <div className="flex flex-col items-end justify-between shrink-0">
-                    <button onClick={() => removeItem(item.productId, item.size, item.color)}>
+                    <button
+                      onClick={() => removeItem(item.productId, item.size, item.color)}
+                      className="w-10 h-10 flex items-center justify-center cursor-pointer"
+                      aria-label="Remove item"
+                      style={{ touchAction: "manipulation" }}
+                    >
                       <Trash2 size={14} className="text-[#999999]" />
                     </button>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.productId, item.size, item.color, item.quantity - 1)}
-                        className="w-6 h-6 rounded-full bg-[#F8F8F6] flex items-center justify-center"
+                        className="w-10 h-10 rounded-full bg-[#F8F8F6] flex items-center justify-center cursor-pointer"
+                        style={{ touchAction: "manipulation" }}
+                        aria-label="Decrease quantity"
                       >
-                        <Minus size={10} className="text-[#111111]" />
+                        <Minus size={12} className="text-[#111111]" />
                       </button>
-                      <span className="text-xs font-semibold w-4 text-center">{item.quantity}</span>
+                      <span className="text-xs font-semibold w-5 text-center">{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.productId, item.size, item.color, item.quantity + 1)}
-                        className="w-6 h-6 rounded-full bg-[#F8F8F6] flex items-center justify-center"
+                        className="w-10 h-10 rounded-full bg-[#F8F8F6] flex items-center justify-center cursor-pointer"
+                        style={{ touchAction: "manipulation" }}
+                        aria-label="Increase quantity"
                       >
-                        <Plus size={10} className="text-[#111111]" />
+                        <Plus size={12} className="text-[#111111]" />
                       </button>
                     </div>
                   </div>

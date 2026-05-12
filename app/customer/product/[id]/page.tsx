@@ -2,14 +2,46 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, Heart, Star } from "lucide-react";
-import { useState } from "react";
+import { ChevronLeft, ChevronDown, Heart, Star } from "lucide-react";
+import { useState, useRef, useCallback } from "react";
 import { useCart } from "@/lib/cart-store";
 import { useFavorites } from "@/lib/favorites-store";
-import { getProduct } from "@/data/products";
+import { getProduct, getProductsByCategory, getShortName } from "@/data/products";
 import { getBrand } from "@/data/brands";
 import { getProductReviews } from "@/data/reviews";
 import { use } from "react";
+import { ProductCard } from "@/components/customer/ProductCard";
+
+// ── Accordion item ────────────────────────────────────────────────────────
+function Accordion({ title, children }: { title: string; children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-t border-[#E8E8E8]">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between py-4 text-left cursor-pointer min-h-[44px]"
+        style={{ touchAction: "manipulation" }}
+      >
+        <span
+          className="text-[11px] font-bold tracking-[0.18em] text-[#111111] uppercase"
+          style={{ fontFamily: "var(--font-barlow)" }}
+        >
+          {title}
+        </span>
+        <ChevronDown
+          size={16}
+          strokeWidth={1.5}
+          className={`text-[#999999] transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+      {open && (
+        <div className="pb-4 text-sm text-[#666666] leading-relaxed font-light">
+          {children}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -22,7 +54,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [selectedSize, setSelectedSize] = useState(product?.sizes[1] ?? "");
   const [selectedColor, setSelectedColor] = useState(0);
   const [added, setAdded] = useState(false);
-  const [imgIndex, setImgIndex] = useState(0);
+
+  const reviewsRef = useRef<HTMLDivElement>(null);
+
+  const scrollToReviews = useCallback(() => {
+    reviewsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
 
   if (!product || !brand) {
     return (
@@ -33,9 +70,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   }
 
   const fav = isFavorite(product.id);
-  const currentImg = product.images[imgIndex] ?? product.image;
+  const shortName = getShortName(product);
 
-  const handleAddToBag = () => {
+  // Related products (same category, excluding current)
+  const related = getProductsByCategory(product.category)
+    .filter((p) => p.id !== product.id)
+    .slice(0, 6);
+
+  const handleAddToCart = () => {
     addItem({
       productId: product.id,
       name: product.name,
@@ -52,24 +94,37 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   return (
     <div className="flex flex-col bg-white">
-      {/* Product Image */}
-      <div className="relative h-[360px] bg-[#F0F3EC]">
-        <Image
-          src={currentImg}
-          alt={product.name}
-          fill
-          className="object-cover object-top"
-          priority
-        />
+      {/* ── Vertical image stack ──────────────────────────── */}
+      <div
+        className="relative overflow-y-auto snap-y snap-mandatory bg-[#F0F3EC]"
+        style={{ height: 440 }}
+      >
+        {product.images.map((img, i) => (
+          <div key={i} className="snap-start relative shrink-0" style={{ height: 440 }}>
+            <Image
+              src={img}
+              alt={`${product.name} — view ${i + 1}`}
+              fill
+              className="object-cover object-top"
+              priority={i === 0}
+            />
+          </div>
+        ))}
+
+        {/* Back button — min 44px touch target */}
         <Link
-          href="/customer"
-          className="absolute top-4 left-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm"
+          href="/customer/home"
+          className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10"
+          style={{ touchAction: "manipulation" }}
         >
           <ChevronLeft size={18} className="text-[#111111]" />
         </Link>
+
+        {/* Favourite button — min 44px touch target */}
         <button
           onClick={() => toggle(product.id)}
-          className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm"
+          className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10 cursor-pointer"
+          style={{ touchAction: "manipulation" }}
         >
           <Heart
             size={16}
@@ -77,38 +132,41 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             strokeWidth={fav ? 0 : 1.5}
           />
         </button>
+
+        {/* Vertical page dots */}
         {product.images.length > 1 && (
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-1.5">
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-1.5 z-10">
             {product.images.map((_, i) => (
-              <button
+              <div
                 key={i}
-                onClick={() => setImgIndex(i)}
-                className={`w-1.5 rounded-full transition-all ${
-                  i === imgIndex ? "bg-[#ED832B] h-4" : "bg-white/70 h-1.5"
-                }`}
+                className={`w-1.5 rounded-full ${i === 0 ? "bg-[#111111] h-4" : "bg-black/20 h-1.5"}`}
               />
             ))}
           </div>
         )}
       </div>
 
-      {/* Content panel */}
-      <div className="relative -mt-6 bg-white rounded-t-[32px] pt-5 px-5 flex-1">
+      {/* ── Content panel ─────────────────────────────────── */}
+      <div className="relative -mt-6 bg-white rounded-t-[28px] pt-5 px-5">
         {/* Brand + Name + Price */}
         <div className="flex items-start justify-between mb-3">
           <div>
-            <p className="text-xs text-[#859365] font-bold uppercase tracking-wide mb-1">
+            <p className="text-[10px] text-[#859365] font-bold uppercase tracking-widest mb-1">
               {brand.name}
             </p>
-            <h1 className="text-xl font-bold text-[#111111] leading-tight">{product.name}</h1>
+            <h1 className="text-xl font-bold text-[#111111] leading-tight">{shortName}</h1>
           </div>
-          <p className="text-lg font-bold text-[#4A89C2] mt-1 shrink-0">
+          <p className="text-lg font-bold text-[#111111] mt-1 shrink-0">
             LKR {product.price.toLocaleString()}
           </p>
         </div>
 
-        {/* Rating */}
-        <div className="flex items-center gap-1.5 mb-4">
+        {/* Clickable rating → scrolls to reviews */}
+        <button
+          onClick={scrollToReviews}
+          className="flex items-center gap-1.5 mb-5 cursor-pointer min-h-[44px]"
+          style={{ touchAction: "manipulation" }}
+        >
           <div className="flex items-center gap-0.5">
             {[1, 2, 3, 4, 5].map((s) => (
               <Star
@@ -123,27 +181,28 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               />
             ))}
           </div>
-          <span className="text-xs text-[#666666]">
+          <span className="text-xs text-[#4A89C2] underline underline-offset-2">
             {product.rating} ({product.reviewCount} reviews)
           </span>
-        </div>
+        </button>
 
-        {/* Description */}
-        <p className="text-sm text-[#666666] leading-relaxed mb-5">{product.description}</p>
-
-        {/* Sizes */}
+        {/* Sizes — square buttons */}
         <div className="mb-5">
-          <p className="text-sm font-bold text-[#111111] mb-2">Sizes</p>
+          <p className="text-[10px] font-bold text-[#111111] uppercase tracking-widest mb-3"
+            style={{ fontFamily: "var(--font-barlow)" }}>
+            Size
+          </p>
           <div className="flex flex-wrap gap-2">
             {product.sizes.map((size) => (
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
-                className={`w-10 h-10 rounded-full text-sm font-semibold transition-all border-2 ${
+                className={`w-12 h-12 text-sm font-semibold transition-all border cursor-pointer ${
                   selectedSize === size
-                    ? "bg-[#859365] text-white border-[#859365]"
+                    ? "bg-[#111111] text-white border-[#111111]"
                     : "bg-white text-[#111111] border-[#E8E8E8]"
                 }`}
+                style={{ touchAction: "manipulation" }}
               >
                 {size}
               </button>
@@ -153,29 +212,71 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
         {/* Colors */}
         <div className="mb-6">
-          <p className="text-sm font-bold text-[#111111] mb-2">Color</p>
+          <p className="text-[10px] font-bold text-[#111111] uppercase tracking-widest mb-3"
+            style={{ fontFamily: "var(--font-barlow)" }}>
+            Colour
+          </p>
           <div className="flex gap-2.5">
             {product.colors.map((color, i) => (
               <button
                 key={color.name}
                 onClick={() => setSelectedColor(i)}
-                className={`w-8 h-8 rounded-full border-2 transition-all ${
-                  selectedColor === i ? "border-[#859365] scale-110" : "border-transparent"
+                className={`w-11 h-11 rounded-full border-2 transition-all cursor-pointer ${
+                  selectedColor === i ? "border-[#111111] scale-110" : "border-transparent"
                 }`}
-                style={{ backgroundColor: color.hex }}
+                style={{ backgroundColor: color.hex, touchAction: "manipulation" }}
                 aria-label={color.name}
               />
             ))}
           </div>
         </div>
 
-        {/* Reviews */}
+        {/* ── 4 Accordions ──────────────────────────────────── */}
+        <div className="mb-6">
+          <Accordion title="Description">
+            <p className="mb-2">{product.description}</p>
+            <p className="text-[#999999]">Fabric: 100% premium cotton blend · Machine wash cold</p>
+            <p className="text-[#999999] mt-1">Made in Sri Lanka</p>
+          </Accordion>
+
+          <Accordion title="Size Guide">
+            <p>We recommend sizing up if you are between sizes. Our model is wearing size M.</p>
+            <div className="mt-3 text-[11px] text-[#999999] space-y-1">
+              <div className="flex justify-between border-b border-[#F0F0F0] pb-1"><span>XS</span><span>UK 6–8 · US 2–4</span></div>
+              <div className="flex justify-between border-b border-[#F0F0F0] pb-1"><span>S</span><span>UK 8–10 · US 4–6</span></div>
+              <div className="flex justify-between border-b border-[#F0F0F0] pb-1"><span>M</span><span>UK 10–12 · US 6–8</span></div>
+              <div className="flex justify-between border-b border-[#F0F0F0] pb-1"><span>L</span><span>UK 12–14 · US 8–10</span></div>
+              <div className="flex justify-between"><span>XL</span><span>UK 14–16 · US 10–12</span></div>
+            </div>
+          </Accordion>
+
+          <Accordion title="Delivery">
+            <p>Standard delivery: 3–5 working days · LKR 350</p>
+            <p className="mt-1">Express delivery: 1–2 working days · LKR 750</p>
+            <p className="mt-1 text-[#999999]">Free standard delivery on orders over LKR 5,000.</p>
+          </Accordion>
+
+          <Accordion title="Returns">
+            <p>Free returns within 14 days of delivery. Item must be unworn with original tags attached.</p>
+            <p className="mt-1 text-[#999999]">Items marked Final Sale cannot be returned.</p>
+          </Accordion>
+
+          {/* Close border */}
+          <div className="border-t border-[#E8E8E8]" />
+        </div>
+
+        {/* ── Reviews ───────────────────────────────────────── */}
         {reviews.length > 0 && (
-          <div className="mb-6">
-            <p className="text-sm font-bold text-[#111111] mb-2">Reviews</p>
+          <div className="mb-6" ref={reviewsRef}>
+            <p
+              className="text-[11px] font-bold text-[#111111] uppercase tracking-[0.18em] mb-4"
+              style={{ fontFamily: "var(--font-barlow)" }}
+            >
+              Reviews
+            </p>
             <div className="space-y-3">
-              {reviews.slice(0, 2).map((r) => (
-                <div key={r.id} className="bg-[#F8F8F6] rounded-2xl p-3">
+              {reviews.slice(0, 3).map((r) => (
+                <div key={r.id} className="bg-[#F8F8F6] p-3">
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 rounded-full bg-[#859365] flex items-center justify-center text-white text-[9px] font-bold">
@@ -197,9 +298,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       ))}
                     </div>
                   </div>
-                  <p className="text-xs text-[#666666] leading-relaxed">{r.comment}</p>
+                  <p className="text-xs text-[#666666] leading-relaxed font-light">{r.comment}</p>
                   <span
-                    className={`mt-1.5 inline-block text-[10px] px-2 py-0.5 rounded-full font-semibold ${
+                    className={`mt-1.5 inline-block text-[10px] px-2 py-0.5 font-semibold ${
                       r.fitFeedback === "True to Size"
                         ? "bg-green-100 text-green-700"
                         : r.fitFeedback === "Runs Small"
@@ -214,22 +315,40 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
           </div>
         )}
+
+        {/* ── You May Also Like ─────────────────────────────── */}
+        {related.length > 0 && (
+          <div className="mb-6">
+            <p
+              className="text-[11px] font-bold text-[#111111] uppercase tracking-[0.18em] mb-4"
+              style={{ fontFamily: "var(--font-barlow)" }}
+            >
+              You May Also Like
+            </p>
+            <div className="flex gap-3 overflow-x-auto pb-2 -mx-5 px-5 phone-scroll">
+              {related.map((p) => (
+                <div key={p.id} className="shrink-0 w-36">
+                  <ProductCard product={p} />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Add to Bag */}
-      <div className="px-5 pb-6 bg-white">
-        <button
-          onClick={handleAddToBag}
-          className={`w-full py-4 rounded-full text-base font-bold tracking-wide transition-all ${
-            added
-              ? "bg-[#859365] text-white"
-              : "bg-[#111111] text-white hover:bg-[#333]"
-          }`}
-          style={{ fontFamily: "var(--font-barlow)" }}
-        >
-          {added ? "✓ ADDED TO BAG" : "+ ADD TO BAG"}
-        </button>
-      </div>
+      {/* ── Full-width ADD TO CART bar ────────────────────── */}
+      <button
+        onClick={handleAddToCart}
+        className={`w-full py-5 text-sm font-bold tracking-[0.2em] uppercase transition-all ${
+          added ? "bg-[#859365] text-white" : "bg-[#111111] text-white"
+        }`}
+        style={{ fontFamily: "var(--font-barlow)" }}
+      >
+        {added ? "✓ ADDED TO CART" : "ADD TO CART"}
+      </button>
+
+      {/* Space for bottom nav */}
+      <div className="h-16" />
     </div>
   );
 }
