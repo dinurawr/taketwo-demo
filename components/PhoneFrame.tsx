@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 
 const PHONE_W = 390;
 const PHONE_H = 844;
-const BANNER_H = 0; // DemoBanner is now floating (no vertical space consumed)
+const BANNER_H = 0; // DemoBanner is floating — no vertical space consumed
+
 const PAD = 24;      // breathing room around the phone
 
 export function PhoneFrame({

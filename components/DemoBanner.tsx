@@ -10,14 +10,14 @@ export function DemoBanner() {
 
   return (
     <>
-      {/* Mobile: full-width bar at very top (vendor only) */}
-      {isVendor && (
-        <div className="md:hidden fixed top-0 left-0 right-0 z-[100] h-12 bg-white border-b border-[#E8E8E4] flex items-center justify-center gap-2">
-          <Link href="/customer" className="px-3 py-1 rounded-full text-[11px] font-semibold text-[#9B9B98] hover:text-[#111111] transition-all">
+      {/* Mobile: full-width bar at very top */}
+      {(isVendor || isCustomer) && (
+        <div className={`md:hidden fixed top-0 left-0 right-0 z-[100] h-12 flex items-center justify-center gap-2 ${isVendor ? "bg-white border-b border-[#E8E8E4]" : ""}`}>
+          <Link href="/customer" className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-all ${isCustomer ? "text-[#111111]" : "text-[#9B9B98] hover:text-[#111111]"}`}>
             🛍️ Customer
           </Link>
-          <span className="text-[#E8E8E4]">|</span>
-          <Link href="/vendor" className="px-3 py-1 rounded-full text-[11px] font-semibold text-[#111111]">
+          <span className="text-[#C8C8C4]">|</span>
+          <Link href="/vendor" className={`px-3 py-1 rounded-full text-[11px] font-semibold transition-all ${isVendor ? "text-[#111111]" : "text-[#9B9B98] hover:text-[#111111]"}`}>
             📦 Vendor
           </Link>
         </div>
