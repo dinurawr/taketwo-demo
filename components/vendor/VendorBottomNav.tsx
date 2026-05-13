@@ -2,54 +2,36 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingBag, Truck, RotateCcw, AlertCircle, Package } from "lucide-react";
-import { orders } from "@/data/orders";
+import { BarChart2, Megaphone, ShoppingBag, Package, Users } from "lucide-react";
 
-const newCount = orders.filter((o) => o.status === "new").length;
-const returningCount = orders.filter((o) => o.status === "returning").length;
-const pendingCount = orders.filter((o) => o.status === "pending_verdict").length;
-
-const tabs = [
-  { href: "/vendor/new-orders", icon: ShoppingBag, label: "New",      badge: newCount,       color: "#4A89C2" },
-  { href: "/vendor/shipping",   icon: Truck,        label: "Shipping", badge: null,            color: "#859365" },
-  { href: "/vendor/returning",  icon: RotateCcw,    label: "Returns",  badge: returningCount,  color: "#ED832B" },
-  { href: "/vendor/pending",    icon: AlertCircle,  label: "Verdict",  badge: pendingCount,    color: "#ED832B" },
-  { href: "/vendor/products",   icon: Package,      label: "Products", badge: null,            color: "#999999" },
+const TABS = [
+  { href: "/vendor/analytics", icon: BarChart2,   label: "Analytics" },
+  { href: "/vendor/marketing", icon: Megaphone,   label: "Marketing" },
+  { href: "/vendor/orders",    icon: ShoppingBag, label: "Orders"    },
+  { href: "/vendor/products",  icon: Package,     label: "Products"  },
+  { href: "/vendor/customers", icon: Users,       label: "Customers" },
 ];
 
 export function VendorBottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#111111] border-t border-white/10 safe-area-pb">
-      <div className="flex items-center justify-around px-1 py-2">
-        {tabs.map(({ href, icon: Icon, label, badge, color }) => {
-          const isActive = pathname === href || pathname.startsWith(href);
+    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-[#E8E8E8]">
+      <div className="flex items-center justify-around px-1 pb-safe">
+        {TABS.map(({ href, icon: Icon, label }) => {
+          const isActive = pathname === href || pathname.startsWith(href + "/");
           return (
             <Link
               key={href}
               href={href}
-              className="relative flex flex-col items-center gap-0.5 px-2 py-1 min-w-0 flex-1"
+              className="relative flex flex-col items-center gap-0.5 px-2 py-2.5 min-w-0 flex-1"
             >
-              <div className="relative">
-                <Icon
-                  size={20}
-                  strokeWidth={isActive ? 2.5 : 1.5}
-                  style={{ color: isActive ? color : "rgba(255,255,255,0.35)" }}
-                />
-                {badge != null && badge > 0 && (
-                  <span
-                    className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 rounded-full text-[8px] font-bold text-white flex items-center justify-center"
-                    style={{ backgroundColor: color }}
-                  >
-                    {badge}
-                  </span>
-                )}
-              </div>
-              <span
-                className="text-[9px] font-medium truncate"
-                style={{ color: isActive ? color : "rgba(255,255,255,0.35)" }}
-              >
+              <Icon
+                size={19}
+                strokeWidth={isActive ? 2 : 1.5}
+                className={isActive ? "text-[#0A0A0A]" : "text-[#BBBBBB]"}
+              />
+              <span className={`text-[9px] font-medium truncate ${isActive ? "text-[#0A0A0A]" : "text-[#BBBBBB]"}`}>
                 {label}
               </span>
             </Link>

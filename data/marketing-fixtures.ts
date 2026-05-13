@@ -23,7 +23,7 @@ export type ActiveBoost = {
   productId: string;
   productName: string;
   placement: string;
-  expiresAt: string; // ISO date
+  expiresAt: string;
   daysRemaining: number;
 };
 
@@ -59,6 +59,34 @@ export const drops: Drop[] = [
     products: ["valley-linen-overshirt"],
     status: "upcoming",
   },
+  {
+    id: "d4",
+    name: "Autumn Capsule",
+    date: "2026-06-15",
+    products: ["valley-cream-overshirt", "valley-linen-overshirt"],
+    status: "upcoming",
+  },
+  {
+    id: "d5",
+    name: "Cream Restock",
+    date: "2026-04-10",
+    products: ["valley-cream-overshirt"],
+    status: "ended",
+  },
+  {
+    id: "d6",
+    name: "Linen Series Vol. 1",
+    date: "2026-03-22",
+    products: ["valley-linen-overshirt"],
+    status: "ended",
+  },
+  {
+    id: "d7",
+    name: "Early Summer Pre-Drop",
+    date: "2026-05-12",
+    products: ["valley-beach-coverup"],
+    status: "live",
+  },
 ];
 
 export const ambassadorRequests: AmbassadorRequest[] = [
@@ -84,6 +112,61 @@ export const ambassadorRequests: AmbassadorRequest[] = [
     avatarInitials: "KR",
     status: "pending",
   },
+  {
+    id: "a3",
+    name: "Senuri Bandara",
+    handle: "@senuri.b",
+    followerCount: 24_600,
+    platform: "Instagram",
+    productId: "valley-linen-overshirt",
+    productName: "Valley Linen Overshirt",
+    avatarInitials: "SB",
+    status: "pending",
+  },
+  {
+    id: "a4",
+    name: "Dineth Perera",
+    handle: "@dinethp",
+    followerCount: 5_800,
+    platform: "YouTube",
+    productId: "valley-cream-overshirt",
+    productName: "Valley Cream Overshirt",
+    avatarInitials: "DP",
+    status: "pending",
+  },
+  {
+    id: "a5",
+    name: "Hashini Wijesinghe",
+    handle: "@hashinistyle",
+    followerCount: 18_300,
+    platform: "Instagram",
+    productId: "valley-beach-coverup",
+    productName: "Valley Beach Cover Up",
+    avatarInitials: "HW",
+    status: "approved",
+  },
+  {
+    id: "a6",
+    name: "Ravindu Fernando",
+    handle: "@ravifit",
+    followerCount: 3_100,
+    platform: "TikTok",
+    productId: "valley-linen-overshirt",
+    productName: "Valley Linen Overshirt",
+    avatarInitials: "RF",
+    status: "declined",
+  },
+  {
+    id: "a7",
+    name: "Methmi De Silva",
+    handle: "@methmistyle",
+    followerCount: 9_400,
+    platform: "Instagram",
+    productId: "valley-cream-overshirt",
+    productName: "Valley Cream Overshirt",
+    avatarInitials: "MD",
+    status: "approved",
+  },
 ];
 
 export const activeBoosts: ActiveBoost[] = [
@@ -94,6 +177,22 @@ export const activeBoosts: ActiveBoost[] = [
     placement: "Home Hero",
     expiresAt: "2026-05-14",
     daysRemaining: 2,
+  },
+  {
+    id: "b2",
+    productId: "valley-beach-coverup",
+    productName: "Valley Beach Cover Up",
+    placement: "2×2 Tile",
+    expiresAt: "2026-05-19",
+    daysRemaining: 7,
+  },
+  {
+    id: "b3",
+    productId: "valley-linen-overshirt",
+    productName: "Valley Linen Overshirt",
+    placement: "Shop Top",
+    expiresAt: "2026-05-26",
+    daysRemaining: 14,
   },
 ];
 

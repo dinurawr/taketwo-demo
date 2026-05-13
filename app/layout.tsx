@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Barlow_Condensed, Cormorant_Garamond, Dancing_Script } from "next/font/google";
+import { Inter, Barlow_Condensed, Cormorant_Garamond, Dancing_Script, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-store";
 import { FavoritesProvider } from "@/lib/favorites-store";
@@ -33,6 +33,13 @@ const dancingScript = Dancing_Script({
   display: "swap",
 });
 
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Take Two — Vendor Demo",
   description: "Sri Lanka's First Collaborative Fashion Platform — Vendor Demo",
@@ -46,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${barlowCondensed.variable} ${cormorantGaramond.variable} ${dancingScript.variable} font-sans antialiased`}
+        className={`${inter.variable} ${barlowCondensed.variable} ${cormorantGaramond.variable} ${dancingScript.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         <CartProvider>
           <FavoritesProvider>
