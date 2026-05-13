@@ -5,9 +5,17 @@ import { useEffect, useState } from "react";
 
 const PHONE_W = 390;
 const PHONE_H = 844;
-const BANNER_H = 0; // DemoBanner is floating — no vertical space consumed
+const PAD = 24;
+const MOBILE_BANNER_H = 48; // DemoBanner bar height on mobile
 
-const PAD = 24;      // breathing room around the phone
+function calcScale() {
+  const vw = window.innerWidth;
+  const bannerH = vw < 768 ? MOBILE_BANNER_H : 0;
+  const vh = window.innerHeight - bannerH;
+  const sx = (vw - PAD * 2) / PHONE_W;
+  const sy = (vh - PAD * 2) / PHONE_H;
+  return Math.min(sx, sy, 1);
+}
 
 export function PhoneFrame({
   children,
@@ -20,17 +28,12 @@ export function PhoneFrame({
   overlay?: React.ReactNode;
   className?: string;
 }) {
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(() =>
+    typeof window !== "undefined" ? calcScale() : 1
+  );
 
   useEffect(() => {
-    function updateScale() {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight - BANNER_H;
-      const sx = (vw - PAD * 2) / PHONE_W;
-      const sy = (vh - PAD * 2) / PHONE_H;
-      // Fit to screen but never scale above 1× (don't upscale on huge monitors)
-      setScale(Math.min(sx, sy, 1));
-    }
+    function updateScale() { setScale(calcScale()); }
     updateScale();
     window.addEventListener("resize", updateScale);
     return () => window.removeEventListener("resize", updateScale);
@@ -39,8 +42,7 @@ export function PhoneFrame({
   return (
     /* Outer centring shell */
     <div
-      className="flex items-center justify-center bg-[#E8E8E8]"
-      style={{ minHeight: `calc(100svh - ${BANNER_H}px)` }}
+      className="flex items-center justify-center bg-[#E8E8E8] mt-12 md:mt-0 min-h-[calc(100svh-3rem)] md:min-h-[100svh]"
     >
       {/*
         Scale wrapper: takes up exactly the scaled footprint so the flex
