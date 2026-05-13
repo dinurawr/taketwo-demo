@@ -2,6 +2,7 @@ import Image from "next/image";
 import { products } from "@/data/products";
 import { getBrand } from "@/data/brands";
 import { CheckCircle2 } from "lucide-react";
+import { Rs } from "@/components/vendor/Rs";
 
 const VENDOR_BRAND = "serendib-style";
 
@@ -11,7 +12,7 @@ export default function VendorProductsPage() {
 
   return (
     <div className="p-6 md:p-8 max-w-5xl">
-      <div className="flex items-start justify-between mb-8 gap-4">
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-8 gap-3 md:gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">
             <span className="text-[#0A0A0A]">Take Two </span><span className="bg-gradient-to-r from-[#16A34A] to-[#4ADE80] bg-clip-text text-transparent">Catalog</span>
@@ -61,7 +62,7 @@ export default function VendorProductsPage() {
                   </span>
                 </td>
                 <td className="px-5 py-3.5">
-                  <p className="font-mono-num text-xs font-semibold text-[#111111]">₨ {product.price.toLocaleString()}</p>
+                  <Rs value={product.price} className="font-mono-num text-xs font-semibold text-[#111111]" />
                 </td>
                 <td className="px-5 py-3.5">
                   <div className="flex flex-wrap gap-1">

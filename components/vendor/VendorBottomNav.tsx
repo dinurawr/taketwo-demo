@@ -16,24 +16,27 @@ export function VendorBottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-[#E8E8E8]">
-      <div className="flex items-center justify-around px-1 pb-safe">
+    <div className="fixed top-24 left-0 right-0 z-20 md:hidden bg-white border-b border-[#E8E8E8]">
+      <div className="flex items-center overflow-x-auto scrollbar-none">
         {TABS.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href || pathname.startsWith(href + "/");
           return (
             <Link
               key={href}
               href={href}
-              className="relative flex flex-col items-center gap-0.5 px-2 py-2.5 min-w-0 flex-1"
+              className="relative flex items-center gap-1.5 px-4 py-3 whitespace-nowrap shrink-0"
             >
               <Icon
-                size={19}
+                size={14}
                 strokeWidth={isActive ? 2 : 1.5}
                 className={isActive ? "text-[#0A0A0A]" : "text-[#BBBBBB]"}
               />
-              <span className={`text-[9px] font-medium truncate ${isActive ? "text-[#0A0A0A]" : "text-[#BBBBBB]"}`}>
+              <span className={`text-[12px] font-medium ${isActive ? "text-[#0A0A0A]" : "text-[#BBBBBB]"}`}>
                 {label}
               </span>
+              {isActive && (
+                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#0A0A0A] rounded-t-full" />
+              )}
             </Link>
           );
         })}

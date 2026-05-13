@@ -7,7 +7,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { ArrowUpRight, ArrowDownRight, AlertTriangle, AlertCircle } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, AlertTriangle, AlertCircle, LayoutDashboard, Tag, RotateCcw } from "lucide-react";
 import {
   DAILY_REVENUE,
   CITY_DISTRIBUTION,
@@ -24,11 +24,20 @@ import {
 type Period = "7d" | "30d" | "90d";
 const fmt = (n: number) => "₨ " + n.toLocaleString("en-LK");
 
+function Rs({ value, className = "" }: { value: number; className?: string }) {
+  return (
+    <span className={className}>
+      <span className="text-[10px] font-medium align-baseline mr-0.5">₨</span>
+      {value.toLocaleString("en-LK")}
+    </span>
+  );
+}
+
 // ─── tabs ─────────────────────────────────────────────────────────────────────
 const TABS = [
-  { key: "overview", label: "Overview" },
-  { key: "products", label: "Products" },
-  { key: "returns",  label: "Returns"  },
+  { key: "overview", label: "Overview", icon: LayoutDashboard },
+  { key: "products", label: "Products", icon: Tag             },
+  { key: "returns",  label: "Returns",  icon: RotateCcw       },
 ] as const;
 type Tab = typeof TABS[number]["key"];
 
@@ -121,7 +130,17 @@ function OverviewTab() {
         {KPI_DEFS.map(({ key, label, format }) => (
           <div key={key} className="bg-white rounded-xl p-4 border border-[#E8E8E4]">
             <p className="text-[11px] font-medium text-[#9B9B98] uppercase tracking-widest mb-2 leading-tight">{label}</p>
-            <p className="font-mono-num text-lg font-semibold text-[#111111] leading-none mb-2">{format(kpis[key].value)}</p>
+            {(() => {
+              const val = format(kpis[key].value);
+              const isCurrency = val.startsWith("₨");
+              return (
+                <p className="font-mono-num text-sm md:text-lg font-semibold text-[#111111] leading-none mb-2 truncate">
+                  {isCurrency
+                    ? <Rs value={kpis[key].value} />
+                    : val}
+                </p>
+              );
+            })()}
             <Trend pct={kpis[key].pct} />
           </div>
         ))}
@@ -180,7 +199,7 @@ function OverviewTab() {
                   </div>
                 </div>
                 <div className="text-right shrink-0 space-y-0.5">
-                  <p className="font-mono-num text-xs font-semibold text-[#111111]">₨ {p.revenue.toLocaleString()}</p>
+                  <Rs value={p.revenue} className="font-mono-num text-xs font-semibold text-[#111111]" />
                   <Trend pct={p.trend} />
                 </div>
               </div>
@@ -223,11 +242,12 @@ function ProductsTab() {
 
   return (
     <div className="bg-white rounded-xl border border-[#E8E8E4] overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[820px]">
+      <div className="relative">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[720px]">
           <thead>
             <tr className="border-b border-[#F0F0EC] bg-[#FAFAF8]">
-              <th className="px-5 py-3 text-left text-[11px] font-medium text-[#9B9B98] uppercase tracking-widest">Product</th>
+              <th className="px-4 py-3 text-left text-[11px] font-medium text-[#9B9B98] uppercase tracking-widest">Product</th>
               <th className="px-4 py-3 text-left"><SortBtn k="views" label="Views" /></th>
               <th className="px-4 py-3 text-left text-[11px] font-medium text-[#9B9B98] uppercase tracking-widest">Cart %</th>
               <th className="px-4 py-3 text-left"><SortBtn k="conversionRate" label="Conv." /></th>
@@ -246,13 +266,13 @@ function ProductsTab() {
               const trendUp = p.trend >= 0;
               return (
                 <tr key={p.id} className={`hover:bg-[#FAFAF8] transition-colors ${i !== sorted.length - 1 ? "border-b border-[#F0F0EC]" : ""}`}>
-                  <td className="px-5 py-3.5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-lg overflow-hidden bg-[#F0F0EC] shrink-0">
-                        {product && <Image src={product.image} alt={product.name} width={36} height={36} className="object-cover w-full h-full" />}
+                  <td className="px-4 py-3.5">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg overflow-hidden bg-[#F0F0EC] shrink-0">
+                        {product && <Image src={product.image} alt={product.name} width={32} height={32} className="object-cover w-full h-full" />}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-xs font-medium text-[#111111] truncate max-w-[180px]">{product?.name ?? p.id}</p>
+                        <p className="text-xs font-medium text-[#111111] truncate max-w-[120px]">{product?.name ?? p.id}</p>
                         <div className="flex items-center gap-1 mt-0.5 flex-wrap">
                           {product?.isLowStock && (
                             <span className="flex items-center gap-0.5 text-[9px] font-medium text-[#DC2626] bg-[#FEF2F2] px-1.5 py-0.5 rounded-md">
@@ -284,7 +304,7 @@ function ProductsTab() {
                     {p.returnRate.toFixed(1)}%
                   </td>
                   <td className="px-4 py-3.5 text-left">
-                    <p className="font-mono-num text-xs font-semibold text-[#111111]">₨ {p.revenue.toLocaleString()}</p>
+                    <Rs value={p.revenue} className="font-mono-num text-xs font-semibold text-[#111111]" />
                     <p className={`font-mono-num text-[10px] font-medium mt-0.5 ${trendUp ? "text-[#16A34A]" : "text-[#DC2626]"}`}>
                       {trendUp ? "↑" : "↓"}{Math.abs(p.trend)}%
                     </p>
@@ -295,6 +315,7 @@ function ProductsTab() {
           </tbody>
         </table>
       </div>
+    </div>
     </div>
   );
 }
@@ -376,11 +397,19 @@ function ReturnsTab() {
             <tbody>
               {PER_PRODUCT_RETURNS.map((p, i) => {
                 const isPaused = paused.has(p.id);
+                const product = SELLER_PRODUCTS.find((s) => s.id === p.id);
                 return (
                   <tr key={p.id} className={`hover:bg-[#FAFAF8] transition-colors ${i !== PER_PRODUCT_RETURNS.length - 1 ? "border-b border-[#F0F0EC]" : ""}`}>
                     <td className="px-5 py-3.5">
-                      <p className={`text-xs font-medium ${isPaused ? "text-[#9B9B98]" : "text-[#111111]"}`}>{p.name}</p>
-                      {isPaused && <span className="text-[9px] text-[#9B9B98] bg-[#F0F0EC] px-1.5 py-0.5 rounded-md">Paused</span>}
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg overflow-hidden bg-[#F0F0EC] shrink-0">
+                          {product && <Image src={product.image} alt={p.name} width={32} height={32} className="object-cover w-full h-full" />}
+                        </div>
+                        <div>
+                          <p className={`text-xs font-medium ${isPaused ? "text-[#9B9B98]" : "text-[#111111]"}`}>{p.name}</p>
+                          {isPaused && <span className="text-[9px] text-[#9B9B98] bg-[#F0F0EC] px-1.5 py-0.5 rounded-md">Paused</span>}
+                        </div>
+                      </div>
                     </td>
                     <td className="px-5 py-3.5">
                       <span className={`font-mono-num text-xs font-semibold ${p.returnRate >= 25 ? "text-[#DC2626]" : "text-[#111111]"}`}>
@@ -438,16 +467,17 @@ export default function AnalyticsPage() {
   return (
     <div className="flex flex-col min-h-full">
       {/* Tab bar */}
-      <div className="bg-white border-b border-[#E8E8E4] sticky top-0 z-10">
+      <div className="bg-white border-b border-[#E8E8E4]">
         <div className="flex items-center px-6 overflow-x-auto scrollbar-none">
           {TABS.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`relative px-1 py-4 text-sm font-medium mr-6 whitespace-nowrap transition-colors cursor-pointer ${
+              className={`relative flex items-center gap-1.5 px-1 py-3.5 text-[11px] font-medium mr-5 whitespace-nowrap transition-colors cursor-pointer ${
                 activeTab === tab.key ? "text-[#111111]" : "text-[#9B9B98] hover:text-[#6B6B68]"
               }`}
             >
+              <tab.icon size={12} strokeWidth={activeTab === tab.key ? 2 : 1.5} />
               {tab.label}
               {activeTab === tab.key && (
                 <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#0A0A0A] rounded-t-full" />
