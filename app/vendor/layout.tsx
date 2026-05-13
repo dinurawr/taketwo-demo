@@ -9,7 +9,7 @@ export default function VendorLayout({ children }: { children: React.ReactNode }
     <>
       <DemoBanner />
       {/* Mobile top bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-30 bg-white border-b border-[#E8E8E8] h-12 flex items-center justify-center">
+      <div className="md:hidden fixed top-12 left-0 right-0 z-30 bg-white border-b border-[#E8E8E8] h-12 flex items-center justify-center">
         <Image src="/logo.png" alt="Take Two" width={68} height={40} />
       </div>
 
@@ -20,7 +20,7 @@ export default function VendorLayout({ children }: { children: React.ReactNode }
         </div>
 
         {/* Content */}
-        <main className="flex-1 overflow-y-auto pt-12 pb-24 md:pt-0 md:pb-0 min-w-0">
+        <main className="flex-1 md:overflow-y-auto pt-36 pb-6 md:pt-0 md:pb-0 min-w-0">
           {children}
         </main>
       </div>

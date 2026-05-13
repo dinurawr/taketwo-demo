@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { getVendorStats } from "@/data/vendor-stats";
 import { MapPin, Star, Flame, RotateCcw, Users, TrendingUp, Repeat2, Zap } from "lucide-react";
+import { Rs } from "@/components/vendor/Rs";
 
 const VENDOR_BRAND = "serendib-style";
 const stats = getVendorStats(VENDOR_BRAND)!;
@@ -49,7 +50,11 @@ export default function CustomersPage() {
               <p className="text-[11px] font-medium text-[#9B9B98] uppercase tracking-widest leading-tight">{label}</p>
               <Icon size={14} className="text-[#9B9B98]" strokeWidth={1.5} />
             </div>
-            <p className="font-mono-num text-xl font-semibold text-[#111111]">{value}</p>
+            <p className="font-mono-num text-xl font-semibold text-[#111111]">
+              {typeof value === "string" && value.startsWith("₨")
+                ? <><span className="text-[11px] font-medium mr-0.5">₨</span>{value.replace("₨ ", "")}</>
+                : value}
+            </p>
           </div>
         ))}
       </div>
@@ -114,7 +119,7 @@ export default function CustomersPage() {
               <p className="font-mono-num text-sm font-semibold text-[#111111]">{customer.orderCount}</p>
 
               <p className="font-mono-num text-sm font-semibold text-[#111111]">
-                ₨ {customer.ltv.toLocaleString()}
+                <Rs value={customer.ltv} />
               </p>
 
               <div className="flex flex-wrap gap-1">

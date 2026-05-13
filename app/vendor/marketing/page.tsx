@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { products } from "@/data/products";
 import { Check, ChevronDown, ArrowRight } from "lucide-react";
+import { Rs } from "@/components/vendor/Rs";
 
 const VENDOR_BRAND = "valley";
 const brandProducts = products.filter((p) => p.brand === VENDOR_BRAND);
@@ -161,6 +162,13 @@ export default function MarketingPage() {
   const [openSections,  setOpenSections]  = useState<TargetKey[]>([]);
   const [toast,         setToast]         = useState("");
 
+  const configRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (selectedType && configRef.current) {
+      configRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [selectedType]);
+
   const adConf   = selectedType ? AD_CONFIG[selectedType] : null;
   const durMult  = DURATION_OPTIONS.find((d) => d.days === durationDays)?.multiplier ?? 1;
   const reachMult = REACH_OPTIONS.find((r) => r.value === reachValue)?.multiplier ?? 1;
@@ -252,8 +260,8 @@ export default function MarketingPage() {
                   <div className="h-full bg-[#111111] rounded-full" style={{ width: `${pct}%` }} />
                 </div>
                 <div className="flex justify-between">
-                  <p className="font-mono-num text-[10px] text-[#9B9B98]">₨ {c.spent.toLocaleString()} spent</p>
-                  <p className="font-mono-num text-[10px] text-[#9B9B98]">₨ {c.budget.toLocaleString()} budget</p>
+                  <p className="font-mono-num text-[10px] text-[#9B9B98]"><Rs value={c.spent} /> spent</p>
+                  <p className="font-mono-num text-[10px] text-[#9B9B98]"><Rs value={c.budget} /> budget</p>
                 </div>
               </button>
             );
@@ -266,15 +274,15 @@ export default function MarketingPage() {
           const a = c.analytics;
           const daysPast = c.totalDays - c.daysLeft;
           const maxBar   = Math.max(...a.daily.filter((v) => v > 0), 1);
-          const kpis = [
-            { label: "Impressions",       value: a.impressions.toLocaleString(),       sub: null,             green: false },
-            { label: "Reach",             value: a.reach.toLocaleString(),             sub: "unique people",  green: false },
-            { label: "Clicks",            value: a.clicks.toLocaleString(),            sub: null,             green: false },
-            { label: "CTR",               value: `${a.ctr.toFixed(1)}%`,               sub: "click-through",  green: false },
-            { label: "Conversions",       value: a.conversions.toLocaleString(),       sub: "purchases",      green: false },
-            { label: "Rev. Attributed",   value: `₨ ${a.revenue.toLocaleString()}`,    sub: null,             green: true  },
-            { label: "ROAS",              value: `${a.roas.toFixed(1)}×`,              sub: "return on spend", green: true  },
-            { label: "Cost per Click",    value: `₨ ${a.cpc.toFixed(1)}`,             sub: null,             green: false },
+          const kpis: { label: string; value: string | null; rsValue: number | null; sub: string | null; green: boolean }[] = [
+            { label: "Impressions",     value: a.impressions.toLocaleString(), rsValue: null,      sub: null,              green: false },
+            { label: "Reach",           value: a.reach.toLocaleString(),       rsValue: null,      sub: "unique people",   green: false },
+            { label: "Clicks",          value: a.clicks.toLocaleString(),      rsValue: null,      sub: null,              green: false },
+            { label: "CTR",             value: `${a.ctr.toFixed(1)}%`,         rsValue: null,      sub: "click-through",   green: false },
+            { label: "Conversions",     value: a.conversions.toLocaleString(), rsValue: null,      sub: "purchases",       green: false },
+            { label: "Rev. Attributed", value: null,                           rsValue: a.revenue, sub: null,              green: true  },
+            { label: "ROAS",            value: `${a.roas.toFixed(1)}×`,        rsValue: null,      sub: "return on spend", green: true  },
+            { label: "Cost per Click",  value: null,                           rsValue: a.cpc,     sub: null,              green: false },
           ];
           return (
             <div className="bg-white rounded-xl border border-[#E8E8E4] overflow-hidden">
@@ -297,10 +305,12 @@ export default function MarketingPage() {
               <div className="p-5 space-y-5">
                 {/* KPI grid */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {kpis.map(({ label, value, sub, green }) => (
+                  {kpis.map(({ label, value, rsValue, sub, green }) => (
                     <div key={label} className="bg-[#FAFAF8] rounded-xl p-3 border border-[#F0F0EC]">
                       <p className="text-[10px] font-medium text-[#9B9B98] uppercase tracking-widest mb-1.5">{label}</p>
-                      <p className={`font-mono-num text-base font-semibold ${green ? "text-[#16A34A]" : "text-[#111111]"}`}>{value}</p>
+                      <p className={`font-mono-num text-base font-semibold ${green ? "text-[#16A34A]" : "text-[#111111]"}`}>
+                        {rsValue !== null ? <Rs value={rsValue} /> : value}
+                      </p>
                       {sub && <p className="text-[10px] text-[#9B9B98] mt-0.5">{sub}</p>}
                     </div>
                   ))}
@@ -375,7 +385,7 @@ export default function MarketingPage() {
                 <p className="text-sm font-semibold text-[#111111]">{conf.label}</p>
                 <p className="text-[11px] text-[#16A34A] font-medium mt-0.5 leading-snug">{conf.tagline}</p>
                 <p className="font-mono-num text-[11px] text-[#16A34A] font-semibold mt-2.5">
-                  From ₨ {conf.baseRate.toLocaleString()}
+                  From <Rs value={conf.baseRate} />
                 </p>
               </button>
             );
@@ -385,7 +395,7 @@ export default function MarketingPage() {
 
       {/* Config + calculator */}
       {selectedType && adConf && (
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-4 items-start">
+        <div ref={configRef} className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-4 items-start">
 
           {/* Left: config panels */}
           <div className="space-y-3">
@@ -544,13 +554,13 @@ export default function MarketingPage() {
                 <div className="space-y-2 pt-4 pb-4 border-b border-[#F0F0EC]">
                   <div className="flex justify-between">
                     <span className="text-xs text-[#9B9B98]">Base</span>
-                    <span className="font-mono-num text-xs text-[#6B6B68]">₨ {baseCost.toLocaleString()}</span>
+                    <span className="font-mono-num text-xs text-[#6B6B68]"><Rs value={baseCost} /></span>
                   </div>
                   {targetingBreakdown.map((t) => (
                     <div key={t.label} className="flex justify-between">
                       <span className="text-xs text-[#9B9B98]">{t.label} ×{t.count}</span>
                       <span className="font-mono-num text-xs text-[#16A34A]">
-                        + ₨ {Math.round(baseCost * t.mult).toLocaleString()}
+                        + <Rs value={Math.round(baseCost * t.mult)} />
                       </span>
                     </div>
                   ))}
@@ -564,12 +574,12 @@ export default function MarketingPage() {
                   <div className="flex justify-between items-baseline">
                     <span className="text-sm font-semibold text-[#111111]">Total</span>
                     <span className="font-mono-num text-2xl font-semibold text-[#111111]">
-                      ₨ {totalCost.toLocaleString()}
+                      <Rs value={totalCost} />
                     </span>
                   </div>
                   {targetingCost > 0 && (
                     <p className="text-[10px] text-[#9B9B98] mt-0.5 text-right">
-                      incl. ₨ {targetingCost.toLocaleString()} targeting
+                      incl. <Rs value={targetingCost} /> targeting
                     </p>
                   )}
                 </div>

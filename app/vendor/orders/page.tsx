@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import Image from "next/image";
 import { orders as allOrders, type Order, type OrderStatus } from "@/data/orders";
+import { Rs } from "@/components/vendor/Rs";
 
 const VENDOR_BRAND = "serendib-style";
 const NOW = new Date("2026-05-12");
@@ -82,13 +83,17 @@ export default function OrdersPage() {
       {/* KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
         {[
-          { label: "Total Orders",     value: periodOrders.length.toLocaleString() },
-          { label: "Revenue",          value: `₨ ${totalRevenue.toLocaleString()}` },
-          { label: "Avg. Order Value", value: periodOrders.length ? `₨ ${avgOrderValue.toLocaleString()}` : "—" },
-        ].map(({ label, value }) => (
+          { label: "Total Orders",     value: periodOrders.length.toLocaleString(),                               currency: false },
+          { label: "Revenue",          value: totalRevenue,                                                        currency: true  },
+          { label: "Avg. Order Value", value: periodOrders.length ? avgOrderValue : null,                          currency: true  },
+        ].map(({ label, value, currency }) => (
           <div key={label} className="bg-white rounded-xl p-4 border border-[#E8E8E4]">
             <p className="text-[11px] font-medium text-[#9B9B98] uppercase tracking-widest mb-1.5">{label}</p>
-            <p className="font-mono-num text-xl font-semibold text-[#111111]">{value}</p>
+            <p className="font-mono-num text-xl font-semibold text-[#111111]">
+              {currency && value !== null
+                ? <Rs value={value as number} />
+                : (value === null ? "—" : value)}
+            </p>
           </div>
         ))}
       </div>
@@ -188,7 +193,7 @@ export default function OrdersPage() {
                     </div>
 
                     <p className="font-mono-num text-sm font-semibold text-[#111111]">
-                      ₨ {order.total.toLocaleString()}
+                      <Rs value={order.total} />
                     </p>
 
                     <span className={`text-[10px] font-semibold px-2 py-1 rounded-lg w-fit ${meta.color}`}>
@@ -204,7 +209,7 @@ export default function OrdersPage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
                         <p className="font-mono-num text-xs font-medium text-[#111111] truncate">{order.id}</p>
-                        <p className="font-mono-num text-sm font-semibold text-[#111111] shrink-0">₨ {order.total.toLocaleString()}</p>
+                        <p className="font-mono-num text-sm font-semibold text-[#111111] shrink-0"><Rs value={order.total} /></p>
                       </div>
                       <p className="text-xs text-[#6B6B68] mt-0.5 truncate">{abbreviateName(order.customerName)}</p>
                       <p className="text-[11px] text-[#9B9B98] mt-0.5 truncate">{firstItem.productName} · {firstItem.size}</p>
