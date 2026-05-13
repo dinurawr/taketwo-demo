@@ -16,7 +16,7 @@ export function VendorBottomNav() {
   const pathname = usePathname();
 
   return (
-    <div className="fixed top-24 left-0 right-0 z-20 md:hidden bg-white border-b border-[#E8E8E8]">
+    <div className="md:hidden bg-white border-b border-[#E8E8E8]">
       <div className="flex items-center overflow-x-auto scrollbar-none">
         {TABS.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href || pathname.startsWith(href + "/");
