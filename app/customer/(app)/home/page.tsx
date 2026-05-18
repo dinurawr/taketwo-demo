@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-type Tab = "WOMEN" | "MEN" | "SWIM";
+type Tab = "WOMEN" | "MEN";
 
 // ── Hero images (3 per tab, cycle every 4 s) ─────────────────────────────
 const HERO_IMAGES: Record<Tab, string[]> = {
@@ -19,18 +19,12 @@ const HERO_IMAGES: Record<Tab, string[]> = {
     "/products/pexels-cottonbro-6616673.jpg",              // two men in linen overshirts
     "/products/pexels-prayoon-sajeev-1486107-2897529.jpg", // black ribbed turtleneck
   ],
-  SWIM: [
-    "https://images.unsplash.com/photo-1570976447640-ac859083963f?w=800&q=80",   // bikini editorial
-    "https://images.unsplash.com/photo-1561677978-583a6c9b4b28?w=800&q=80",    // swimwear model
-    "https://images.unsplash.com/photo-1602752079071-f5d7f1ebb5d0?w=800&q=80", // beach fashion
-  ],
 };
 
 // ── 2×2 category tiles per tab ───────────────────────────────────────────
 const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
   WOMEN: [
     {
-      // Different from hero[0] (pexels-tima blazer) — trench coat editorial
       label: "New In",
       image: "https://images.unsplash.com/photo-1548624313-0396c75e4b1a?w=400&q=80",
       cat: "new-in",
@@ -43,7 +37,7 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
     {
       label: "Swim",
       image: "https://images.unsplash.com/photo-1570976447640-ac859083963f?w=400&q=80",
-      cat: "bikinis",
+      cat: "swim",
     },
     {
       label: "Bottoms",
@@ -63,7 +57,6 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
       cat: "bottoms",
     },
     {
-      // Different from hero[1] (pexels-cottonbro-6616673 duo shot) — graphic tee
       label: "Tops",
       image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&q=80",
       cat: "tops",
@@ -74,115 +67,112 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
       cat: "shorts",
     },
   ],
-  SWIM: [
-    {
-      label: "Bikinis",
-      image: "https://images.unsplash.com/photo-1570976447640-ac859083963f?w=400&q=80",
-      cat: "bikinis",
-    },
-    {
-      label: "Beach Cover Ups",
-      image: "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=400&q=80",
-      cat: "beach-cover-up",
-    },
-    {
-      label: "Beach Dresses",
-      image: "https://images.unsplash.com/photo-1572804013427-4d7ca7268217?w=400&q=80",
-      cat: "beach-dresses",
-    },
-    {
-      // Different from hero[1] (photo-1507525428034 beach) — aerial coast shot
-      label: "Shop All",
-      image: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=400&q=80",
-      cat: "all",
-    },
-  ],
 };
 
-const TABS: Tab[] = ["WOMEN", "MEN", "SWIM"];
+const TABS: Tab[] = ["WOMEN", "MEN"];
 
 export default function CustomerHome() {
   const [activeTab, setActiveTab] = useState<Tab>("WOMEN");
   const [heroIndex, setHeroIndex] = useState(0);
   const prefersReducedMotion = useReducedMotion();
 
-  // Cycle hero image every 4 s (skip if user prefers reduced motion)
+  const images = HERO_IMAGES[activeTab];
+  const totalImages = images.length;
+
+  // Reset on tab change
   useEffect(() => {
-    setHeroIndex(0); // reset on tab change
+    setHeroIndex(0);
   }, [activeTab]);
 
+  // Auto-advance every 4 s (respects prefers-reduced-motion)
   useEffect(() => {
     if (prefersReducedMotion) return;
     const interval = setInterval(() => {
-      setHeroIndex((i) => (i + 1) % HERO_IMAGES[activeTab].length);
+      setHeroIndex((i) => (i + 1) % totalImages);
     }, 4000);
     return () => clearInterval(interval);
-  }, [activeTab, prefersReducedMotion]);
+  }, [activeTab, prefersReducedMotion, totalImages]);
 
-  const currentHero = HERO_IMAGES[activeTab][heroIndex];
   const currentTiles = TILES[activeTab];
 
   return (
     // -mt-16 cancels layout pt-16; pb-20 gives tiles room to scroll above the nav bar; marginBottom cancels layout pb-32
     <div className="flex flex-col -mt-16 pb-20" style={{ marginBottom: "-8rem" }}>
       {/* ── Hero block ──────────────────────────────────────── */}
-      <div className="relative bg-black" style={{ height: 600 }}>
-        {/* Hero image with cross-fade (skipped when prefers-reduced-motion) */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={`${activeTab}-${heroIndex}`}
-            className="absolute inset-0"
-            initial={{ opacity: prefersReducedMotion ? 1 : 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: prefersReducedMotion ? 1 : 0 }}
-            transition={{ duration: prefersReducedMotion ? 0 : 0.6, ease: "easeInOut" }}
-          >
-            <Image
-              src={currentHero}
-              alt={`${activeTab} fashion`}
-              fill
-              className="object-cover object-top"
-              priority
-            />
-          </motion.div>
-        </AnimatePresence>
+      <div className="relative bg-black overflow-hidden" style={{ height: 600 }}>
+        {/* Swipeable hero strip — horizontally translating, no cross-fade flash */}
+        <motion.div
+          className="absolute inset-0 flex"
+          style={{ width: `${totalImages * 100}%` }}
+          animate={{ x: `-${heroIndex * (100 / totalImages)}%` }}
+          transition={{
+            duration: prefersReducedMotion ? 0 : 0.5,
+            ease: [0.32, 0.72, 0, 1],
+          }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.18}
+          onDragEnd={(_, info) => {
+            const threshold = 50;
+            if (info.offset.x < -threshold && heroIndex < totalImages - 1) {
+              setHeroIndex((i) => i + 1);
+            } else if (info.offset.x > threshold && heroIndex > 0) {
+              setHeroIndex((i) => i - 1);
+            }
+          }}
+        >
+          {images.map((src, i) => (
+            <div
+              key={`${activeTab}-${i}`}
+              className="relative shrink-0 h-full"
+              style={{ width: `${100 / totalImages}%` }}
+            >
+              <Image
+                src={src}
+                alt={`${activeTab} fashion ${i + 1}`}
+                fill
+                className="object-cover object-top pointer-events-none select-none"
+                priority={i === 0}
+                draggable={false}
+              />
+            </div>
+          ))}
+        </motion.div>
 
         {/* Gradient overlay top + bottom */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/40 pointer-events-none" />
 
-        {/* ── Tab row + wordmark — below dynamic island ───── */}
-        {/* top-[52px]: clears the 44px status bar + 8px breathing room */}
-        <div className="absolute left-0 right-0 flex items-center justify-between px-4" style={{ top: 52, height: 44 }}>
-          {/* Left: all 3 tabs in a row */}
-          <div className="flex items-center gap-3">
-            {TABS.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`min-h-[44px] px-1 flex items-center cursor-pointer text-[14px] font-bold tracking-[0.18em] transition-all ${
-                  activeTab === tab
-                    ? "text-white border-b-2 border-white"
-                    : "text-white/50"
-                }`}
-                style={{ fontFamily: "var(--font-barlow)", touchAction: "manipulation" }}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-
-          {/* Right: taketwo wordmark — large Barlow Condensed 900 */}
+        {/* ── Wordmark centred top ───────────────────────────── */}
+        <div className="absolute left-0 right-0 flex justify-center pointer-events-none" style={{ top: 48 }}>
           <p
             className="text-white leading-none uppercase"
-            style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: 40, letterSpacing: "-0.02em" }}
+            style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: 44, letterSpacing: "-0.02em" }}
           >
             taketwo
           </p>
         </div>
 
+        {/* ── Tabs centred below wordmark ─────────────────── */}
+        <div className="absolute left-0 right-0 flex items-center justify-center gap-6" style={{ top: 104, height: 44 }}>
+          {TABS.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`min-h-[44px] px-1 flex items-center cursor-pointer text-[15px] font-bold tracking-[0.20em] transition-all ${
+                activeTab === tab
+                  ? "text-white border-b-2 border-white"
+                  : "text-white/50"
+              }`}
+              style={{ fontFamily: "var(--font-barlow)", touchAction: "manipulation" }}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
         {/* Hero image dots — padded for 44px hit area */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-1">
-          {HERO_IMAGES[activeTab].map((_, i) => (
+          {images.map((_, i) => (
             <button
               key={i}
               onClick={() => setHeroIndex(i)}
