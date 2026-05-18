@@ -1,28 +1,28 @@
 "use client";
 
-import { Suspense, useState, useMemo } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import { Search, Sparkles, User, Heart, Waves, Tag, ChevronRight } from "lucide-react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Search, Sparkles, User, Heart, Tag, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { products } from "@/data/products";
 import { brands } from "@/data/brands";
-import { ProductCard } from "@/components/customer/ProductCard";
+import { CategoryAccordion } from "@/components/customer/CategoryAccordion";
+import { EndlessFeed } from "@/components/customer/EndlessFeed";
 
-type Pill = "for-you" | "brands" | "men" | "women" | "swim";
+type Pill = "for-you" | "brands" | "men" | "women";
 
 const PILLS: { id: Pill; label: string; icon: React.ReactNode }[] = [
   { id: "for-you", label: "For you",  icon: <Sparkles size={13} strokeWidth={1.8} /> },
   { id: "brands",  label: "Brands",   icon: <Tag       size={13} strokeWidth={1.8} /> },
   { id: "men",     label: "Men",      icon: <User      size={13} strokeWidth={1.8} /> },
   { id: "women",   label: "Women",    icon: <Heart     size={13} strokeWidth={1.8} /> },
-  { id: "swim",    label: "Swim",     icon: <Waves     size={13} strokeWidth={1.8} /> },
 ];
 
-function deriveInitialPill(gender: string, cat: string): Pill {
+function deriveInitialPill(gender: string): Pill {
   if (gender === "men")   return "men";
   if (gender === "women") return "women";
-  if (gender === "swim")  return "swim";
+  if (gender === "swim")  return "women"; // swim rolls up into women accordion now
   return "for-you";
 }
 
@@ -46,9 +46,9 @@ function BrandsView({ query }: { query: string }) {
           <Link
             key={brand.id}
             href={`/customer/brand/${brand.id}`}
-            className="flex items-center gap-4 bg-white border border-[#F0F0F0] p-3 active:opacity-70 transition-opacity"
+            className="flex items-center gap-4 bg-white border border-[#111111]/20 p-3 active:opacity-70 transition-opacity"
           >
-            {/* Hero image thumbnail */}
+            {/* Hero image thumbnail — hard corners */}
             <div className="w-16 h-16 overflow-hidden shrink-0 relative">
               <Image
                 src={brand.heroImage}
@@ -61,7 +61,6 @@ function BrandsView({ query }: { query: string }) {
 
             {/* Info */}
             <div className="flex-1 min-w-0">
-              {/* Brand colour dot + name */}
               <div className="flex items-center gap-2 mb-0.5">
                 <div
                   className="w-2 h-2 rounded-full shrink-0"
@@ -86,48 +85,24 @@ function BrandsView({ query }: { query: string }) {
 
 function ShopGrid() {
   const params     = useSearchParams();
-  const router     = useRouter();
   const initGender = params.get("gender") ?? "";
-  const initCat    = params.get("cat")    ?? "";
 
-  const [activePill, setActivePill] = useState<Pill>(() => deriveInitialPill(initGender, initCat));
+  const [activePill, setActivePill] = useState<Pill>(() => deriveInitialPill(initGender));
   const [query, setQuery]           = useState("");
-
-  const filtered = useMemo(() => {
-    let list = products;
-
-    // Gender filter from pill
-    if (activePill === "men")   list = list.filter(p => p.category === "Men");
-    if (activePill === "women") list = list.filter(p => p.category === "Women");
-    if (activePill === "swim")  list = list.filter(p => p.category === "Swim");
-    // "brands" + "for-you" → show all (could be extended later)
-
-    // Text search
-    if (query.trim()) {
-      const q = query.toLowerCase();
-      list = list.filter(p =>
-        p.name.toLowerCase().includes(q) ||
-        p.brand.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q)
-      );
-    }
-
-    return list;
-  }, [activePill, query]);
 
   return (
     <div className="flex flex-col bg-white min-h-full pb-24">
 
-      {/* ── Search bar ─────────────────────────────────────── */}
+      {/* ── Search bar (hard-edge underline) ─────────────── */}
       <div className="px-4 pt-1 pb-2">
-        <div className="flex items-center gap-2 bg-[#F2F2F2] rounded-full px-4 py-3">
-          <Search size={15} strokeWidth={2} className="text-[#999] flex-shrink-0" />
+        <div className="flex items-center gap-2 border-b border-[#111111] px-1 py-3">
+          <Search size={15} strokeWidth={2} className="text-[#111] flex-shrink-0" />
           <input
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder="Search styles, brands..."
-            className="flex-1 bg-transparent text-[13px] text-[#111] placeholder-[#AAA] outline-none font-light"
+            placeholder="Search"
+            className="flex-1 bg-transparent text-[14px] text-[#111] placeholder-[#999] outline-none font-light"
           />
           {query && (
             <button
@@ -141,18 +116,18 @@ function ShopGrid() {
         </div>
       </div>
 
-      {/* ── Filter pills ───────────────────────────────────── */}
-      <div className="flex items-center gap-2 px-4 pb-4 overflow-x-auto scrollbar-none">
+      {/* ── Filter pills (hard-edge square) ─────────────── */}
+      <div className="flex items-center gap-2 px-4 pt-3 pb-4 overflow-x-auto scrollbar-none">
         {PILLS.map(pill => {
           const active = activePill === pill.id;
           return (
             <button
               key={pill.id}
               onClick={() => setActivePill(pill.id)}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full flex-shrink-0 text-[12px] font-semibold transition-all cursor-pointer border ${
+              className={`flex items-center gap-1.5 px-4 py-2 flex-shrink-0 text-[12px] font-semibold transition-all cursor-pointer border ${
                 active
                   ? "bg-[#111111] text-white border-[#111111]"
-                  : "bg-white text-[#333] border-[#E0E0E0]"
+                  : "bg-white text-[#111] border-[#111]"
               }`}
               style={{ touchAction: "manipulation" }}
             >
@@ -163,32 +138,11 @@ function ShopGrid() {
         })}
       </div>
 
-      {/* ── Brands directory or product grid ──────────────── */}
-      {activePill === "brands" ? (
-        <BrandsView query={query} />
-      ) : (
-        <>
-          {/* Results count */}
-          <div className="px-4 pb-3">
-            <p className="text-[11px] text-[#AAA] font-light uppercase tracking-widest">
-              {filtered.length} item{filtered.length !== 1 ? "s" : ""}
-            </p>
-          </div>
-
-          {filtered.length > 0 ? (
-            <div className="px-4 grid grid-cols-2 gap-3">
-              {filtered.map(product => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <div className="flex flex-col items-center justify-center py-20 text-center px-5">
-              <p className="text-base font-bold text-[#111111] mb-2">Nothing found.</p>
-              <p className="text-sm text-[#999999] font-light">Try a different search or filter.</p>
-            </div>
-          )}
-        </>
-      )}
+      {/* ── Content per pill ─────────────────────────────── */}
+      {activePill === "for-you" && <EndlessFeed query={query} />}
+      {activePill === "brands"  && <BrandsView query={query} />}
+      {activePill === "men"     && <CategoryAccordion gender="men"   query={query} />}
+      {activePill === "women"   && <CategoryAccordion gender="women" query={query} />}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import { useFavorites } from "@/lib/favorites-store";
 import type { Product } from "@/data/products";
+import { getShortName } from "@/data/products";
 import { getBrand } from "@/data/brands";
 
 export function ProductCard({ product }: { product: Product }) {
@@ -40,13 +41,15 @@ export function ProductCard({ product }: { product: Product }) {
         aria-label="Toggle favorite"
         style={{ touchAction: "manipulation" }}
       >
-        <div className="w-7 h-7 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm">
-          <Heart
-            size={14}
-            className={fav ? "fill-[#ED832B] text-[#ED832B]" : "text-[#666666]"}
-            strokeWidth={fav ? 0 : 1.5}
-          />
-        </div>
+        <Heart
+          size={20}
+          strokeWidth={fav ? 0 : 1.8}
+          className={
+            fav
+              ? "fill-[#ED832B] text-[#ED832B] drop-shadow-[0_1px_2px_rgba(0,0,0,0.25)]"
+              : "text-[#111111] drop-shadow-[0_1px_2px_rgba(0,0,0,0.20)]"
+          }
+        />
       </button>
 
       {/* Info */}
@@ -60,7 +63,7 @@ export function ProductCard({ product }: { product: Product }) {
 
         <Link href={`/customer/product/${product.id}`}>
           <p className="text-xs font-semibold text-[#111111] leading-tight mt-0.5 line-clamp-2">
-            {product.name}
+            {getShortName(product)}
           </p>
         </Link>
 
