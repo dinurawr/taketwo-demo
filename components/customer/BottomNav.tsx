@@ -32,18 +32,20 @@ export function BottomNav() {
             href={href}
             className="relative flex flex-col items-center gap-0.5 px-3 py-1.5 flex-1"
           >
-            <div className={`relative ${isActive ? "text-[#111111]" : "text-[#AAAAAA]"}`}>
+            <div className="relative" style={{ color: isActive ? "var(--ink)" : "var(--muted-light)" }}>
               <Icon size={20} strokeWidth={isActive ? 2 : 1.5} />
               {badge != null && badge > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#111111] rounded-full text-[9px] font-bold text-white flex items-center justify-center">
+                <span
+                  className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center"
+                  style={{ backgroundColor: "var(--ink)", color: "var(--surface)" }}
+                >
                   {badge > 9 ? "9+" : badge}
                 </span>
               )}
             </div>
             <span
-              className={`text-[9px] font-medium ${
-                isActive ? "text-[#111111]" : "text-[#AAAAAA]"
-              }`}
+              className="text-[9px] font-medium"
+              style={{ color: isActive ? "var(--ink)" : "var(--muted-light)" }}
             >
               {label}
             </span>

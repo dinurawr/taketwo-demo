@@ -4,6 +4,7 @@ import { useFavorites } from "@/lib/favorites-store";
 import { products } from "@/data/products";
 import { ProductCard } from "@/components/customer/ProductCard";
 import Link from "next/link";
+import { Bookmark } from "lucide-react";
 
 export default function FavoritesPage() {
   const { favorites } = useFavorites();
@@ -17,21 +18,34 @@ export default function FavoritesPage() {
       </div>
 
       {favoriteProducts.length > 0 ? (
-        <div className="px-5 grid grid-cols-2 gap-3">
-          {favoriteProducts.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
+        <div className="px-4 grid gap-3" style={{ gridTemplateColumns: "repeat(2, 1fr)" }}>
+          {favoriteProducts.map((p, i) => {
+            const isWide = i % 5 === 0 && i !== 0;
+            return (
+              <div key={p.id} style={isWide ? { gridColumn: "span 2" } : {}}>
+                <ProductCard product={p} />
+              </div>
+            );
+          })}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center py-20 px-5 text-center">
-          <p className="text-5xl mb-4">🤍</p>
-          <h2 className="text-lg font-bold text-[#111111] mb-2">Nothing saved yet</h2>
-          <p className="text-sm text-[#666666] mb-6">Tap the heart on any product to save it here</p>
-          <Link
-            href="/customer"
-            className="px-6 py-3 bg-[#859365] text-white rounded-full text-sm font-semibold"
+        <div className="flex flex-col px-5 pt-16">
+          <Bookmark size={28} strokeWidth={1.2} className="text-[#ED832B] mb-5" />
+          <h2
+            className="text-2xl font-black uppercase tracking-tight leading-none mb-2"
+            style={{ fontFamily: "var(--font-barlow)", color: "var(--ink)" }}
           >
-            Browse Products
+            Nothing saved.
+          </h2>
+          <p className="text-sm font-light mb-8" style={{ color: "var(--muted)" }}>
+            Tap the heart on any product to save it here.
+          </p>
+          <Link
+            href="/customer/shop"
+            className="self-start px-7 py-3 text-sm font-bold uppercase tracking-widest border border-[var(--ink)] transition-colors"
+            style={{ fontFamily: "var(--font-barlow)", color: "var(--ink)" }}
+          >
+            Browse Shop
           </Link>
         </div>
       )}

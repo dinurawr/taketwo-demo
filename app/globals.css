@@ -3,14 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #111111;
+  /* ── OKLCH tinted neutrals (faintly sage-green, never pure black/white) ── */
+  --ink:         oklch(0.20 0.01 140);   /* replaces #111111 */
+  --surface:     oklch(0.99 0.003 140);  /* replaces #ffffff */
+  --hairline:    oklch(0.88 0.006 140);  /* replaces border-[#111]/15 */
+  --muted:       oklch(0.45 0.008 140);  /* replaces #666666 */
+  --muted-light: oklch(0.65 0.006 140);  /* replaces #AAAAAA inactive */
+
+  /* legacy hex aliases kept for vendor dashboard / any untouched components */
+  --background: oklch(0.99 0.003 140);
+  --foreground: oklch(0.20 0.01 140);
+
   /* brand tokens */
   --green:   #859365;
   --blue:    #4A89C2;
   --orange:  #ED832B;
-  --ink:     #111111;
-  --muted:   #666666;
 
   /* vendor dashboard tokens */
   --v-bg:             #F7F7F7;
@@ -34,12 +41,12 @@
 }
 
 html {
-  background-color: #ffffff;
+  background-color: var(--surface);
 }
 
 body {
-  background-color: #ffffff;
-  color: #111111;
+  background-color: var(--surface);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
 

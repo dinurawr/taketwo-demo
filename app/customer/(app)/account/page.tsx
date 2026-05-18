@@ -66,16 +66,16 @@ export default function AccountPage() {
         </div>
       </div>
 
-      {/* Stats — hard corners */}
-      <div className="mx-5 mb-4 grid grid-cols-3 gap-2">
+      {/* Stats — divide-x hairline row, no card chrome */}
+      <div className="mx-5 mb-4 flex divide-x" style={{ borderColor: "var(--hairline)" }}>
         {[
           { label: "Orders", value: myOrders.length },
           { label: "Saved", value: mockUser.favoriteIds.length },
           { label: "Reviews", value: 2 },
         ].map(({ label, value }) => (
-          <div key={label} className="bg-[#F8F8F6] p-3 text-center border border-[#F0F0F0]">
-            <p className="text-xl font-bold text-[#4A89C2]">{value}</p>
-            <p className="text-xs text-[#666666] font-light">{label}</p>
+          <div key={label} className="flex-1 py-4 text-center">
+            <p className="text-xl font-bold" style={{ color: "#859365" }}>{value}</p>
+            <p className="text-xs font-light" style={{ color: "var(--muted)" }}>{label}</p>
           </div>
         ))}
       </div>

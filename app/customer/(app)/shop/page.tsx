@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Search, Sparkles, User, Heart, Tag, ChevronRight } from "lucide-react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { products } from "@/data/products";
@@ -116,7 +117,7 @@ function ShopGrid() {
         </div>
       </div>
 
-      {/* ── Filter pills (hard-edge square) ─────────────── */}
+      {/* ── Filter pills — layoutId sliding active fill ──── */}
       <div className="flex items-center gap-2 px-4 pt-3 pb-4 overflow-x-auto scrollbar-none">
         {PILLS.map(pill => {
           const active = activePill === pill.id;
@@ -124,15 +125,21 @@ function ShopGrid() {
             <button
               key={pill.id}
               onClick={() => setActivePill(pill.id)}
-              className={`flex items-center gap-1.5 px-4 py-2 flex-shrink-0 text-[12px] font-semibold transition-all cursor-pointer border ${
-                active
-                  ? "bg-[#111111] text-white border-[#111111]"
-                  : "bg-white text-[#111] border-[#111]"
-              }`}
-              style={{ touchAction: "manipulation" }}
+              className="relative flex items-center gap-1.5 px-4 py-2 flex-shrink-0 text-[12px] font-semibold cursor-pointer border border-[var(--ink)] overflow-hidden"
+              style={{ touchAction: "manipulation", color: active ? "var(--surface)" : "var(--ink)" }}
             >
-              {pill.icon}
-              {pill.label}
+              {active && (
+                <motion.span
+                  layoutId="pill-fill"
+                  className="absolute inset-0"
+                  style={{ backgroundColor: "var(--ink)" }}
+                  transition={{ type: "spring", stiffness: 380, damping: 36 }}
+                />
+              )}
+              <span className="relative z-10 flex items-center gap-1.5">
+                {pill.icon}
+                {pill.label}
+              </span>
             </button>
           );
         })}

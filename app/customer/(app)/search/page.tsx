@@ -116,10 +116,17 @@ export default function SearchPage() {
         ))}
       </div>
       {filtered.length === 0 && (
-        <div className="text-center py-16 text-[#999999]">
-          <p className="text-4xl mb-4">🔍</p>
-          <p className="font-medium text-[#111111]">No results found</p>
-          <p className="text-sm mt-1">Try different keywords or filters</p>
+        <div className="flex flex-col px-5 pt-10">
+          <Search size={24} strokeWidth={1.2} className="text-[#859365] mb-4" />
+          <h2
+            className="text-xl font-black uppercase tracking-tight leading-none mb-2"
+            style={{ fontFamily: "var(--font-barlow)", color: "var(--ink)" }}
+          >
+            No results.
+          </h2>
+          <p className="text-sm font-light" style={{ color: "var(--muted)" }}>
+            Try different keywords or adjust your filters.
+          </p>
         </div>
       )}
     </div>

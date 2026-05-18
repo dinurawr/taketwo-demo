@@ -3,7 +3,7 @@
 import { useCart } from "@/lib/cart-store";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, Minus, Plus, Trash2, ExternalLink } from "lucide-react";
+import { ChevronLeft, Minus, Plus, Trash2, ExternalLink, ShoppingBag } from "lucide-react";
 import { getBrand } from "@/data/brands";
 
 export default function CartPage() {
@@ -19,19 +19,23 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      /* 844px phone − 64px status bar − 64px bottom nav = 716px visible area */
-      <div
-        className="flex flex-col items-center justify-center px-5 text-center bg-white"
-        style={{ height: 716 }}
-      >
-        <h2 className="text-lg font-bold text-[#111111] mb-2">Your bag is empty.</h2>
-        <p className="text-sm text-[#666666] font-light mb-6">Add some pieces you love</p>
+      <div className="flex flex-col px-5 pt-16" style={{ height: 716 }}>
+        <ShoppingBag size={28} strokeWidth={1.2} className="text-[#859365] mb-5" />
+        <h2
+          className="text-2xl font-black uppercase tracking-tight leading-none mb-2"
+          style={{ fontFamily: "var(--font-barlow)", color: "var(--ink)" }}
+        >
+          Bag is empty.
+        </h2>
+        <p className="text-sm font-light mb-8" style={{ color: "var(--muted)" }}>
+          Add pieces you want — we&apos;ll hold them here.
+        </p>
         <Link
           href="/customer/shop"
-          className="px-8 py-3 bg-[#111111] text-white text-sm font-bold uppercase tracking-widest"
-          style={{ fontFamily: "var(--font-barlow)" }}
+          className="self-start px-7 py-3 text-sm font-bold uppercase tracking-widest border border-[var(--ink)] hover:bg-[var(--ink)] hover:text-[var(--surface)] transition-colors"
+          style={{ fontFamily: "var(--font-barlow)", color: "var(--ink)" }}
         >
-          Shop Now
+          Browse Shop
         </Link>
       </div>
     );
@@ -52,10 +56,10 @@ export default function CartPage() {
           const brand = getBrand(brandId);
           const brandTotal = brandItems.reduce((s, i) => s + i.price * i.quantity, 0);
           return (
-            <div key={brandId} className="bg-white rounded-2xl overflow-hidden border border-[#E8E8E8]">
-              <div className="flex items-center justify-between px-4 py-2.5 bg-[#859365]">
-                <span className="text-sm font-bold text-white">{brand?.name ?? brandId}</span>
-                <span className="text-xs text-white/80">LKR {brandTotal.toLocaleString()}</span>
+            <div key={brandId} className="overflow-hidden" style={{ borderTop: `2px solid ${brand?.color ?? "#859365"}` }}>
+              <div className="flex items-center justify-between px-4 py-3">
+                <span className="text-sm font-bold uppercase tracking-wide" style={{ fontFamily: "var(--font-barlow)", color: brand?.color ?? "#859365" }}>{brand?.name ?? brandId}</span>
+                <span className="text-xs" style={{ color: "var(--muted)" }}>LKR {brandTotal.toLocaleString()}</span>
               </div>
               {brandItems.map((item) => (
                 <div key={`${item.productId}-${item.size}-${item.color}`} className="flex gap-3 p-3 border-b border-[#F8F8F6] last:border-0">
@@ -100,7 +104,8 @@ export default function CartPage() {
               ))}
               <div className="px-3 pb-3">
                 <button
-                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-full border-2 text-sm font-semibold transition-colors border-[#859365] text-[#859365] hover:bg-[#859365] hover:text-white"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 text-sm font-bold uppercase tracking-widest border transition-colors"
+                  style={{ fontFamily: "var(--font-barlow)", borderColor: brand?.color ?? "#859365", color: brand?.color ?? "#859365" }}
                   onClick={() => alert(`Demo: Redirecting to ${brand?.name} checkout…`)}
                 >
                   Checkout with {brand?.name}
