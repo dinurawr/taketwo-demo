@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { products } from "@/data/products";
 import type { Product } from "@/data/products";
 import { ProductCard } from "@/components/customer/ProductCard";
+import { type Filters, applyFilters, hasActiveFilters } from "@/lib/filters";
 
 const MAX_CYCLES = 5;
 
@@ -19,26 +20,32 @@ function shuffleWithSeed<T>(list: T[], seed: number): T[] {
   return arr;
 }
 
-export function EndlessFeed({ query }: { query: string }) {
+export function EndlessFeed({ query, filters }: { query: string; filters?: Filters }) {
   const [cycles, setCycles] = useState(1);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  // Filter base list by search query
+  // Filter base list by text query then structured filters
   const baseList = useMemo<Product[]>(() => {
-    if (!query.trim()) return products;
-    const q = query.toLowerCase();
-    return products.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.brand.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q)
-    );
-  }, [query]);
+    let list = products;
+    if (query.trim()) {
+      const q = query.toLowerCase();
+      list = list.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.brand.toLowerCase().includes(q) ||
+          p.category.toLowerCase().includes(q)
+      );
+    }
+    if (filters && hasActiveFilters(filters)) {
+      list = applyFilters(list, filters);
+    }
+    return list;
+  }, [query, filters]);
 
-  // Reset cycles when query changes
+  // Reset cycles when query or filters change
   useEffect(() => {
     setCycles(1);
-  }, [query]);
+  }, [query, filters]);
 
   // Build the rendered list — one shuffled copy per cycle
   const renderedList = useMemo(() => {
@@ -78,7 +85,11 @@ export function EndlessFeed({ query }: { query: string }) {
       {renderedList.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 text-center">
           <p className="text-base font-bold text-[#111111] mb-2">Nothing found.</p>
-          <p className="text-sm text-[#999999] font-light">Try a different search.</p>
+          <p className="text-sm text-[#999999] font-light">
+            {filters && hasActiveFilters(filters)
+              ? "Try adjusting your filters."
+              : "Try a different search."}
+          </p>
         </div>
       ) : (
         <>
