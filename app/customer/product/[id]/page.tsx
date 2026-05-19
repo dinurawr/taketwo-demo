@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronDown, Heart, Star } from "lucide-react";
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/lib/cart-store";
 import { useFavorites } from "@/lib/favorites-store";
 import { getProduct, getProductsByCategory, getShortName } from "@/data/products";
@@ -11,6 +12,7 @@ import { getBrand } from "@/data/brands";
 import { getProductReviews } from "@/data/reviews";
 import { use } from "react";
 import { ProductCard } from "@/components/customer/ProductCard";
+import { ProductDetailSkeleton } from "@/components/customer/ProductDetailSkeleton";
 
 // ── Accordion item ────────────────────────────────────────────────────────
 function Accordion({ title, children }: { title: string; children: React.ReactNode }) {
@@ -55,6 +57,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [selectedColor, setSelectedColor] = useState(0);
   const [added, setAdded] = useState(false);
 
+  // Skeleton overlay until the hero image is loaded. Reset on every product id
+  // change so navigating between products re-shows the skeleton.
+  const [heroReady, setHeroReady] = useState(false);
+  useEffect(() => {
+    setHeroReady(false);
+  }, [id]);
+
   const reviewsRef = useRef<HTMLDivElement>(null);
 
   const scrollToReviews = useCallback(() => {
@@ -93,7 +102,24 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   };
 
   return (
-    <div className="flex flex-col bg-white">
+    <div className="relative flex flex-col bg-white">
+      {/* Skeleton overlay — fades out once the hero image is ready */}
+      <AnimatePresence>
+        {!heroReady && (
+          <motion.div
+            key="product-skeleton"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.12, ease: "easeIn" }}
+            className="absolute inset-0 z-30"
+            style={{ willChange: "opacity" }}
+          >
+            <ProductDetailSkeleton brandColor={brand.color} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* ── Vertical image stack ──────────────────────────── */}
       <div
         className="relative overflow-y-auto snap-y snap-mandatory bg-[#F0F3EC]"
@@ -107,6 +133,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               fill
               className="object-cover object-top"
               priority={i === 0}
+              onLoad={i === 0 ? () => setHeroReady(true) : undefined}
             />
           </div>
         ))}

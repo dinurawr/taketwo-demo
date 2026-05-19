@@ -9,18 +9,18 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative pt-16 pb-32 bg-white">
       {/*
-       * mode="popLayout" absolutely-positions the exiting page so it leaves
-       * the document flow instantly — no blank white frame, no height doubling.
-       * Enter: fade in + 6px rise (standard iOS-style tab switch feel).
-       * Exit: fast fade out in place, doesn't fight the entering page.
+       * Instagram/Twitter-style crossfade: opacity-only, 150ms, matched enter/exit.
+       * mode="popLayout" keeps the white-gap fix (exiting page goes absolute).
+       * Single GPU-only property (opacity) — no layout, no paint, no stutter.
        */}
       <AnimatePresence mode="popLayout">
         <motion.div
           key={pathname}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, transition: { duration: 0.12, ease: "easeIn" } }}
-          transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.15, ease: "easeOut" }}
+          style={{ willChange: "opacity" }}
         >
           {children}
         </motion.div>
