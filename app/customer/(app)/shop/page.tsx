@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, useMemo } from "react";
+import { Suspense, useState, useMemo, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { Search, Sparkles, User, Heart, Tag, ChevronRight, SlidersHorizontal } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -122,90 +122,127 @@ function ShopGrid() {
   const showFilterUI = activePill === "for-you";
   const filterBadge  = activeFilterCount(filters);
 
+  // ── Auto-hide header on scroll ──────────────────────────
+  const [headerHidden, setHeaderHidden] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const el = document.getElementById("scroll-container");
+    if (!el) return;
+
+    const onScroll = () => {
+      const y = el.scrollTop;
+      const delta = y - lastScrollY.current;
+
+      // Always show when near the top
+      if (y < 80) {
+        setHeaderHidden(false);
+      } else if (Math.abs(delta) > 6) {
+        // Hide scrolling down, show scrolling up — ignore tiny jitter
+        setHeaderHidden(delta > 0);
+      }
+
+      lastScrollY.current = y;
+    };
+
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <div className="relative flex flex-col bg-white min-h-full pb-24">
 
-      {/* ── Search bar ─────────────────────────────────────── */}
-      <div className="px-4 pt-1 pb-2">
-        <div className="flex items-center gap-2 border-b border-[#111111] px-1 py-3">
-          <Search size={15} strokeWidth={2} className="text-[#111] flex-shrink-0" />
-          <input
-            type="text"
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            placeholder="Search"
-            className="flex-1 bg-transparent text-[14px] text-[#111] placeholder-[#999] outline-none font-light"
-          />
-          {query && (
-            <button
-              onClick={() => setQuery("")}
-              className="text-[#999] text-[11px] cursor-pointer px-1"
-              style={{ touchAction: "manipulation" }}
-            >
-              ✕
-            </button>
-          )}
-          {/* Filter button — only on For You tab */}
-          {showFilterUI && (
-            <button
-              onClick={() => setFilterOpen(true)}
-              className="relative flex items-center gap-1.5 pl-3 border-l border-[#111]/15 cursor-pointer"
-              style={{ touchAction: "manipulation" }}
-            >
-              <SlidersHorizontal size={14} strokeWidth={1.8} className="text-[#111]" />
-              <span className="text-[12px] font-semibold text-[#111] tracking-wide">
-                Filters
-              </span>
-              {filterBadge > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[#111] text-[9px] font-bold text-white flex items-center justify-center">
-                  {filterBadge}
-                </span>
-              )}
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* ── Active filter chips ────────────────────────────── */}
-      <AnimatePresence initial={false}>
-        {showFilterUI && hasActiveFilters(filters) && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-          >
-            <FilterChips
-              filters={filters}
-              onFiltersChange={setFilters}
-              options={filterOptions}
+      {/* ── Sticky auto-hide header ─────────────────────────── */}
+      <motion.div
+        className="sticky top-0 bg-white z-30"
+        animate={{ y: headerHidden ? "-100%" : 0 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
+      >
+        {/* Search bar */}
+        <div className="px-4 pt-1 pb-2">
+          <div className="flex items-center gap-2 border-b border-[#111111] px-1 py-3">
+            <Search size={15} strokeWidth={2} className="text-[#111] flex-shrink-0" />
+            <input
+              type="text"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder="Search"
+              className="flex-1 bg-transparent text-[14px] text-[#111] placeholder-[#999] outline-none font-light"
             />
-          </motion.div>
-        )}
-      </AnimatePresence>
+            {query && (
+              <button
+                onClick={() => setQuery("")}
+                className="text-[#999] text-[11px] cursor-pointer px-1"
+                style={{ touchAction: "manipulation" }}
+              >
+                ✕
+              </button>
+            )}
+            {/* Filter button — only on For You tab */}
+            {showFilterUI && (
+              <button
+                onClick={() => {
+                  setHeaderHidden(false);
+                  setFilterOpen(true);
+                }}
+                className="relative flex items-center gap-1.5 pl-3 border-l border-[#111]/15 cursor-pointer"
+                style={{ touchAction: "manipulation" }}
+              >
+                <SlidersHorizontal size={14} strokeWidth={1.8} className="text-[#111]" />
+                <span className="text-[12px] font-semibold text-[#111] tracking-wide">
+                  Filters
+                </span>
+                {filterBadge > 0 && (
+                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[#111] text-[9px] font-bold text-white flex items-center justify-center">
+                    {filterBadge}
+                  </span>
+                )}
+              </button>
+            )}
+          </div>
+        </div>
 
-      {/* ── Category pills ─────────────────────────────────── */}
-      <div className="flex items-center gap-2 px-4 pt-3 pb-4 overflow-x-auto scrollbar-none">
-        {PILLS.map(pill => {
-          const active = activePill === pill.id;
-          return (
-            <button
-              key={pill.id}
-              onClick={() => setActivePill(pill.id)}
-              className={`flex items-center gap-1.5 px-4 py-2 flex-shrink-0 text-[12px] font-semibold transition-all cursor-pointer border ${
-                active
-                  ? "bg-[#111111] text-white border-[#111111]"
-                  : "bg-white text-[#111] border-[#111]"
-              }`}
-              style={{ touchAction: "manipulation" }}
+        {/* Active filter chips */}
+        <AnimatePresence initial={false}>
+          {showFilterUI && hasActiveFilters(filters) && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="overflow-hidden"
             >
-              {pill.icon}
-              {pill.label}
-            </button>
-          );
-        })}
-      </div>
+              <FilterChips
+                filters={filters}
+                onFiltersChange={setFilters}
+                options={filterOptions}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Category pills */}
+        <div className="flex items-center gap-2 px-4 pt-3 pb-4 overflow-x-auto scrollbar-none">
+          {PILLS.map(pill => {
+            const active = activePill === pill.id;
+            return (
+              <button
+                key={pill.id}
+                onClick={() => setActivePill(pill.id)}
+                className={`flex items-center gap-1.5 px-4 py-2 flex-shrink-0 text-[12px] font-semibold transition-all cursor-pointer border ${
+                  active
+                    ? "bg-[#111111] text-white border-[#111111]"
+                    : "bg-white text-[#111] border-[#111]"
+                }`}
+                style={{ touchAction: "manipulation" }}
+              >
+                {pill.icon}
+                {pill.label}
+              </button>
+            );
+          })}
+        </div>
+      </motion.div>
 
       {/* ── Content per pill ───────────────────────────────── */}
       {activePill === "for-you" && <EndlessFeed query={query} filters={filters} />}
