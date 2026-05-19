@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { ShoppingBag, Store } from "lucide-react";
 
 export default function RolePicker() {
   return (
@@ -19,10 +20,10 @@ export default function RolePicker() {
         </p>
       </div>
 
-      {/* Demo badge */}
-      <div className="mb-8 px-4 py-1.5 bg-[#859365] rounded-full text-white text-xs tracking-widest uppercase font-semibold">
-        Vendor Demo · 2026
-      </div>
+      {/* Quiet version line */}
+      <p className="text-[#C8C8C8] text-[9px] tracking-[0.4em] uppercase font-medium mb-10">
+        Preview · 2026
+      </p>
 
       {/* Role cards */}
       <div className="flex flex-col sm:flex-row gap-4 w-full max-w-lg">
@@ -31,8 +32,8 @@ export default function RolePicker() {
           href="/customer"
           className="flex-1 group bg-white rounded-3xl p-8 shadow-sm border-2 border-[#E8E8E8] hover:border-[#859365] hover:shadow-lg transition-all duration-200 flex flex-col items-center gap-4 text-center"
         >
-          <div className="w-14 h-14 rounded-full bg-[#F0F3EC] flex items-center justify-center text-2xl group-hover:bg-[#859365] transition-colors">
-            🛍️
+          <div className="w-14 h-14 rounded-full bg-[#F0F3EC] flex items-center justify-center group-hover:bg-[#859365] transition-colors">
+            <ShoppingBag size={22} strokeWidth={1.6} className="text-[#859365] group-hover:text-white transition-colors" />
           </div>
           <div>
             <p className="text-[10px] text-[#859365] uppercase tracking-widest mb-1 font-semibold">View as</p>
@@ -48,8 +49,8 @@ export default function RolePicker() {
           href="/vendor"
           className="flex-1 group bg-white rounded-3xl p-8 shadow-sm border-2 border-[#E8E8E8] hover:border-[#859365] hover:shadow-lg transition-all duration-200 flex flex-col items-center gap-4 text-center"
         >
-          <div className="w-14 h-14 rounded-full bg-[#F0F3EC] flex items-center justify-center text-2xl group-hover:bg-[#859365] transition-colors">
-            📦
+          <div className="w-14 h-14 rounded-full bg-[#F0F3EC] flex items-center justify-center group-hover:bg-[#859365] transition-colors">
+            <Store size={22} strokeWidth={1.6} className="text-[#859365] group-hover:text-white transition-colors" />
           </div>
           <div>
             <p className="text-[10px] text-[#859365] uppercase tracking-widest mb-1 font-semibold">View as</p>
