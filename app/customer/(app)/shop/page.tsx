@@ -154,10 +154,13 @@ function ShopGrid() {
 
       {/* ── Sticky auto-hide header ─────────────────────────── */}
       <motion.div
-        className="sticky top-0 bg-white z-30"
+        className="sticky top-0 -mt-16 bg-white z-30"
         animate={{ y: headerHidden ? "-100%" : 0 }}
         transition={{ duration: 0.25, ease: "easeOut" }}
       >
+        {/* White spacer behind dynamic island */}
+        <div className="h-16" />
+
         {/* Search bar */}
         <div className="px-4 pt-1 pb-2">
           <div className="flex items-center gap-2 border-b border-[#111111] px-1 py-3">
