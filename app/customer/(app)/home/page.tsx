@@ -1,9 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { products } from "@/data/products";
+import { ProductSlider } from "@/components/customer/ProductSlider";
+import { ShopByBrand } from "@/components/customer/ShopByBrand";
 
 type Tab = "WOMEN" | "MEN";
 
@@ -75,6 +78,14 @@ export default function CustomerHome() {
   const [activeTab, setActiveTab] = useState<Tab>("WOMEN");
   const [heroIndex, setHeroIndex] = useState(0);
   const prefersReducedMotion = useReducedMotion();
+
+  // Products for the "New In" slider — filtered to active tab's gender, newest 10
+  const sliderProducts = useMemo(() => {
+    const gender = activeTab === "WOMEN" ? "Women" : "Men";
+    return products
+      .filter((p) => p.category === gender)
+      .slice(0, 10);
+  }, [activeTab]);
 
   const images = HERO_IMAGES[activeTab];
   const totalImages = images.length;
@@ -227,6 +238,16 @@ export default function CustomerHome() {
           ))}
         </motion.div>
       </AnimatePresence>
+
+      {/* ── New In product slider ────────────────────────────── */}
+      <ProductSlider
+        title={`New in: ${activeTab === "WOMEN" ? "Women" : "Men"}`}
+        products={sliderProducts}
+        ctaHref={`/customer/shop?gender=${activeTab.toLowerCase()}`}
+      />
+
+      {/* ── Shop by brand ──────────────────────────────────── */}
+      <ShopByBrand />
 
     </div>
   );

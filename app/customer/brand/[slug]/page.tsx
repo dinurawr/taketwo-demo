@@ -74,20 +74,20 @@ export default function BrandStorefront({
           </p>
         </div>
 
-        {/* Brand name + slogan — bottom left of hero */}
+        {/* Brand logo + slogan — bottom left of hero */}
         <div className="absolute bottom-5 left-4 right-20">
-          <p
-            className="text-white leading-none uppercase"
-            style={{
-              fontFamily: "var(--font-barlow)",
-              fontWeight: 900,
-              fontSize: 32,
-              letterSpacing: "-0.01em",
-            }}
-          >
-            {brand.name}
-          </p>
-          <p className="text-white/80 text-[13px] font-light mt-1 tracking-wide">
+          {/* SVG logo — white tinted via CSS filter */}
+          <div className="relative mb-1" style={{ width: 120, height: 44 }}>
+            <Image
+              src={brand.logoFile}
+              alt={brand.name}
+              fill
+              className="object-contain object-left"
+              style={{ filter: "brightness(0) invert(1)" }}
+              sizes="120px"
+            />
+          </div>
+          <p className="text-white/80 text-[13px] font-light tracking-wide">
             {brand.tagline}
           </p>
         </div>
