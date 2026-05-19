@@ -59,12 +59,13 @@ function BrandsView({ query }: { query: string }) {
             href={`/customer/brand/${brand.id}`}
             className="flex items-center gap-4 bg-white border border-[#111111]/20 p-3 active:opacity-70 transition-opacity"
           >
-            <div className="w-16 h-16 overflow-hidden shrink-0 relative">
+            {/* Brand logo tile */}
+            <div className="w-16 h-16 bg-[#F8F8F6] border border-[#EEEEEE] shrink-0 flex items-center justify-center relative overflow-hidden">
               <Image
-                src={brand.heroImage}
+                src={brand.logoFile}
                 alt={brand.name}
                 fill
-                className="object-cover"
+                className="object-contain p-2"
                 sizes="64px"
               />
             </div>
