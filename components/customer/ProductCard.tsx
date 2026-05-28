@@ -16,9 +16,8 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <motion.div
-      className="relative bg-white overflow-hidden shadow-sm border border-[#F0F0F0]"
-      whileTap={{ scale: 0.96, opacity: 0.85 }}
-      whileHover={{ y: -2 }}
+      className="relative bg-white overflow-hidden"
+      whileTap={{ scale: 0.97, opacity: 0.85 }}
       transition={{ duration: 0.15 }}
     >
       <Link href={`/customer/product/${product.id}`}>
@@ -56,7 +55,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="px-2.5 pt-2 pb-2.5">
         {/* Brand label — links to brand storefront */}
         <Link href={`/customer/brand/${brand?.id}`} className="block">
-          <p className="text-[10px] text-[#859365] font-bold uppercase tracking-wide hover:underline">
+          <p className="text-[10px] text-[#AAAAAA] font-semibold uppercase tracking-wide hover:underline">
             {brand?.name}
           </p>
         </Link>

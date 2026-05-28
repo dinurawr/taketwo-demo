@@ -77,13 +77,13 @@ export function EndlessFeed({ query, filters }: { query: string; filters?: Filte
   }, [cycles]);
 
   return (
-    <div className="px-4 pb-6">
-      <p className="text-[11px] text-[#AAA] font-light uppercase tracking-widest pb-3">
+    <div className="pb-6">
+      <p className="text-[11px] text-[#AAA] font-light uppercase tracking-widest pb-3 px-4">
         For you
       </p>
 
       {renderedList.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 text-center">
+        <div className="flex flex-col items-center justify-center py-16 text-center px-4">
           <p className="text-base font-bold text-[#111111] mb-2">Nothing found.</p>
           <p className="text-sm text-[#999999] font-light">
             {filters && hasActiveFilters(filters)
@@ -93,7 +93,7 @@ export function EndlessFeed({ query, filters }: { query: string; filters?: Filte
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-0.5">
             {renderedList.map(({ key, product }) => (
               <ProductCard key={key} product={product} />
             ))}

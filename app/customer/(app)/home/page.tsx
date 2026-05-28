@@ -154,8 +154,9 @@ export default function CustomerHome() {
           ))}
         </motion.div>
 
-        {/* Gradient overlay top + bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/40 pointer-events-none" />
+        {/* Gradient overlay — top scrim for wordmark + bottom scrim for dots only */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent via-40% to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
 
         {/* ── Wordmark centred top ───────────────────────────── */}
         <div className="absolute left-0 right-0 flex justify-center pointer-events-none" style={{ top: 48 }}>

@@ -178,7 +178,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {/* Brand + Name + Price */}
         <div className="flex items-start justify-between mb-3">
           <div>
-            <p className="text-[10px] text-[#859365] font-bold uppercase tracking-widest mb-1">
+            <p className="text-[10px] text-[#AAAAAA] font-semibold uppercase tracking-widest mb-1">
               {brand.name}
             </p>
             <h1 className="text-xl font-bold text-[#111111] leading-tight">{shortName}</h1>
@@ -306,7 +306,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 <div key={r.id} className="bg-[#F8F8F6] p-3">
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-[#859365] flex items-center justify-center text-white text-[9px] font-bold">
+                      <div className="w-6 h-6 rounded-full bg-[#111111] flex items-center justify-center text-white text-[9px] font-bold">
                         {r.authorName[0]}
                       </div>
                       <span className="text-xs font-semibold text-[#111111]">{r.authorName}</span>
@@ -363,19 +363,18 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         )}
       </div>
 
-      {/* ── Full-width ADD TO CART bar ────────────────────── */}
-      <button
-        onClick={handleAddToCart}
-        className={`w-full py-5 text-sm font-bold tracking-[0.2em] uppercase transition-all ${
-          added ? "bg-[#859365] text-white" : "bg-[#111111] text-white"
-        }`}
-        style={{ fontFamily: "var(--font-barlow)" }}
-      >
-        {added ? "✓ ADDED TO CART" : "ADD TO CART"}
-      </button>
-
-      {/* Space for bottom nav */}
-      <div className="h-16" />
+      {/* ── Sticky ADD TO CART bar — sits above the bottom nav ── */}
+      <div className="sticky bottom-16 z-20 bg-white border-t border-[#EEEEEE]">
+        <button
+          onClick={handleAddToCart}
+          className={`w-full py-4 text-sm font-bold tracking-[0.2em] uppercase transition-all cursor-pointer ${
+            added ? "bg-[#4A7C59] text-white" : "bg-[#111111] text-white"
+          }`}
+          style={{ fontFamily: "var(--font-barlow)", touchAction: "manipulation" }}
+        >
+          {added ? "✓ ADDED TO BAG" : "ADD TO BAG"}
+        </button>
+      </div>
     </div>
   );
 }

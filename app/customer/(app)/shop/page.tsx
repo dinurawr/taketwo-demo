@@ -164,13 +164,13 @@ function ShopGrid() {
 
         {/* Search bar */}
         <div className="px-4 pt-1 pb-2">
-          <div className="flex items-center gap-2 border-b border-[#111111] px-1 py-3">
-            <Search size={15} strokeWidth={2} className="text-[#111] flex-shrink-0" />
+          <div className="flex items-center gap-2 bg-[#F5F5F5] rounded-full px-4 py-2.5">
+            <Search size={14} strokeWidth={1.8} className="text-[#999] flex-shrink-0" />
             <input
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Search"
+              placeholder="Search brands, products…"
               className="flex-1 bg-transparent text-[14px] text-[#111] placeholder-[#999] outline-none font-light"
             />
             {query && (
@@ -233,10 +233,10 @@ function ShopGrid() {
               <button
                 key={pill.id}
                 onClick={() => setActivePill(pill.id)}
-                className={`flex items-center gap-1.5 px-4 py-2 flex-shrink-0 text-[12px] font-semibold transition-all cursor-pointer border ${
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-full flex-shrink-0 text-[12px] font-semibold transition-all cursor-pointer border ${
                   active
                     ? "bg-[#111111] text-white border-[#111111]"
-                    : "bg-white text-[#111] border-[#111]"
+                    : "bg-white text-[#111] border-[#CCCCCC]"
                 }`}
                 style={{ touchAction: "manipulation" }}
               >

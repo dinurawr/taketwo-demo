@@ -77,7 +77,7 @@ export function ProductSlider({ title, products, ctaHref = "/customer/shop" }: P
             </div>
 
             {/* Info */}
-            <p className="text-[10px] font-bold text-[#859365] uppercase tracking-wide mb-0.5">
+            <p className="text-[10px] font-semibold text-[#AAAAAA] uppercase tracking-wide mb-0.5">
               {product.brand.replace("-", " ")}
             </p>
             <p className="text-[12px] font-semibold text-[#111111] leading-tight line-clamp-2">
