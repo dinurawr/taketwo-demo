@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Image Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 24px; }
+  h1 { font-size: 18px; font-weight: 800; margin-bottom: 24px; letter-spacing: 0.05em; text-transform: uppercase; color: #111; }
+  .section { margin-bottom: 36px; }
+  .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: #859365; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 6px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .card { background: white; border-radius: 4px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+  .card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top; display: block; background: #eee; }
+  .card-label { font-size: 10px; color: #666; padding: 6px 8px; }
+</style>
+</head>
+<body>
+<h1>Product Images — Category Preview</h1>
+
+<div class="section">
+  <div class="section-title">Women · Tops</div>
+  <div class="grid">
+    <div class="card"><img src="https://images.unsplash.com/photo-1683134001310-c56af29c4f7c?w=400&q=80" loading="lazy"><div class="card-label">Top 1</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1768289222455-893014681363?w=400&q=80" loading="lazy"><div class="card-label">Top 2</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1767785829225-2f6d286c4cf5?w=400&q=80" loading="lazy"><div class="card-label">Top 3</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1779401813888-33cf2267352f?w=400&q=80" loading="lazy"><div class="card-label">Top 4</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Women · Dresses</div>
+  <div class="grid">
+    <div class="card"><img src="https://images.unsplash.com/photo-1674718918254-8f96b77c12d8?w=400&q=80" loading="lazy"><div class="card-label">Dress 1</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?w=400&q=80" loading="lazy"><div class="card-label">Dress 2</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1567966456076-905a50a06d8c?w=400&q=80" loading="lazy"><div class="card-label">Dress 3</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1721990336298-90832e791b5a?w=400&q=80" loading="lazy"><div class="card-label">Dress 4</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Women · Swimwear &amp; Bikinis</div>
+  <div class="grid">
+    <div class="card"><img src="https://images.unsplash.com/photo-1581588636584-5c447d2c9d97?w=400&q=80" loading="lazy"><div class="card-label">Bikini 1</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1568819317551-31051b37f69f?w=400&q=80" loading="lazy"><div class="card-label">Bikini 2</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1631157892458-7cc24bc95e68?w=400&q=80" loading="lazy"><div class="card-label">Swimwear 3</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1606792109963-7b34205b1333?w=400&q=80" loading="lazy"><div class="card-label">Swimwear 4</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Women · Beach Cover-ups &amp; Sets</div>
+  <div class="grid">
+    <div class="card"><img src="https://images.unsplash.com/photo-1593360871505-046499505840?w=400&q=80" loading="lazy"><div class="card-label">Cover-up 1</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1630588034516-9180c7ead89e?w=400&q=80" loading="lazy"><div class="card-label">Cover-up 2</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1674273912783-edcab1180fef?w=400&q=80" loading="lazy"><div class="card-label">Beach Set 1</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1657373307141-349a3393d4d9?w=400&q=80" loading="lazy"><div class="card-label">Beach Set 2</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Women · Bottoms</div>
+  <div class="grid">
+    <div class="card"><img src="https://images.unsplash.com/photo-1711516141938-cc5917435dcd?w=400&q=80" loading="lazy"><div class="card-label">Bottoms 1</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1563540153332-29de4b355f49?w=400&q=80" loading="lazy"><div class="card-label">Bottoms 2</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1762343937103-5c8a55116288?w=400&q=80" loading="lazy"><div class="card-label">Bottoms 3</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1760551600405-54c70e6d7f42?w=400&q=80" loading="lazy"><div class="card-label">Bottoms 4</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Men · Shirts &amp; Tops</div>
+  <div class="grid">
+    <div class="card"><img src="https://images.unsplash.com/photo-1740711152088-88a009e877bb?w=400&q=80" loading="lazy"><div class="card-label">Shirt 1</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?w=400&q=80" loading="lazy"><div class="card-label">Shirt 2</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1626557981101-aae6f84aa6ff?w=400&q=80" loading="lazy"><div class="card-label">Shirt 3</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1642764873649-5c228ce3fe74?w=400&q=80" loading="lazy"><div class="card-label">Shirt 4</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Men · Bottoms &amp; Shorts</div>
+  <div class="grid">
+    <div class="card"><img src="https://images.unsplash.com/photo-1623658580851-3b25bf83b4ea?w=400&q=80" loading="lazy"><div class="card-label">Trousers 1</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1624835567150-0c530a20d8cc?w=400&q=80" loading="lazy"><div class="card-label">Trousers 2</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1629244032690-1c243449f90a?w=400&q=80" loading="lazy"><div class="card-label">Shorts 1</div></div>
+    <div class="card"><img src="https://images.unsplash.com/photo-1771919331453-9a52362d8909?w=400&q=80" loading="lazy"><div class="card-label">Shorts 2</div></div>
+  </div>
+</div>
+
+</body>
+</html>

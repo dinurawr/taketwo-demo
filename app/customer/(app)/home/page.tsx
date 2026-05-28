@@ -13,60 +13,64 @@ type Tab = "WOMEN" | "MEN";
 // ── Hero images (3 per tab, cycle every 4 s) ─────────────────────────────
 const HERO_IMAGES: Record<Tab, string[]> = {
   WOMEN: [
-    "/products/pexels-tima-miroshnichenko-7202792.jpg",   // three women blazers editorial
-    "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&q=80",
-    "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80",
+    "https://images.unsplash.com/photo-1603189343302-e603f7add05a?w=800&q=80",
+    "https://images.unsplash.com/photo-1562151270-c7d22ceb586a?w=800&q=80",
+    "https://images.unsplash.com/photo-1574015974293-817f0ebebb74?w=800&q=80",
   ],
   MEN: [
-    "/products/pexels-cottonbro-6626418.jpg",              // man in cream overshirt studio
-    "/products/pexels-cottonbro-6616673.jpg",              // two men in linen overshirts
-    "/products/pexels-prayoon-sajeev-1486107-2897529.jpg", // black ribbed turtleneck
+    "https://images.unsplash.com/photo-1656695230389-01185e6fbff8?w=800&q=80",
+    "https://images.unsplash.com/photo-1550995694-3f5f4a7e1bd2?w=800&q=80",
+    "https://images.unsplash.com/photo-1619603364904-c0498317e145?w=800&q=80",
   ],
 };
 
 // ── 2×2 category tiles per tab ───────────────────────────────────────────
+// ASOS tile image helper
+const at = (slug: string, id: number) =>
+  `https://images.asos-media.com/products/${slug}/${id}-1?$n_480w$&wid=478&fit=constrain`;
+
 const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
   WOMEN: [
     {
       label: "New In",
-      image: "https://images.unsplash.com/photo-1548624313-0396c75e4b1a?w=400&q=80",
+      image: at("asos-design-supersoft-asymmetric-mini-dress-with-dropped-hem-detail-in-cream", 210120054),
       cat: "new-in",
     },
     {
       label: "Dresses",
-      image: "https://images.unsplash.com/photo-1572804013427-4d7ca7268217?w=400&q=80",
+      image: at("asos-design-premium-tulle-maxi-prom-dress-with-ribbon-ties", 10663976),
       cat: "dresses",
     },
     {
       label: "Swim",
-      image: "https://images.unsplash.com/photo-1570976447640-ac859083963f?w=400&q=80",
+      image: at("asos-design-v-plunge-skinny-strap-thong-swimsuit-in-black", 13258826),
       cat: "swim",
     },
     {
       label: "Bottoms",
-      image: "https://images.unsplash.com/photo-1555689502-c4b22d76c56f?w=400&q=80",
+      image: at("asos-design-tall-tailored-wide-leg-pants-with-pleat-detail-in-black", 204861990),
       cat: "bottoms",
     },
   ],
   MEN: [
     {
-      label: "Rock Revival by Jaded",
-      image: "https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=400&q=80",
+      label: "Rock Revival",
+      image: at("hollister-linen-blend-tailored-shorts-in-navy", 208447576),
       cat: "rock-revival",
     },
     {
       label: "Bottoms",
-      image: "/products/pexels-ron-lach-9464625.jpg",
+      image: at("asos-design-slim-chinos-in-black", 208066174),
       cat: "bottoms",
     },
     {
       label: "Tops",
-      image: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&q=80",
+      image: at("asos-design-linen-blend-overshirt-in-stone", 206097131),
       cat: "tops",
     },
     {
       label: "Shorts",
-      image: "https://images.unsplash.com/photo-1591195853828-11db59a44f43?w=400&q=80",
+      image: at("topman-linen-blend-shorts-in-stone", 205682420),
       cat: "shorts",
     },
   ],

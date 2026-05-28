@@ -3,6 +3,7 @@
   "configurations": [
     {
       "name": "taketwo-demo",
+      "cwd": ".",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 3000,
