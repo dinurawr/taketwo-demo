@@ -25,52 +25,52 @@ const HERO_IMAGES: Record<Tab, string[]> = {
 };
 
 // ── 2×2 category tiles per tab ───────────────────────────────────────────
-// ASOS tile image helper
-const at = (slug: string, id: number) =>
-  `https://images.asos-media.com/products/${slug}/${id}-1?$n_480w$&wid=478&fit=constrain`;
+// Pexels CDN helper for tile images
+const px = (id: number) =>
+  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop`;
 
 const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
   WOMEN: [
     {
       label: "New In",
-      image: at("asos-design-supersoft-asymmetric-mini-dress-with-dropped-hem-detail-in-cream", 210120054),
+      image: px(23883682),
       cat: "new-in",
     },
     {
       label: "Dresses",
-      image: at("asos-design-premium-tulle-maxi-prom-dress-with-ribbon-ties", 10663976),
+      image: px(1008206),
       cat: "dresses",
     },
     {
       label: "Swim",
-      image: at("asos-design-v-plunge-skinny-strap-thong-swimsuit-in-black", 13258826),
+      image: px(29542527),
       cat: "swim",
     },
     {
       label: "Bottoms",
-      image: at("asos-design-tall-tailored-wide-leg-pants-with-pleat-detail-in-black", 204861990),
+      image: px(7202826),
       cat: "bottoms",
     },
   ],
   MEN: [
     {
       label: "Rock Revival",
-      image: at("hollister-linen-blend-tailored-shorts-in-navy", 208447576),
+      image: px(7823899),
       cat: "rock-revival",
     },
     {
       label: "Bottoms",
-      image: at("asos-design-slim-chinos-in-black", 208066174),
+      image: px(9464625),
       cat: "bottoms",
     },
     {
       label: "Tops",
-      image: at("asos-design-linen-blend-overshirt-in-stone", 206097131),
+      image: px(32778907),
       cat: "tops",
     },
     {
       label: "Shorts",
-      image: at("topman-linen-blend-shorts-in-stone", 205682420),
+      image: px(18178103),
       cat: "shorts",
     },
   ],

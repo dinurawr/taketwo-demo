@@ -1,7 +1,6 @@
-// ASOS CDN helper — keeps URLs readable
-// Pattern: https://images.asos-media.com/products/{slug}/{id}-{n}?$n_480w$&wid=478&fit=constrain
-const asos = (slug: string, id: number, n = 1) =>
-  `https://images.asos-media.com/products/${slug}/${id}-${n}?$n_480w$&wid=478&fit=constrain`;
+// Pexels CDN helper — allows server-side hotlinking (no auth required)
+const px = (id: number) =>
+  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=400&h=600&fit=crop`;
 
 export type Product = {
   id: string;
@@ -32,11 +31,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "tops",
     price: 5500,
-    image: asos("asos-design-heavyweight-boxy-oversized-fit-t-shirt-in-white", 205771603),
-    images: [
-      asos("asos-design-heavyweight-boxy-oversized-fit-t-shirt-in-white", 205771603, 1),
-      asos("asos-design-heavyweight-boxy-oversized-fit-t-shirt-in-white", 205771603, 2),
-    ],
+    image: px(5145182),
+    images: [px(5145182), px(22441297)],
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     colors: [
       { name: "White", hex: "#F5F5F5" },
@@ -56,12 +52,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "tops",
     price: 9800,
-    image: asos("asos-design-linen-blend-overshirt-in-stone", 206097131),
-    images: [
-      asos("asos-design-linen-blend-overshirt-in-stone", 206097131, 1),
-      asos("asos-design-linen-blend-overshirt-in-stone", 206097131, 2),
-      asos("asos-design-linen-blend-overshirt-in-stone", 206097131, 3),
-    ],
+    image: px(18075374),
+    images: [px(18075374), px(8367472), px(5029685)],
     sizes: ["S", "M", "L", "XL"],
     colors: [
       { name: "Stone", hex: "#C4B89A" },
@@ -80,11 +72,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "shorts",
     price: 6800,
-    image: asos("cotton-on-relaxed-shorts-in-linen-mix-in-brown", 206251484),
-    images: [
-      asos("cotton-on-relaxed-shorts-in-linen-mix-in-brown", 206251484, 1),
-      asos("cotton-on-relaxed-shorts-in-linen-mix-in-brown", 206251484, 2),
-    ],
+    image: px(18178103),
+    images: [px(18178103), px(18178451)],
     sizes: ["S", "M", "L", "XL"],
     colors: [
       { name: "Brown", hex: "#7A5C3C" },
@@ -103,11 +92,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "shorts",
     price: 7200,
-    image: asos("asos-design-linen-blend-shorts-in-multi-plaid", 206912116),
-    images: [
-      asos("asos-design-linen-blend-shorts-in-multi-plaid", 206912116, 1),
-      asos("asos-design-linen-blend-shorts-in-multi-plaid", 206912116, 2),
-    ],
+    image: px(18178445),
+    images: [px(18178445), px(8942369)],
     sizes: ["S", "M", "L", "XL"],
     colors: [
       { name: "Multi Plaid", hex: "#6B7280" },
@@ -129,12 +115,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "bottoms",
     price: 13500,
-    image: asos("asos-design-slim-chinos-in-black", 208066174),
-    images: [
-      asos("asos-design-slim-chinos-in-black", 208066174, 1),
-      asos("asos-design-slim-chinos-in-black", 208066174, 2),
-      asos("asos-design-slim-chinos-in-black", 208066174, 3),
-    ],
+    image: px(9464625),
+    images: [px(9464625), px(2897539), px(27584193)],
     sizes: ["28", "30", "32", "34", "36"],
     colors: [
       { name: "Black", hex: "#111111" },
@@ -153,11 +135,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "bottoms",
     price: 12800,
-    image: asos("topman-slim-chino-pant-in-navy", 207135730),
-    images: [
-      asos("topman-slim-chino-pant-in-navy", 207135730, 1),
-      asos("topman-slim-chino-pant-in-navy", 207135730, 2),
-    ],
+    image: px(2897533),
+    images: [px(2897533), px(11176394)],
     sizes: ["28", "30", "32", "34", "36"],
     colors: [
       { name: "Navy", hex: "#1B3A5C" },
@@ -176,11 +155,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "shorts",
     price: 7500,
-    image: asos("topman-linen-blend-shorts-in-stone", 205682420),
-    images: [
-      asos("topman-linen-blend-shorts-in-stone", 205682420, 1),
-      asos("topman-linen-blend-shorts-in-stone", 205682420, 2),
-    ],
+    image: px(1502517),
+    images: [px(1502517), px(7823899)],
     sizes: ["S", "M", "L", "XL"],
     colors: [
       { name: "Stone", hex: "#C4B89A" },
@@ -199,12 +175,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "tops",
     price: 11500,
-    image: asos("selected-linen-mix-overshirt-in-navy", 205988147),
-    images: [
-      asos("selected-linen-mix-overshirt-in-navy", 205988147, 1),
-      asos("selected-linen-mix-overshirt-in-navy", 205988147, 2),
-      asos("selected-linen-mix-overshirt-in-navy", 205988147, 3),
-    ],
+    image: px(32778907),
+    images: [px(32778907), px(5038964), px(33412645)],
     sizes: ["S", "M", "L", "XL"],
     colors: [
       { name: "Navy", hex: "#1B3A5C" },
@@ -222,11 +194,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "tops",
     price: 10800,
-    image: asos("asos-design-boxy-oversized-over-the-head-textured-linen-blend-shirt-in-black", 207611465),
-    images: [
-      asos("asos-design-boxy-oversized-over-the-head-textured-linen-blend-shirt-in-black", 207611465, 1),
-      asos("asos-design-boxy-oversized-over-the-head-textured-linen-blend-shirt-in-black", 207611465, 2),
-    ],
+    image: px(5038964),
+    images: [px(5038964), px(33412645)],
     sizes: ["S", "M", "L", "XL"],
     colors: [
       { name: "Black", hex: "#111111" },
@@ -248,11 +217,8 @@ export const products: Product[] = [
     category: "Swim",
     categoryGroup: "beach-cover-up",
     price: 6200,
-    image: asos("asos-design-satin-sarong-wrap-maxi-skirt-in-green", 201988529),
-    images: [
-      asos("asos-design-satin-sarong-wrap-maxi-skirt-in-green", 201988529, 1),
-      asos("asos-design-satin-sarong-wrap-maxi-skirt-in-green", 201988529, 2),
-    ],
+    image: px(29542527),
+    images: [px(29542527), px(815996)],
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: [
       { name: "Green", hex: "#2D6A4F" },
@@ -271,11 +237,8 @@ export const products: Product[] = [
     category: "Swim",
     categoryGroup: "beach-cover-up",
     price: 4800,
-    image: asos("asos-design-maxi-beach-sarong-in-animal-palm-print", 12682344),
-    images: [
-      asos("asos-design-maxi-beach-sarong-in-animal-palm-print", 12682344, 1),
-      asos("asos-design-maxi-beach-sarong-in-animal-palm-print", 12682344, 2),
-    ],
+    image: px(8157976),
+    images: [px(8157976), px(8157744)],
     sizes: ["One Size"],
     colors: [
       { name: "Palm Print", hex: "#4A7C59" },
@@ -293,11 +256,8 @@ export const products: Product[] = [
     category: "Swim",
     categoryGroup: "beach-cover-up",
     price: 5500,
-    image: asos("asos-design-tie-side-maxi-chiffon-beach-sarong-in-black", 14678625),
-    images: [
-      asos("asos-design-tie-side-maxi-chiffon-beach-sarong-in-black", 14678625, 1),
-      asos("asos-design-tie-side-maxi-chiffon-beach-sarong-in-black", 14678625, 2),
-    ],
+    image: px(8157823),
+    images: [px(8157823), px(8157745)],
     sizes: ["One Size"],
     colors: [
       { name: "Black", hex: "#111111" },
@@ -315,11 +275,8 @@ export const products: Product[] = [
     category: "Swim",
     categoryGroup: "beach-dresses",
     price: 7800,
-    image: asos("asos-design-woven-stripe-frill-beach-sarong-two-piece-skirt", 9783688),
-    images: [
-      asos("asos-design-woven-stripe-frill-beach-sarong-two-piece-skirt", 9783688, 1),
-      asos("asos-design-woven-stripe-frill-beach-sarong-two-piece-skirt", 9783688, 2),
-    ],
+    image: px(8760433),
+    images: [px(8760433), px(8157979)],
     sizes: ["XS", "S", "M", "L"],
     colors: [
       { name: "Multi Stripe", hex: "#D4A853" },
@@ -337,11 +294,8 @@ export const products: Product[] = [
     category: "Swim",
     categoryGroup: "bikinis",
     price: 4200,
-    image: asos("asos-design-mix-and-match-crinkle-high-leg-hipster-bikini-bottom", 8305751),
-    images: [
-      asos("asos-design-mix-and-match-crinkle-high-leg-hipster-bikini-bottom", 8305751, 1),
-      asos("asos-design-mix-and-match-crinkle-high-leg-hipster-bikini-bottom", 8305751, 2),
-    ],
+    image: px(815996),
+    images: [px(815996), px(29542527)],
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: [
       { name: "Coral", hex: "#E8785A" },
@@ -361,11 +315,8 @@ export const products: Product[] = [
     category: "Swim",
     categoryGroup: "bikinis",
     price: 6800,
-    image: asos("asos-design-v-plunge-skinny-strap-thong-swimsuit-in-black", 13258826),
-    images: [
-      asos("asos-design-v-plunge-skinny-strap-thong-swimsuit-in-black", 13258826, 1),
-      asos("asos-design-v-plunge-skinny-strap-thong-swimsuit-in-black", 13258826, 2),
-    ],
+    image: px(8157979),
+    images: [px(8157979), px(8760433)],
     sizes: ["XS", "S", "M", "L"],
     colors: [
       { name: "Black", hex: "#111111" },
@@ -387,12 +338,8 @@ export const products: Product[] = [
     category: "Women",
     categoryGroup: "dresses",
     price: 9500,
-    image: asos("asos-design-supersoft-asymmetric-mini-dress-with-dropped-hem-detail-in-cream", 210120054),
-    images: [
-      asos("asos-design-supersoft-asymmetric-mini-dress-with-dropped-hem-detail-in-cream", 210120054, 1),
-      asos("asos-design-supersoft-asymmetric-mini-dress-with-dropped-hem-detail-in-cream", 210120054, 2),
-      asos("asos-design-supersoft-asymmetric-mini-dress-with-dropped-hem-detail-in-cream", 210120054, 3),
-    ],
+    image: px(1008206),
+    images: [px(1008206), px(28698706), px(11844304)],
     sizes: ["XS", "S", "M", "L"],
     colors: [
       { name: "Cream", hex: "#F5F0E8" },
@@ -411,11 +358,8 @@ export const products: Product[] = [
     category: "Women",
     categoryGroup: "dresses",
     price: 18500,
-    image: asos("asos-design-premium-tulle-maxi-prom-dress-with-ribbon-ties", 10663976),
-    images: [
-      asos("asos-design-premium-tulle-maxi-prom-dress-with-ribbon-ties", 10663976, 1),
-      asos("asos-design-premium-tulle-maxi-prom-dress-with-ribbon-ties", 10663976, 2),
-    ],
+    image: px(18860758),
+    images: [px(18860758), px(14801160)],
     sizes: ["XS", "S", "M", "L"],
     colors: [
       { name: "Dusky Blue", hex: "#7B9CC0" },
@@ -434,12 +378,8 @@ export const products: Product[] = [
     category: "Women",
     categoryGroup: "bottoms",
     price: 13800,
-    image: asos("asos-design-tall-tailored-wide-leg-pants-with-pleat-detail-in-black", 204861990),
-    images: [
-      asos("asos-design-tall-tailored-wide-leg-pants-with-pleat-detail-in-black", 204861990, 1),
-      asos("asos-design-tall-tailored-wide-leg-pants-with-pleat-detail-in-black", 204861990, 2),
-      asos("asos-design-tall-tailored-wide-leg-pants-with-pleat-detail-in-black", 204861990, 3),
-    ],
+    image: px(7202826),
+    images: [px(7202826), px(19995459), px(7202819)],
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: [
       { name: "Black", hex: "#111111" },
@@ -457,11 +397,8 @@ export const products: Product[] = [
     category: "Women",
     categoryGroup: "bottoms",
     price: 14500,
-    image: asos("selected-femme-tailored-wide-leg-pants-with-pleat-front-in-camel", 204848327),
-    images: [
-      asos("selected-femme-tailored-wide-leg-pants-with-pleat-front-in-camel", 204848327, 1),
-      asos("selected-femme-tailored-wide-leg-pants-with-pleat-front-in-camel", 204848327, 2),
-    ],
+    image: px(7202768),
+    images: [px(7202768), px(7202815)],
     sizes: ["XS", "S", "M", "L"],
     colors: [
       { name: "Camel", hex: "#C4945A" },
@@ -480,11 +417,8 @@ export const products: Product[] = [
     category: "Women",
     categoryGroup: "bottoms",
     price: 12500,
-    image: asos("asos-edition-tailored-relaxed-wide-leg-pants-in-taupe", 205200141),
-    images: [
-      asos("asos-edition-tailored-relaxed-wide-leg-pants-in-taupe", 205200141, 1),
-      asos("asos-edition-tailored-relaxed-wide-leg-pants-in-taupe", 205200141, 2),
-    ],
+    image: px(4458521),
+    images: [px(4458521), px(28168176)],
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: [
       { name: "Taupe", hex: "#9E9585" },
@@ -503,11 +437,8 @@ export const products: Product[] = [
     category: "Women",
     categoryGroup: "sets",
     price: 19500,
-    image: asos("lioness-halterneck-top-co-ord-in-black-part-of-a-set", 206283474),
-    images: [
-      asos("lioness-halterneck-top-co-ord-in-black-part-of-a-set", 206283474, 1),
-      asos("lioness-halterneck-top-co-ord-in-black-part-of-a-set", 206283474, 2),
-    ],
+    image: px(26744884),
+    images: [px(26744884), px(15661635)],
     sizes: ["XS", "S", "M", "L"],
     colors: [
       { name: "Black", hex: "#111111" },
@@ -530,12 +461,8 @@ export const products: Product[] = [
     category: "Women",
     categoryGroup: "tops",
     price: 11500,
-    image: asos("asos-edition-sequin-off-shoulder-drape-crop-top-in-blush", 203098544),
-    images: [
-      asos("asos-edition-sequin-off-shoulder-drape-crop-top-in-blush", 203098544, 1),
-      asos("asos-edition-sequin-off-shoulder-drape-crop-top-in-blush", 203098544, 2),
-      asos("asos-edition-sequin-off-shoulder-drape-crop-top-in-blush", 203098544, 3),
-    ],
+    image: px(23883682),
+    images: [px(23883682), px(11311403), px(37414269)],
     sizes: ["XS", "S", "M", "L"],
     colors: [
       { name: "Blush", hex: "#E8B4B0" },
@@ -554,11 +481,8 @@ export const products: Product[] = [
     category: "Women",
     categoryGroup: "tops",
     price: 8500,
-    image: asos("topshop-ruched-cropped-blouse-in-red-heart-print", 23995227),
-    images: [
-      asos("topshop-ruched-cropped-blouse-in-red-heart-print", 23995227, 1),
-      asos("topshop-ruched-cropped-blouse-in-red-heart-print", 23995227, 2),
-    ],
+    image: px(8257736),
+    images: [px(8257736), px(7022607)],
     sizes: ["XS", "S", "M", "L"],
     colors: [
       { name: "Red Print", hex: "#CC2222" },
@@ -577,11 +501,8 @@ export const products: Product[] = [
     category: "Women",
     categoryGroup: "bottoms",
     price: 12800,
-    image: asos("topshop-wide-leg-pleat-tailored-pants-in-gray", 206030210),
-    images: [
-      asos("topshop-wide-leg-pleat-tailored-pants-in-gray", 206030210, 1),
-      asos("topshop-wide-leg-pleat-tailored-pants-in-gray", 206030210, 2),
-    ],
+    image: px(8946961),
+    images: [px(8946961), px(7202815)],
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: [
       { name: "Gray", hex: "#6B7280" },
@@ -600,11 +521,8 @@ export const products: Product[] = [
     category: "Women",
     categoryGroup: "bottoms",
     price: 14200,
-    image: asos("asos-design-tall-tailored-slinky-wide-leg-pants-with-wrap-pleat-detail-in-chocolate", 206894390),
-    images: [
-      asos("asos-design-tall-tailored-slinky-wide-leg-pants-with-wrap-pleat-detail-in-chocolate", 206894390, 1),
-      asos("asos-design-tall-tailored-slinky-wide-leg-pants-with-wrap-pleat-detail-in-chocolate", 206894390, 2),
-    ],
+    image: px(28168176),
+    images: [px(28168176), px(19995459)],
     sizes: ["XS", "S", "M", "L"],
     colors: [
       { name: "Chocolate", hex: "#5C3317" },
@@ -623,11 +541,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "tops",
     price: 9500,
-    image: asos("topman-linen-mix-knit-polo-shirt-in-navy", 208185104),
-    images: [
-      asos("topman-linen-mix-knit-polo-shirt-in-navy", 208185104, 1),
-      asos("topman-linen-mix-knit-polo-shirt-in-navy", 208185104, 2),
-    ],
+    image: px(22441297),
+    images: [px(22441297), px(8367472)],
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: [
       { name: "Navy", hex: "#1B3A5C" },
@@ -646,11 +561,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "shorts",
     price: 6500,
-    image: asos("asos-design-linen-blend-shorts-in-super-short-length-in-tan", 208594178),
-    images: [
-      asos("asos-design-linen-blend-shorts-in-super-short-length-in-tan", 208594178, 1),
-      asos("asos-design-linen-blend-shorts-in-super-short-length-in-tan", 208594178, 2),
-    ],
+    image: px(12803209),
+    images: [px(12803209), px(13015120)],
     sizes: ["S", "M", "L", "XL"],
     colors: [
       { name: "Tan", hex: "#C4945A" },
@@ -669,11 +581,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "rock-revival",
     price: 8200,
-    image: asos("hollister-linen-blend-tailored-shorts-in-navy", 208447576),
-    images: [
-      asos("hollister-linen-blend-tailored-shorts-in-navy", 208447576, 1),
-      asos("hollister-linen-blend-tailored-shorts-in-navy", 208447576, 2),
-    ],
+    image: px(7823899),
+    images: [px(7823899), px(12803209)],
     sizes: ["S", "M", "L", "XL"],
     colors: [
       { name: "Navy", hex: "#1B3A5C" },
