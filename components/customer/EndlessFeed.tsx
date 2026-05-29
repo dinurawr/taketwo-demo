@@ -5,6 +5,7 @@ import { products } from "@/data/products";
 import type { Product } from "@/data/products";
 import { ProductCard } from "@/components/customer/ProductCard";
 import { type Filters, applyFilters, hasActiveFilters } from "@/lib/filters";
+import type { SortOption } from "@/app/customer/(app)/shop/page";
 
 const MAX_CYCLES = 5;
 
@@ -20,7 +21,16 @@ function shuffleWithSeed<T>(list: T[], seed: number): T[] {
   return arr;
 }
 
-export function EndlessFeed({ query, filters }: { query: string; filters?: Filters }) {
+function applySortOrder(list: Product[], sort: SortOption): Product[] {
+  switch (sort) {
+    case "price-asc":  return [...list].sort((a, b) => a.price - b.price);
+    case "price-desc": return [...list].sort((a, b) => b.price - a.price);
+    case "top-rated":  return [...list].sort((a, b) => b.rating - a.rating || b.reviewCount - a.reviewCount);
+    default:           return list;
+  }
+}
+
+export function EndlessFeed({ query, filters, sort = "default" }: { query: string; filters?: Filters; sort?: SortOption }) {
   const [cycles, setCycles] = useState(1);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
@@ -42,20 +52,31 @@ export function EndlessFeed({ query, filters }: { query: string; filters?: Filte
     return list;
   }, [query, filters]);
 
-  // Reset cycles when query or filters change
+  // Reset cycles when query, filters, or sort change
   useEffect(() => {
     setCycles(1);
-  }, [query, filters]);
+  }, [query, filters, sort]);
 
-  // Build the rendered list — one shuffled copy per cycle
+  // Build the rendered list.
+  // When sorted: single sorted pass (no shuffle cycles — sorted order must stay stable).
+  // When default: shuffle-per-cycle for endless variety.
   const renderedList = useMemo(() => {
+    const isSorted = sort !== "default";
     const out: { key: string; product: Product }[] = [];
-    for (let c = 0; c < cycles; c++) {
-      const shuffled = c === 0 ? baseList : shuffleWithSeed(baseList, c * 31 + 7);
-      shuffled.forEach((p, i) => out.push({ key: `${c}-${i}-${p.id}`, product: p }));
+
+    if (isSorted) {
+      applySortOrder(baseList, sort).forEach((p, i) =>
+        out.push({ key: `0-${i}-${p.id}`, product: p })
+      );
+    } else {
+      for (let c = 0; c < cycles; c++) {
+        const shuffled = c === 0 ? baseList : shuffleWithSeed(baseList, c * 31 + 7);
+        shuffled.forEach((p, i) => out.push({ key: `${c}-${i}-${p.id}`, product: p }));
+      }
     }
+
     return out;
-  }, [baseList, cycles]);
+  }, [baseList, cycles, sort]);
 
   // IntersectionObserver — load more when sentinel scrolls into view
   useEffect(() => {
@@ -99,14 +120,20 @@ export function EndlessFeed({ query, filters }: { query: string; filters?: Filte
             ))}
           </div>
 
-          {/* Sentinel for endless scroll */}
-          {cycles < MAX_CYCLES ? (
-            <div ref={sentinelRef} className="h-12 flex items-center justify-center mt-4">
-              <div className="w-5 h-5 rounded-full border-2 border-[#111111]/20 border-t-[#111111] animate-spin" />
-            </div>
+          {/* Sentinel for endless scroll — hidden when a sort is active */}
+          {sort === "default" ? (
+            cycles < MAX_CYCLES ? (
+              <div ref={sentinelRef} className="h-12 flex items-center justify-center mt-4">
+                <div className="w-5 h-5 rounded-full border-2 border-[#111111]/20 border-t-[#111111] animate-spin" />
+              </div>
+            ) : (
+              <p className="text-[10px] uppercase tracking-widest text-[#CCCCCC] text-center mt-6">
+                You&apos;ve reached the end
+              </p>
+            )
           ) : (
             <p className="text-[10px] uppercase tracking-widest text-[#CCCCCC] text-center mt-6">
-              You&apos;ve reached the end
+              {renderedList.length} result{renderedList.length !== 1 ? "s" : ""}
             </p>
           )}
         </>

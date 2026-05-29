@@ -2,7 +2,7 @@
 
 import { Suspense, useState, useMemo, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { Search, Sparkles, User, Heart, Tag, ChevronRight, SlidersHorizontal } from "lucide-react";
+import { Search, Sparkles, User, Heart, Tag, ChevronRight, SlidersHorizontal, ListFilter, Check, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -91,6 +91,88 @@ function BrandsView({ query }: { query: string }) {
   );
 }
 
+// ── Sort ──────────────────────────────────────────────────────────────────────
+export type SortOption = "default" | "price-asc" | "price-desc" | "top-rated";
+
+const SORT_OPTIONS: { id: SortOption; label: string }[] = [
+  { id: "default",    label: "Relevance" },
+  { id: "price-asc",  label: "Price: Low to High" },
+  { id: "price-desc", label: "Price: High to Low" },
+  { id: "top-rated",  label: "Top Rated" },
+];
+
+function SortSheet({
+  isOpen,
+  onClose,
+  sort,
+  onSortChange,
+}: {
+  isOpen: boolean;
+  onClose: () => void;
+  sort: SortOption;
+  onSortChange: (s: SortOption) => void;
+}) {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            key="sort-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/40 z-40"
+            onClick={onClose}
+          />
+          <motion.div
+            key="sort-panel"
+            initial={{ y: -12, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -12, opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            className="absolute top-0 left-0 right-0 bg-white z-50 overflow-hidden"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-center px-5 py-4 border-b border-[#F0F0F0] relative">
+              <p
+                className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#111]"
+                style={{ fontFamily: "var(--font-barlow)" }}
+              >
+                Sort By
+              </p>
+              <button
+                onClick={onClose}
+                className="absolute right-5 w-8 h-8 flex items-center justify-center cursor-pointer"
+                style={{ touchAction: "manipulation" }}
+              >
+                <X size={18} strokeWidth={1.5} className="text-[#111]" />
+              </button>
+            </div>
+
+            {/* Options */}
+            {SORT_OPTIONS.map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => { onSortChange(opt.id); onClose(); }}
+                className="flex items-center w-full px-5 py-4 border-b border-[#F0F0F0] cursor-pointer active:bg-[#F7F7F7] transition-colors"
+                style={{ touchAction: "manipulation" }}
+              >
+                <span className={`flex-1 text-[14px] text-left font-light ${sort === opt.id ? "text-[#111] font-semibold" : "text-[#111]"}`}>
+                  {opt.label}
+                </span>
+                {sort === opt.id && (
+                  <Check size={15} strokeWidth={2.5} className="text-[#111]" />
+                )}
+              </button>
+            ))}
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // ── Main shop grid ────────────────────────────────────────────────────────────
 function ShopGrid() {
   const params     = useSearchParams();
@@ -100,6 +182,8 @@ function ShopGrid() {
   const [query, setQuery]           = useState("");
   const [filters, setFilters]       = useState<Filters>(EMPTY_FILTERS);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [sortOpen, setSortOpen]     = useState(false);
+  const [sort, setSort]             = useState<SortOption>("default");
 
   // Derive filter options from the full product list (not query-filtered,
   // so counts reflect total catalogue — prevents options disappearing as you filter)
@@ -164,13 +248,13 @@ function ShopGrid() {
 
         {/* Search bar */}
         <div className="px-4 pt-1 pb-2">
-          <div className="flex items-center gap-2 bg-[#F5F5F5] rounded-full px-4 py-2.5">
-            <Search size={14} strokeWidth={1.8} className="text-[#999] flex-shrink-0" />
+          <div className="flex items-center gap-2 border-b border-[#111111] px-1 py-3">
+            <Search size={15} strokeWidth={2} className="text-[#111] flex-shrink-0" />
             <input
               type="text"
               value={query}
               onChange={e => setQuery(e.target.value)}
-              placeholder="Search brands, products…"
+              placeholder="Search"
               className="flex-1 bg-transparent text-[14px] text-[#111] placeholder-[#999] outline-none font-light"
             />
             {query && (
@@ -182,6 +266,26 @@ function ShopGrid() {
                 ✕
               </button>
             )}
+
+            {/* Sort button — always visible on For You tab */}
+            {showFilterUI && (
+              <button
+                onClick={() => { setHeaderHidden(false); setSortOpen(true); }}
+                className={`relative flex items-center gap-1.5 pl-3 border-l border-[#111]/15 cursor-pointer ${sort !== "default" ? "text-[#111]" : "text-[#111]"}`}
+                style={{ touchAction: "manipulation" }}
+              >
+                <ListFilter size={14} strokeWidth={1.8} className="text-[#111]" />
+                <span className="text-[12px] font-semibold text-[#111] tracking-wide">
+                  Sort
+                </span>
+                {sort !== "default" && (
+                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-[#111] text-[9px] font-bold text-white flex items-center justify-center">
+                    1
+                  </span>
+                )}
+              </button>
+            )}
+
             {/* Filter button — only on For You tab */}
             {showFilterUI && (
               <button
@@ -233,10 +337,10 @@ function ShopGrid() {
               <button
                 key={pill.id}
                 onClick={() => setActivePill(pill.id)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-full flex-shrink-0 text-[12px] font-semibold transition-all cursor-pointer border ${
+                className={`flex items-center gap-1.5 px-4 py-2 flex-shrink-0 text-[12px] font-semibold transition-all cursor-pointer border ${
                   active
                     ? "bg-[#111111] text-white border-[#111111]"
-                    : "bg-white text-[#111] border-[#CCCCCC]"
+                    : "bg-white text-[#111] border-[#111]"
                 }`}
                 style={{ touchAction: "manipulation" }}
               >
@@ -249,10 +353,18 @@ function ShopGrid() {
       </motion.div>
 
       {/* ── Content per pill ───────────────────────────────── */}
-      {activePill === "for-you" && <EndlessFeed query={query} filters={filters} />}
+      {activePill === "for-you" && <EndlessFeed query={query} filters={filters} sort={sort} />}
       {activePill === "brands"  && <BrandsView query={query} />}
       {activePill === "men"     && <CategoryAccordion gender="men"   query={query} />}
       {activePill === "women"   && <CategoryAccordion gender="women" query={query} />}
+
+      {/* ── Sort sheet overlay ─────────────────────────────── */}
+      <SortSheet
+        isOpen={sortOpen}
+        onClose={() => setSortOpen(false)}
+        sort={sort}
+        onSortChange={setSort}
+      />
 
       {/* ── Filter dropdown overlay ─────────────────────────── */}
       <FilterDropdown
