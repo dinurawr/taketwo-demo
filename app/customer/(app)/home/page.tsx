@@ -13,14 +13,29 @@ type Tab = "WOMEN" | "MEN";
 // ── Hero images (3 per tab, cycle every 4 s) ─────────────────────────────
 const HERO_IMAGES: Record<Tab, string[]> = {
   WOMEN: [
-    "https://images.unsplash.com/photo-1603189343302-e603f7add05a?w=800&q=80",
+    // Dramatic B&W editorial — initial image on Women tab
     "https://images.unsplash.com/photo-1562151270-c7d22ceb586a?w=800&q=80",
+    "https://images.unsplash.com/photo-1603189343302-e603f7add05a?w=800&q=80",
     "https://images.unsplash.com/photo-1574015974293-817f0ebebb74?w=800&q=80",
   ],
   MEN: [
     "https://images.unsplash.com/photo-1656695230389-01185e6fbff8?w=800&q=80",
     "https://images.unsplash.com/photo-1550995694-3f5f4a7e1bd2?w=800&q=80",
     "https://images.unsplash.com/photo-1619603364904-c0498317e145?w=800&q=80",
+  ],
+};
+
+// ── Editorial text overlay per hero slide (The Iconic "winter foundations" style) ──
+const HERO_TEXT: Record<Tab, { line1: string; line2: string }[]> = {
+  WOMEN: [
+    { line1: "new",        line2: "arrivals"  },
+    { line1: "summer",     line2: "edit"      },
+    { line1: "effortless", line2: "everyday"  },
+  ],
+  MEN: [
+    { line1: "essential",  line2: "pieces"    },
+    { line1: "everyday",   line2: "staples"   },
+    { line1: "clean",      line2: "minimal"   },
   ],
 };
 
@@ -154,9 +169,35 @@ export default function CustomerHome() {
           ))}
         </motion.div>
 
-        {/* Gradient overlay — top scrim for wordmark + bottom scrim for dots only */}
+        {/* Gradient overlay — top scrim for wordmark + bottom scrim for text/dots */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent via-40% to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/65 to-transparent pointer-events-none" />
+
+        {/* ── Editorial text overlay — fades with each slide ── */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`hero-text-${activeTab}-${heroIndex}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            className="absolute left-0 right-0 pointer-events-none px-5"
+            style={{ bottom: 68 }}
+          >
+            <p
+              className="text-white leading-none italic"
+              style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400, fontSize: 42 }}
+            >
+              {HERO_TEXT[activeTab][heroIndex].line1}
+            </p>
+            <p
+              className="text-white leading-none italic pl-10"
+              style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400, fontSize: 42 }}
+            >
+              {HERO_TEXT[activeTab][heroIndex].line2}
+            </p>
+          </motion.div>
+        </AnimatePresence>
 
         {/* ── Wordmark centred top ───────────────────────────── */}
         <div className="absolute left-0 right-0 flex justify-center pointer-events-none" style={{ top: 48 }}>
@@ -228,8 +269,8 @@ export default function CustomerHome() {
                 className="object-cover"
                 sizes="195px"
               />
-              {/* Dark overlay for legibility */}
-              <div className="absolute inset-0 bg-black/35" />
+              {/* Bottom gradient only — preserves image colours, keeps label readable */}
+              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/60 to-transparent" />
               {/* Label — bottom-left, hard style */}
               <div className="absolute bottom-0 left-0 p-3">
                 <p
