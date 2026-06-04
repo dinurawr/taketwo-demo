@@ -342,7 +342,7 @@ function ShopGrid() {
                     ? "bg-[#111111] text-white border-[#111111]"
                     : "bg-white text-[#111] border-[#111]"
                 }`}
-                style={{ touchAction: "manipulation" }}
+                style={{ touchAction: "manipulation", fontFamily: "var(--font-nunito)" }}
               >
                 {pill.icon}
                 {pill.label}

@@ -20,10 +20,14 @@ const config: Config = {
         "off-white": "#F8F8F6",
       },
       fontFamily: {
-        sans:       ["var(--font-inter)",    "Arial", "sans-serif"],
-        display:    ["var(--font-barlow)",   "Arial", "sans-serif"], // condensed impact headlines
-        serif:      ["var(--font-cormorant)","Georgia", "serif"],    // decorative serif
-        script:     ["var(--font-dancing)",  "cursive"],             // script — "Two"
+        // Three-family type system:
+        //   Geist          → all functional UI
+        //   Bodoni Moda    → editorial serif (The Iconic Canela-inspired)
+        //   Barlow Condens → TAKETWO wordmark + impact display labels
+        sans:    ["var(--font-geist)",    "Arial", "sans-serif"],
+        display: ["var(--font-barlow)",   "Arial", "sans-serif"],
+        serif:   ["var(--font-bodoni)",   "Georgia", "serif"],
+        script:  ["var(--font-bodoni)",   "Georgia", "serif"], // legacy alias
       },
       borderRadius: {
         "4xl": "2rem",

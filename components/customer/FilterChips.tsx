@@ -24,6 +24,7 @@ function Chip({ label, onRemove }: ChipProps) {
       exit={{ opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.15 }}
       className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#111]/20 bg-white text-[11px] font-medium text-[#111] shrink-0"
+      style={{ fontFamily: "var(--font-nunito)" }}
     >
       {label}
       <button
