@@ -72,8 +72,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "new-in",
     price: 8900,
-    image: px(33412645),
-    images: [px(33412645), px(22441297)],
+    image: px(9558606),
+    images: [px(9558606), px(22441297)],
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: [
       { name: "Ecru", hex: "#EDE8DC" },
@@ -305,7 +305,7 @@ export const products: Product[] = [
     categoryGroup: "tops",
     price: 11500,
     image: px(32778907),
-    images: [px(32778907), px(5038964), px(33412645)],
+    images: [px(32778907), px(5038964), px(9558606)],
     sizes: ["S", "M", "L", "XL"],
     colors: [
       { name: "Navy", hex: "#1B3A5C" },
@@ -324,7 +324,7 @@ export const products: Product[] = [
     categoryGroup: "tops",
     price: 10800,
     image: px(5038964),
-    images: [px(5038964), px(33412645)],
+    images: [px(5038964), px(9558606)],
     sizes: ["S", "M", "L", "XL"],
     colors: [
       { name: "Black", hex: "#111111" },
