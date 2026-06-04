@@ -42,12 +42,13 @@ body {
   color: #111111;
   -webkit-font-smoothing: antialiased;
 
-  /* Backwards-compat aliases — old --font-* names map to the new two-family stack.
-     Existing components using var(--font-barlow) etc keep working unchanged. */
+  /* Backwards-compat aliases — old --font-* names mapped to the new stack.
+     --font-barlow is NOT aliased: the real Barlow Condensed is loaded in
+     layout.tsx and resolves directly (restored for the TAKETWO wordmark). */
   --font-inter:     var(--font-geist);
-  --font-barlow:    var(--font-geist);
-  --font-cormorant: var(--font-fraunces);
-  --font-dancing:   var(--font-fraunces);
+  --font-cormorant: var(--font-bodoni);
+  --font-fraunces:  var(--font-bodoni);
+  --font-dancing:   var(--font-bodoni);
   --font-mono:      var(--font-geist);
 }
 
