@@ -72,8 +72,8 @@ export const products: Product[] = [
     category: "Men",
     categoryGroup: "new-in",
     price: 8900,
-    image: px(9558606),
-    images: [px(9558606), px(22441297)],
+    image: px(8068701),
+    images: [px(8068701), px(9880321)],
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: [
       { name: "Ecru", hex: "#EDE8DC" },
