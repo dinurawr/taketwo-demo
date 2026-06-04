@@ -20,10 +20,11 @@ const config: Config = {
         "off-white": "#F8F8F6",
       },
       fontFamily: {
-        sans:       ["var(--font-inter)",    "Arial", "sans-serif"],
-        display:    ["var(--font-barlow)",   "Arial", "sans-serif"], // condensed impact headlines
-        serif:      ["var(--font-cormorant)","Georgia", "serif"],    // decorative serif
-        script:     ["var(--font-dancing)",  "cursive"],             // script — "Two"
+        // Two-family type system — Geist for all UI, Fraunces for editorial moments
+        sans:    ["var(--font-geist)",    "Arial", "sans-serif"],
+        display: ["var(--font-geist)",    "Arial", "sans-serif"],
+        serif:   ["var(--font-fraunces)", "Georgia", "serif"],
+        script:  ["var(--font-fraunces)", "Georgia", "serif"], // legacy alias
       },
       borderRadius: {
         "4xl": "2rem",

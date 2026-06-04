@@ -41,6 +41,14 @@ body {
   background-color: #ffffff;
   color: #111111;
   -webkit-font-smoothing: antialiased;
+
+  /* Backwards-compat aliases — old --font-* names map to the new two-family stack.
+     Existing components using var(--font-barlow) etc keep working unchanged. */
+  --font-inter:     var(--font-geist);
+  --font-barlow:    var(--font-geist);
+  --font-cormorant: var(--font-fraunces);
+  --font-dancing:   var(--font-fraunces);
+  --font-mono:      var(--font-geist);
 }
 
 /* Hide scrollbar for phone frame */
@@ -61,14 +69,16 @@ body {
   display: none;
 }
 
-/* Condensed uppercase utility */
+/* Display utility — heavy Geist for impact headlines */
 .font-display {
-  font-family: var(--font-barlow), Arial, sans-serif;
+  font-family: var(--font-geist), Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
-/* Tabular numbers — dashboard / data feel */
+/* Tabular numbers — Geist with tabular-nums for aligned digits in tables */
 .font-mono-num {
-  font-family: var(--font-mono), ui-monospace, SFMono-Regular, "SF Mono", monospace;
+  font-family: var(--font-geist), Arial, sans-serif;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }

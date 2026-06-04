@@ -1,42 +1,31 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Barlow_Condensed, Cormorant_Garamond, Dancing_Script, JetBrains_Mono } from "next/font/google";
+import { Geist, Fraunces } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-store";
 import { FavoritesProvider } from "@/lib/favorites-store";
 import { FollowsProvider } from "@/lib/follows-store";
 
-const inter = Inter({
-  variable: "--font-inter",
+/**
+ * Two-family type system (type-refresh branch):
+ * - Geist    → all functional UI (body, product names, prices, buttons, headings)
+ * - Fraunces → editorial moments only (brand storefront hero, lookbook captions)
+ *
+ * Old --font-inter / --font-barlow / --font-cormorant variables are aliased
+ * to the new fonts in globals.css so existing inline styles keep working.
+ */
+
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
-const barlowCondensed = Barlow_Condensed({
-  variable: "--font-barlow",
-  subsets: ["latin"],
-  weight: ["700", "800", "900"],
-  display: "swap",
-});
-
-const cormorantGaramond = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
-  display: "swap",
-});
-
-const dancingScript = Dancing_Script({
-  variable: "--font-dancing",
-  subsets: ["latin"],
-  weight: ["700"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
@@ -58,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${barlowCondensed.variable} ${cormorantGaramond.variable} ${dancingScript.variable} ${jetbrainsMono.variable} font-sans antialiased`}
+        className={`${geist.variable} ${fraunces.variable} font-sans antialiased`}
       >
         <CartProvider>
           <FavoritesProvider>
