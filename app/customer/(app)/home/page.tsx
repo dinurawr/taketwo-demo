@@ -13,10 +13,10 @@ type Tab = "WOMEN" | "MEN";
 // ── Hero images (3 per tab, cycle every 4 s) ─────────────────────────────
 const HERO_IMAGES: Record<Tab, string[]> = {
   WOMEN: [
-    // Dramatic B&W editorial — initial image on Women tab
+    // B&W editorial woman — initial image on Women tab
+    "https://images.unsplash.com/photo-1574015974293-817f0ebebb74?w=800&q=80",
     "https://images.unsplash.com/photo-1562151270-c7d22ceb586a?w=800&q=80",
     "https://images.unsplash.com/photo-1603189343302-e603f7add05a?w=800&q=80",
-    "https://images.unsplash.com/photo-1574015974293-817f0ebebb74?w=800&q=80",
   ],
   MEN: [
     "https://images.unsplash.com/photo-1656695230389-01185e6fbff8?w=800&q=80",
@@ -28,9 +28,9 @@ const HERO_IMAGES: Record<Tab, string[]> = {
 // ── Editorial text overlay per hero slide (The Iconic "winter foundations" style) ──
 const HERO_TEXT: Record<Tab, { line1: string; line2: string }[]> = {
   WOMEN: [
+    { line1: "effortless", line2: "everyday"  },
     { line1: "new",        line2: "arrivals"  },
     { line1: "summer",     line2: "edit"      },
-    { line1: "effortless", line2: "everyday"  },
   ],
   MEN: [
     { line1: "essential",  line2: "pieces"    },
