@@ -1,16 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Bodoni_Moda, Barlow_Condensed } from "next/font/google";
+import { Geist, Bodoni_Moda, Barlow_Condensed, Nunito } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-store";
 import { FavoritesProvider } from "@/lib/favorites-store";
 import { FollowsProvider } from "@/lib/follows-store";
 
 /**
- * Three-family type system:
+ * Four-family type system:
  *
  * Geist            → all functional UI: body, product cards, prices, buttons, nav labels
+ * Nunito           → pill tabs + filter chips only (SF Pro Rounded equivalent)
  * Bodoni Moda      → editorial moments only: brand storefront hero, lookbook captions
- *                    Closest free match to The Iconic's "Canela"-style editorial serif
  * Barlow Condensed → TAKETWO wordmark + impact uppercase display labels only
  *
  * Backwards-compat aliases in globals.css map old --font-* variables to the
@@ -29,6 +29,13 @@ const bodoniModa = Bodoni_Moda({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800", "900"],
   style: ["normal", "italic"],
+  display: "swap",
+});
+
+const nunito = Nunito({
+  variable: "--font-nunito",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
   display: "swap",
 });
 
@@ -57,7 +64,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geist.variable} ${bodoniModa.variable} ${barlowCondensed.variable} font-sans antialiased`}
+        className={`${geist.variable} ${nunito.variable} ${bodoniModa.variable} ${barlowCondensed.variable} font-sans antialiased`}
       >
         <CartProvider>
           <FavoritesProvider>

@@ -179,7 +179,7 @@ export default function CustomerHome() {
                   ? "text-white border-b-2 border-white"
                   : "text-white/50"
               }`}
-              style={{ fontFamily: "var(--font-barlow)", touchAction: "manipulation" }}
+              style={{ fontFamily: "var(--font-nunito)", touchAction: "manipulation" }}
             >
               {tab}
             </button>
