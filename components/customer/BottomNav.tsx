@@ -33,7 +33,7 @@ export function BottomNav() {
             className="relative flex flex-col items-center gap-0.5 px-3 py-1.5 flex-1"
           >
             <div className={`relative ${isActive ? "text-[#111111]" : "text-[#AAAAAA]"}`}>
-              <Icon size={20} strokeWidth={isActive ? 2 : 1.5} />
+              <Icon size={21} strokeWidth={isActive ? 1.8 : 1.2} />
               {badge != null && badge > 0 && (
                 <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-[#111111] rounded-full text-[9px] font-bold text-white flex items-center justify-center">
                   {badge > 9 ? "9+" : badge}

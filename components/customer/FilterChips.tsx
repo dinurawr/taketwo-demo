@@ -23,7 +23,7 @@ function Chip({ label, onRemove }: ChipProps) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.9 }}
       transition={{ duration: 0.15 }}
-      className="flex items-center gap-1.5 px-2.5 py-1.5 border border-[#111]/15 bg-white text-[11px] font-medium text-[#111] shrink-0"
+      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#111]/20 bg-white text-[11px] font-medium text-[#111] shrink-0"
     >
       {label}
       <button
