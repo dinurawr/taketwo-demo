@@ -16,11 +16,10 @@ type Group = {
 };
 
 const MEN_GROUPS: Group[] = [
-  { key: "new-in",        label: "New Arrivals" },
-  { key: "tops",          label: "Tops" },
-  { key: "bottoms",       label: "Bottoms" },
-  { key: "shorts",        label: "Shorts" },
-  { key: "rock-revival",  label: "Rock Revival" },
+  { key: "new-in",  label: "New Arrivals" },
+  { key: "tops",    label: "Tops" },
+  { key: "bottoms", label: "Bottoms" },
+  { key: "shorts",  label: "Shorts" },
 ];
 
 const WOMEN_GROUPS: Group[] = [

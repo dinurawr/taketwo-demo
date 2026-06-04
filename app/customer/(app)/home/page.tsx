@@ -33,7 +33,7 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
   WOMEN: [
     {
       label: "New In",
-      image: px(23883682),
+      image: px(15758653),
       cat: "new-in",
     },
     {
@@ -43,7 +43,7 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
     },
     {
       label: "Swim",
-      image: px(29542527),
+      image: px(8760433),
       cat: "swim",
     },
     {
@@ -54,9 +54,9 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
   ],
   MEN: [
     {
-      label: "Rock Revival",
-      image: px(7823899),
-      cat: "rock-revival",
+      label: "New In",
+      image: px(5029685),
+      cat: "new-in",
     },
     {
       label: "Bottoms",

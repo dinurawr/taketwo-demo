@@ -176,16 +176,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       {/* ── Content panel ─────────────────────────────────── */}
       <div className="relative -mt-6 bg-white rounded-t-[28px] pt-5 px-5">
         {/* Brand + Name + Price */}
-        <div className="flex items-start justify-between mb-3">
-          <div>
-            <p className="text-[10px] text-[#AAAAAA] font-semibold uppercase tracking-widest mb-1">
-              {brand.name}
-            </p>
-            <h1 className="text-xl font-bold text-[#111111] leading-tight">{shortName}</h1>
-          </div>
-          <p className="text-lg font-bold text-[#111111] mt-1 shrink-0">
-            LKR {product.price.toLocaleString()}
+        <div className="mb-3">
+          <p className="text-[10px] text-[#AAAAAA] font-semibold uppercase tracking-widest mb-1">
+            {brand.name}
           </p>
+          <div className="flex items-baseline justify-between gap-2">
+            <h1 className="text-xl font-bold text-[#111111] leading-tight">{shortName}</h1>
+            <p className="text-lg font-bold text-[#111111] shrink-0">
+              LKR {product.price.toLocaleString()}
+            </p>
+          </div>
         </div>
 
         {/* Clickable rating → scrolls to reviews */}

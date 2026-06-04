@@ -22,6 +22,135 @@ export type Product = {
 export const products: Product[] = [
 
   // ─────────────────────────────────────────────────────────────
+  // NEW ARRIVALS — Men
+  // ─────────────────────────────────────────────────────────────
+  {
+    id: "valley-organic-tee-new",
+    name: "Valley Organic Cotton Tee",
+    brand: "valley",
+    category: "Men",
+    categoryGroup: "new-in",
+    price: 4800,
+    image: px(5029685),
+    images: [px(5029685), px(5145182)],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: [
+      { name: "White", hex: "#F5F5F5" },
+      { name: "Black", hex: "#111111" },
+      { name: "Sage", hex: "#859365" },
+    ],
+    description:
+      "100% organic cotton tee with a relaxed fit and a clean crew neck. Soft, breathable, and built to last.",
+    inStock: true,
+    rating: 4.6,
+    reviewCount: 41,
+  },
+  {
+    id: "north-lane-linen-shirt-new",
+    name: "North Lane Linen Shirt",
+    brand: "north-lane",
+    category: "Men",
+    categoryGroup: "new-in",
+    price: 11200,
+    image: px(19915630),
+    images: [px(19915630), px(24206198)],
+    sizes: ["S", "M", "L", "XL"],
+    colors: [
+      { name: "White", hex: "#F5F5F5" },
+      { name: "Navy", hex: "#1B3A5C" },
+    ],
+    description:
+      "Crisp 100% linen shirt with a tailored collar and a clean button front. Effortlessly smart — wear it tucked or open over a tee.",
+    inStock: true,
+    rating: 4.7,
+    reviewCount: 28,
+  },
+  {
+    id: "ember-structured-polo-new",
+    name: "Ember Structured Polo",
+    brand: "ember",
+    category: "Men",
+    categoryGroup: "new-in",
+    price: 8900,
+    image: px(33412645),
+    images: [px(33412645), px(22441297)],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: [
+      { name: "Ecru", hex: "#EDE8DC" },
+      { name: "Black", hex: "#111111" },
+    ],
+    description:
+      "Structured piqué polo with a two-button placket and ribbed collar. Clean enough for dinner, easy enough for the weekend.",
+    inStock: true,
+    rating: 4.5,
+    reviewCount: 19,
+  },
+
+  // ─────────────────────────────────────────────────────────────
+  // NEW ARRIVALS — Women
+  // ─────────────────────────────────────────────────────────────
+  {
+    id: "nilo-satin-midi-dress-new",
+    name: "Nilo Satin Midi Dress",
+    brand: "nilo",
+    category: "Women",
+    categoryGroup: "new-in",
+    price: 16500,
+    image: px(15758653),
+    images: [px(15758653), px(29850173)],
+    sizes: ["XS", "S", "M", "L"],
+    colors: [
+      { name: "Champagne", hex: "#E8DCC8" },
+      { name: "Midnight", hex: "#1A1A2E" },
+    ],
+    description:
+      "Fluid satin midi with a subtle bias cut and a delicate tie neckline. Moves beautifully — as good for dinner as it is for a gallery opening.",
+    inStock: true,
+    rating: 4.8,
+    reviewCount: 34,
+  },
+  {
+    id: "ember-minimal-coord-new",
+    name: "Ember Minimal Co-ord Set",
+    brand: "ember",
+    category: "Women",
+    categoryGroup: "new-in",
+    price: 22000,
+    image: px(29146256),
+    images: [px(29146256), px(2090786)],
+    sizes: ["XS", "S", "M", "L"],
+    colors: [
+      { name: "Cream", hex: "#F5F0E8" },
+      { name: "Black", hex: "#111111" },
+    ],
+    description:
+      "Crop top and wide-leg trouser set in a clean stretch fabric. The co-ord that separates effortlessly — wear together or apart.",
+    inStock: true,
+    rating: 4.9,
+    reviewCount: 22,
+  },
+  {
+    id: "valley-linen-shirt-dress-new",
+    name: "Valley Linen Shirt Dress",
+    brand: "valley",
+    category: "Women",
+    categoryGroup: "new-in",
+    price: 13800,
+    image: px(8484078),
+    images: [px(8484078), px(11844304)],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    colors: [
+      { name: "Natural", hex: "#D8CFBE" },
+      { name: "White", hex: "#F5F5F5" },
+    ],
+    description:
+      "Easy linen shirt dress with a relaxed silhouette, button front, and a self-tie belt. The effortless summer piece you'll reach for every day.",
+    inStock: true,
+    rating: 4.7,
+    reviewCount: 57,
+  },
+
+  // ─────────────────────────────────────────────────────────────
   // VALLEY — Effortless everyday (Men)
   // ─────────────────────────────────────────────────────────────
   {
@@ -579,7 +708,7 @@ export const products: Product[] = [
     name: "Ember Tailored Linen Shorts",
     brand: "ember",
     category: "Men",
-    categoryGroup: "rock-revival",
+    categoryGroup: "shorts",
     price: 8200,
     image: px(7823899),
     images: [px(7823899), px(12803209)],
