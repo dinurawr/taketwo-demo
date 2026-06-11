@@ -766,6 +766,20 @@ export function orderedCategoryGroups(keys: string[]): string[] {
   });
 }
 
+/**
+ * Deterministic stock count derived from the product ID.
+ * Presentational only — no schema change needed.
+ * Distribution: ~35% very low (2-5), ~40% low (6-12), ~25% moderate (13-22).
+ */
+export function getStockCount(id: string): number {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  const bucket = h % 100;
+  if (bucket < 35) return (h % 4) + 2;        // 2–5  (very low)
+  if (bucket < 75) return (h % 7) + 6;        // 6–12 (low)
+  return (h % 10) + 13;                        // 13–22 (moderate)
+}
+
 /** Strip the brand name prefix from a product name, e.g. "Nilo Wide-Leg Pants" → "Wide-Leg Pants" */
 export function getShortName(product: { name: string; brand: string }): string {
   const brandWords: Record<string, string[]> = {

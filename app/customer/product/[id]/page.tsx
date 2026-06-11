@@ -7,7 +7,7 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/lib/cart-store";
 import { useFavorites } from "@/lib/favorites-store";
-import { getProduct, getProductsByCategory, getShortName } from "@/data/products";
+import { getProduct, getProductsByCategory, getShortName, getStockCount } from "@/data/products";
 import { getBrand } from "@/data/brands";
 import { getProductReviews } from "@/data/reviews";
 import { use } from "react";
@@ -81,6 +81,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   const fav = isFavorite(product.id);
   const shortName = getShortName(product);
+  const stockCount = getStockCount(product.id);
 
   // Related products (same category, excluding current)
   const related = getProductsByCategory(product.category)
@@ -192,6 +193,21 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               LKR {product.price.toLocaleString()}
             </p>
           </div>
+
+          {/* Stock indicator */}
+          {stockCount <= 5 ? (
+            <p className="mt-1.5 text-[11px] font-semibold text-[#C84B31]">
+              Only {stockCount} left — order soon
+            </p>
+          ) : stockCount <= 12 ? (
+            <p className="mt-1.5 text-[11px] font-semibold text-[#B0863A]">
+              {stockCount} left in stock
+            </p>
+          ) : (
+            <p className="mt-1.5 text-[11px] text-[#6B6B68]">
+              {stockCount} in stock
+            </p>
+          )}
         </div>
 
         {/* Clickable rating → scrolls to reviews */}
