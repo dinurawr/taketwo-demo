@@ -738,6 +738,34 @@ export function getProductsByBrand(brandId: string) {
   return products.filter((p) => p.brand === brandId);
 }
 
+/** Friendly display label for a categoryGroup key. Shared by brand page + CategoryAccordion. */
+const CATEGORY_LABELS: Record<string, string> = {
+  "new-in": "New Arrivals",
+  tops: "Tops",
+  bottoms: "Bottoms",
+  shorts: "Shorts",
+  dresses: "Dresses",
+  sets: "Sets",
+  "beach-cover-up": "Swim & Beach",
+  "beach-dresses": "Swim & Beach",
+  bikinis: "Swim & Beach",
+  "rock-revival": "Rock Revival",
+};
+
+export function categoryLabel(key: string): string {
+  return CATEGORY_LABELS[key] ?? key.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+/** Order categoryGroup keys deterministically: new-in first, then alphabetical by label. */
+export function orderedCategoryGroups(keys: string[]): string[] {
+  const unique = Array.from(new Set(keys));
+  return unique.sort((a, b) => {
+    if (a === "new-in") return -1;
+    if (b === "new-in") return 1;
+    return categoryLabel(a).localeCompare(categoryLabel(b));
+  });
+}
+
 /** Strip the brand name prefix from a product name, e.g. "Nilo Wide-Leg Pants" → "Wide-Leg Pants" */
 export function getShortName(product: { name: string; brand: string }): string {
   const brandWords: Record<string, string[]> = {

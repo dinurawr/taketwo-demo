@@ -7,7 +7,8 @@ import { ChevronLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { useFollows } from "@/lib/follows-store";
 import { getBrand } from "@/data/brands";
-import { products } from "@/data/products";
+import { products, categoryLabel } from "@/data/products";
+import type { Product } from "@/data/products";
 import { ProductCard } from "@/components/customer/ProductCard";
 
 export default function BrandStorefront({
@@ -32,6 +33,19 @@ export default function BrandStorefront({
   const brandProducts = products.filter(
     (p) => p.brand === brand.id && p.category !== "Children"
   );
+
+  // Group products by category label (merges swim variants into one "Swim & Beach" section).
+  // Ordered: New Arrivals first, then alphabetical by label.
+  const grouped = brandProducts.reduce<Record<string, Product[]>>((acc, p) => {
+    const label = categoryLabel(p.categoryGroup);
+    (acc[label] ??= []).push(p);
+    return acc;
+  }, {});
+  const sections = Object.entries(grouped).sort(([a], [b]) => {
+    if (a === "New Arrivals") return -1;
+    if (b === "New Arrivals") return 1;
+    return a.localeCompare(b);
+  });
 
   return (
     <div className="flex flex-col bg-white pb-24">
@@ -117,23 +131,36 @@ export default function BrandStorefront({
         </div>
       </div>
 
-      {/* Section header */}
-      <div className="px-4 mb-3">
+      {/* Section count header */}
+      <div className="px-4 mb-4">
         <p className="text-[11px] uppercase tracking-widest text-[#999999] font-semibold">
-          All Products
+          Shop the collection
         </p>
         <p className="text-lg font-bold text-[#111111] mt-0.5">
           {brandProducts.length} pieces
         </p>
       </div>
 
-      {/* Product grid */}
+      {/* Category-grouped product sections */}
       {brandProducts.length === 0 ? (
         <p className="text-center text-sm text-[#999999] py-10">No products yet.</p>
       ) : (
-        <div className="grid grid-cols-2 gap-3 px-4">
-          {brandProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+        <div className="flex flex-col gap-7">
+          {sections.map(([label, items]) => (
+            <section key={label}>
+              <h2
+                className="px-4 mb-3 text-[15px] font-bold uppercase tracking-wide text-[#111111]"
+                style={{ fontFamily: "var(--font-barlow)" }}
+              >
+                {label}
+                <span className="ml-2 text-[#BBBBBB] font-semibold">{items.length}</span>
+              </h2>
+              <div className="grid grid-cols-2 gap-3 px-4">
+                {items.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       )}

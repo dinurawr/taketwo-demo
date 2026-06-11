@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { BarChart2, Megaphone, ShoppingBag, Package, Users, ChevronLeft } from "lucide-react";
+import { BarChart2, Megaphone, ShoppingBag, Package, Users, MailWarning, ChevronLeft } from "lucide-react";
 import { SELLER } from "@/data/seller-fixtures";
 
 const NAV_ITEMS = [
   { href: "/vendor/analytics", icon: BarChart2,   label: "Analytics" },
   { href: "/vendor/marketing", icon: Megaphone,   label: "Marketing" },
   { href: "/vendor/orders",    icon: ShoppingBag, label: "Orders"    },
+  { href: "/vendor/recovery",  icon: MailWarning, label: "Recovery"  },
   { href: "/vendor/products",  icon: Package,     label: "Products"  },
   { href: "/vendor/customers", icon: Users,       label: "Customers" },
 ];
