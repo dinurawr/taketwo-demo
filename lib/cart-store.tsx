@@ -16,7 +16,7 @@ export type CartItem = {
 
 type CartContextType = {
   items: CartItem[];
-  addItem: (item: Omit<CartItem, "quantity">) => void;
+  addItem: (item: Omit<CartItem, "quantity">, qty?: number) => void;
   removeItem: (productId: string, size: string, color: string) => void;
   updateQuantity: (productId: string, size: string, color: string, qty: number) => void;
   clearCart: () => void;
@@ -44,7 +44,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [items, hydrated]);
 
-  const addItem = (item: Omit<CartItem, "quantity">) => {
+  const addItem = (item: Omit<CartItem, "quantity">, qty: number = 1) => {
+    const add = Math.max(1, Math.floor(qty));
     setItems((prev) => {
       const existing = prev.find(
         (i) => i.productId === item.productId && i.size === item.size && i.color === item.color
@@ -52,11 +53,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (existing) {
         return prev.map((i) =>
           i.productId === item.productId && i.size === item.size && i.color === item.color
-            ? { ...i, quantity: i.quantity + 1 }
+            ? { ...i, quantity: i.quantity + add }
             : i
         );
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prev, { ...item, quantity: add }];
     });
   };
 

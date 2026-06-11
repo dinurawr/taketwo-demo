@@ -2,12 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronDown, Heart, Star } from "lucide-react";
+import { ChevronLeft, ChevronDown, Heart, Star, Minus, Plus } from "lucide-react";
 import { useState, useRef, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/lib/cart-store";
 import { useFavorites } from "@/lib/favorites-store";
-import { getProduct, getProductsByCategory, getShortName } from "@/data/products";
+import { getProduct, getProductsByCategory, getShortName, getStockCount } from "@/data/products";
 import { getBrand } from "@/data/brands";
 import { getProductReviews } from "@/data/reviews";
 import { use } from "react";
@@ -55,6 +55,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   const [selectedSize, setSelectedSize] = useState(product?.sizes[1] ?? "");
   const [selectedColor, setSelectedColor] = useState(0);
+  const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
 
   // Skeleton overlay until the hero image is loaded. Reset on every product id
@@ -80,6 +81,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   const fav = isFavorite(product.id);
   const shortName = getShortName(product);
+  const stockCount = getStockCount(product.id);
 
   // Related products (same category, excluding current)
   const related = getProductsByCategory(product.category)
@@ -96,8 +98,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       size: selectedSize,
       color: product.colors[selectedColor]?.name ?? "",
       image: product.image,
-    });
+    }, qty);
     setAdded(true);
+    setQty(1);
     setTimeout(() => setAdded(false), 2000);
   };
 
@@ -177,15 +180,34 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       <div className="relative -mt-6 bg-white rounded-t-[28px] pt-5 px-5">
         {/* Brand + Name + Price */}
         <div className="mb-3">
-          <p className="text-[10px] text-[#AAAAAA] font-semibold uppercase tracking-widest mb-1">
+          <Link
+            href={`/customer/brand/${brand.id}`}
+            className="inline-block text-[10px] text-[#AAAAAA] font-semibold uppercase tracking-widest mb-1 active:opacity-70 transition-opacity"
+            style={{ touchAction: "manipulation" }}
+          >
             {brand.name}
-          </p>
+          </Link>
           <div className="flex items-baseline justify-between gap-2">
             <h1 className="text-xl font-bold text-[#111111] leading-tight">{shortName}</h1>
             <p className="text-lg font-bold text-[#111111] shrink-0">
               LKR {product.price.toLocaleString()}
             </p>
           </div>
+
+          {/* Stock indicator */}
+          {stockCount <= 5 ? (
+            <p className="mt-1.5 text-[11px] font-semibold text-[#C84B31]">
+              Only {stockCount} left — order soon
+            </p>
+          ) : stockCount <= 12 ? (
+            <p className="mt-1.5 text-[11px] font-semibold text-[#B0863A]">
+              {stockCount} left in stock
+            </p>
+          ) : (
+            <p className="mt-1.5 text-[11px] text-[#6B6B68]">
+              {stockCount} in stock
+            </p>
+          )}
         </div>
 
         {/* Clickable rating → scrolls to reviews */}
@@ -255,6 +277,40 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 aria-label={color.name}
               />
             ))}
+          </div>
+        </div>
+
+        {/* Quantity ticker */}
+        <div className="mb-6">
+          <p className="text-[10px] font-bold text-[#111111] uppercase tracking-widest mb-3"
+            style={{ fontFamily: "var(--font-barlow)" }}>
+            Quantity
+          </p>
+          <div className="flex items-center border border-[#E8E8E8] w-fit">
+            <button
+              onClick={() => setQty((q) => Math.max(1, q - 1))}
+              disabled={qty <= 1}
+              className="w-12 h-12 flex items-center justify-center cursor-pointer text-[#111111] disabled:text-[#CCCCCC] disabled:cursor-not-allowed active:bg-[#F5F5F5] transition-colors"
+              aria-label="Decrease quantity"
+              style={{ touchAction: "manipulation" }}
+            >
+              <Minus size={16} strokeWidth={2} />
+            </button>
+            <span
+              className="w-12 h-12 flex items-center justify-center text-base font-bold text-[#111111] border-x border-[#E8E8E8] tabular-nums"
+              style={{ fontFamily: "var(--font-barlow)" }}
+            >
+              {qty}
+            </span>
+            <button
+              onClick={() => setQty((q) => Math.min(99, q + 1))}
+              disabled={qty >= 99}
+              className="w-12 h-12 flex items-center justify-center cursor-pointer text-[#111111] disabled:text-[#CCCCCC] disabled:cursor-not-allowed active:bg-[#F5F5F5] transition-colors"
+              aria-label="Increase quantity"
+              style={{ touchAction: "manipulation" }}
+            >
+              <Plus size={16} strokeWidth={2} />
+            </button>
           </div>
         </div>
 

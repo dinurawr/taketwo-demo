@@ -1,16 +1,17 @@
 "use client";
 
 import { useState, useMemo, useRef, useEffect } from "react";
+import Image from "next/image";
 import { products } from "@/data/products";
-import { Check, ChevronDown, ArrowRight } from "lucide-react";
+import { Check, ChevronDown, ArrowRight, Play } from "lucide-react";
 import { Rs } from "@/components/vendor/Rs";
 
 const VENDOR_BRAND = "valley";
 const brandProducts = products.filter((p) => p.brand === VENDOR_BRAND);
 
 // ── Types ─────────────────────────────────────────────────────────────────────
-type AdType    = "splash" | "fyp" | "search";
-type TargetKey = "age" | "city" | "brands" | "cartSize" | "spend";
+type AdType    = "splash" | "fyp" | "search" | "video";
+type TargetKey = "gender" | "age" | "city" | "brands" | "cartSize" | "spend";
 
 // ── Config ────────────────────────────────────────────────────────────────────
 const AD_CONFIG: Record<AdType, { label: string; tagline: string; desc: string; baseRate: number }> = {
@@ -32,6 +33,12 @@ const AD_CONFIG: Record<AdType, { label: string; tagline: string; desc: string; 
     desc:     "Pin your product above all organic results when shoppers search relevant terms.",
     baseRate: 600,
   },
+  video: {
+    label:    "Video Boost",
+    tagline:  "A short video on the feed",
+    desc:     "Promote a short video clip as an autoplaying card in shoppers' feed. Pick the material below — video stops the scroll and drives the highest engagement.",
+    baseRate: 1800,
+  },
 };
 
 const DURATION_OPTIONS = [
@@ -49,6 +56,7 @@ const REACH_OPTIONS = [
 ];
 
 const TARGETING_CONFIG: Record<TargetKey, { label: string; options: string[]; perOption: number }> = {
+  gender:   { label: "Gender",          options: ["Women", "Men", "All"],                                               perOption: 0.05 },
   age:      { label: "Age group",       options: ["18–24", "25–34", "35–44", "45+"],                                    perOption: 0.08 },
   city:     { label: "City",            options: ["Colombo", "Kandy", "Galle", "Jaffna", "Negombo", "Kurunegala"],      perOption: 0.06 },
   brands:   { label: "Follows brands",  options: ["Valley", "Minimal", "Ceylon Co.", "Batik House", "Coast & Thread"],  perOption: 0.05 },
@@ -151,11 +159,43 @@ function SearchMockup({ active }: { active: boolean }) {
   );
 }
 
+function VideoMockup({ active }: { active: boolean }) {
+  return (
+    <div className={`w-14 h-24 rounded-xl border overflow-hidden shrink-0 transition-colors ${active ? "border-[#111111]" : "border-[#E8E8E4]"} bg-white`}>
+      <div className="p-1.5">
+        <div className="flex items-center gap-1 mb-1">
+          <div className="w-2 h-2 rounded-full bg-[#E8E8E4]" />
+          <div className="h-1 w-6 bg-[#E8E8E4] rounded" />
+        </div>
+        {/* Video card with play glyph */}
+        <div className={`h-12 rounded relative flex items-center justify-center transition-colors ${active ? "bg-[#111111]" : "bg-[#333]"}`}>
+          <div className="w-4 h-4 rounded-full bg-white/90 flex items-center justify-center">
+            <Play size={7} className="text-[#111111] translate-x-[0.5px]" fill="currentColor" />
+          </div>
+          <div className="absolute top-0.5 right-0.5 bg-white/20 rounded px-0.5">
+            <span className="text-[4px] text-white/80 leading-none">0:15</span>
+          </div>
+        </div>
+        <div className="h-2 bg-[#F0F0EC] rounded mt-1.5 opacity-60" />
+        <div className="h-2 bg-[#F0F0EC] rounded mt-1 opacity-30" />
+      </div>
+    </div>
+  );
+}
+
+// Mock boostable video materials — presentational only (no real upload)
+const BOOST_MATERIALS = [
+  { id: "m1", title: "Summer Linen — reel",     duration: "0:15", image: brandProducts[0]?.image ?? "" },
+  { id: "m2", title: "Overshirt styling",       duration: "0:30", image: brandProducts[1]?.image ?? "" },
+  { id: "m3", title: "Behind the seams",        duration: "0:22", image: brandProducts[2]?.image ?? "" },
+];
+
 // ── Main Page ─────────────────────────────────────────────────────────────────
 export default function MarketingPage() {
   const [expandedCampaign, setExpandedCampaign] = useState<string | null>(null);
   const [selectedType,  setSelectedType]  = useState<AdType | null>(null);
   const [productId,     setProductId]     = useState(brandProducts[0]?.id ?? "");
+  const [materialId,    setMaterialId]    = useState(BOOST_MATERIALS[0]?.id ?? "");
   const [durationDays,  setDurationDays]  = useState(7);
   const [reachValue,    setReachValue]    = useState(5_000);
   const [targeting,     setTargeting]     = useState<Partial<Record<TargetKey, string[]>>>({});
@@ -358,8 +398,8 @@ export default function MarketingPage() {
           <p className="text-[11px] font-semibold text-[#111111] uppercase tracking-widest">Create a campaign</p>
           <p className="text-[11px] text-[#9B9B98]">Choose your ad type to get started</p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {(["splash", "fyp", "search"] as AdType[]).map((key) => {
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {(["splash", "fyp", "search", "video"] as AdType[]).map((key) => {
             const conf   = AD_CONFIG[key];
             const active = selectedType === key;
             return (
@@ -376,6 +416,7 @@ export default function MarketingPage() {
                   {key === "splash" && <SplashMockup active={active} />}
                   {key === "fyp"    && <FYPMockup    active={active} />}
                   {key === "search" && <SearchMockup active={active} />}
+                  {key === "video"  && <VideoMockup  active={active} />}
                   {active && (
                     <div className="w-5 h-5 rounded-full bg-[#111111] flex items-center justify-center shrink-0">
                       <Check size={11} className="text-white" />
@@ -405,9 +446,54 @@ export default function MarketingPage() {
               <p className="text-xs text-[#6B6B68] leading-relaxed">{adConf.desc}</p>
             </div>
 
+            {/* Select material — Video Boost only */}
+            {selectedType === "video" && (
+              <div className="bg-white rounded-xl border border-[#E8E8E4] p-5">
+                <p className="text-[11px] font-medium text-[#9B9B98] uppercase tracking-widest mb-3">Select material</p>
+                <div className="grid grid-cols-3 gap-3">
+                  {BOOST_MATERIALS.map((m) => {
+                    const active = materialId === m.id;
+                    return (
+                      <button
+                        key={m.id}
+                        onClick={() => setMaterialId(m.id)}
+                        className={`text-left rounded-lg border overflow-hidden transition-all cursor-pointer ${
+                          active ? "border-[#111111] ring-1 ring-[#111111]" : "border-[#E8E8E4] hover:border-[#9B9B98]"
+                        }`}
+                      >
+                        <div className="relative aspect-[3/4] bg-[#F0F0EC]">
+                          {m.image && (
+                            <Image src={m.image} alt={m.title} fill className="object-cover" sizes="120px" />
+                          )}
+                          {/* Play glyph */}
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-7 h-7 rounded-full bg-black/55 backdrop-blur-sm flex items-center justify-center">
+                              <Play size={11} className="text-white translate-x-[1px]" fill="currentColor" />
+                            </div>
+                          </div>
+                          {/* Duration chip */}
+                          <span className="absolute bottom-1 right-1 bg-black/65 text-white text-[9px] font-medium px-1.5 py-0.5 rounded font-mono-num">
+                            {m.duration}
+                          </span>
+                          {active && (
+                            <span className="absolute top-1 left-1 w-4 h-4 rounded-full bg-[#111111] flex items-center justify-center">
+                              <Check size={9} className="text-white" />
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-[10px] font-medium text-[#111111] px-2 py-1.5 leading-tight truncate">{m.title}</p>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* Product */}
             <div className="bg-white rounded-xl border border-[#E8E8E4] p-5">
-              <p className="text-[11px] font-medium text-[#9B9B98] uppercase tracking-widest mb-3">Product</p>
+              <p className="text-[11px] font-medium text-[#9B9B98] uppercase tracking-widest mb-3">
+                {selectedType === "video" ? "Linked product" : "Product"}
+              </p>
               <div className="space-y-2">
                 {brandProducts.map((p) => (
                   <button
