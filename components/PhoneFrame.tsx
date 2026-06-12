@@ -11,7 +11,9 @@ const MOBILE_BANNER_H = 48; // DemoBanner bar height on mobile
 function calcScale() {
   const vw = window.innerWidth;
   const bannerH = vw < 768 ? MOBILE_BANNER_H : 0;
-  const vh = window.innerHeight - bannerH;
+  // Use visualViewport.height so the scale never exceeds what the CSS dvh container can fit.
+  // window.innerHeight inflates on iOS Safari when the toolbar auto-hides, causing overflow.
+  const vh = (window.visualViewport?.height ?? window.innerHeight) - bannerH;
   const sx = (vw - PAD * 2) / PHONE_W;
   const sy = (vh - PAD * 2) / PHONE_H;
   return Math.min(sx, sy, 1);
@@ -36,13 +38,17 @@ export function PhoneFrame({
     function updateScale() { setScale(calcScale()); }
     updateScale();
     window.addEventListener("resize", updateScale);
-    return () => window.removeEventListener("resize", updateScale);
+    window.visualViewport?.addEventListener("resize", updateScale);
+    return () => {
+      window.removeEventListener("resize", updateScale);
+      window.visualViewport?.removeEventListener("resize", updateScale);
+    };
   }, []);
 
   return (
     /* Outer centring shell */
     <div
-      className="flex items-center justify-center bg-[#E8E8E8] mt-12 md:mt-0 min-h-[calc(100svh-3rem)] md:min-h-[100svh]"
+      className="flex items-center justify-center bg-[#E8E8E8] mt-12 md:mt-0 min-h-[calc(100dvh-3rem)] md:min-h-[100dvh]"
     >
       {/*
         Scale wrapper: takes up exactly the scaled footprint so the flex
