@@ -11,6 +11,7 @@ import { getProduct, getProductsByCategory, getShortName, getStockCount } from "
 import { getBrand } from "@/data/brands";
 import { getProductReviews } from "@/data/reviews";
 import { use } from "react";
+import { useRouter } from "next/navigation";
 import { ProductCard } from "@/components/customer/ProductCard";
 import { ProductDetailSkeleton } from "@/components/customer/ProductDetailSkeleton";
 
@@ -52,6 +53,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const reviews = product ? getProductReviews(product.id) : [];
   const { addItem } = useCart();
   const { isFavorite, toggle } = useFavorites();
+  const router = useRouter();
 
   const [selectedSize, setSelectedSize] = useState(product?.sizes[1] ?? "");
   const [selectedColor, setSelectedColor] = useState(0);
@@ -105,7 +107,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   };
 
   return (
-    <div className="relative flex flex-col bg-white">
+    <div className="flex flex-col h-full bg-white">
+      {/* ── Inner scroll area (owns its own scroll, so the Add-to-Bag bar
+           can live outside it and always be pinned at the bottom) ── */}
+      <div className="flex-1 overflow-y-auto phone-scroll relative">
+
       {/* Skeleton overlay — fades out once the hero image is ready */}
       <AnimatePresence>
         {!heroReady && (
@@ -137,18 +143,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               className="object-cover object-top"
               priority={i === 0}
               onLoad={i === 0 ? () => setHeroReady(true) : undefined}
+              onError={i === 0 ? () => setHeroReady(true) : undefined}
             />
           </div>
         ))}
 
         {/* Back button — min 44px touch target */}
-        <Link
-          href="/customer/home"
-          className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10"
+        <button
+          onClick={() => router.back()}
+          className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10 cursor-pointer"
           style={{ touchAction: "manipulation" }}
+          aria-label="Go back"
         >
           <ChevronLeft size={18} className="text-[#111111]" />
-        </Link>
+        </button>
 
         {/* Favourite button — min 44px touch target */}
         <button
@@ -419,8 +427,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         )}
       </div>
 
-      {/* ── Sticky ADD TO CART bar — sits above the bottom nav ── */}
-      <div className="sticky bottom-16 z-20 bg-white border-t border-[#EEEEEE]">
+      {/* ── Close inner scroll area ── */}
+      </div>
+
+      {/* ── ADD TO BAG bar — outside the scroll area, always pinned above BottomNav ── */}
+      <div className="shrink-0 bg-white border-t border-[#EEEEEE]">
         <button
           onClick={handleAddToCart}
           className={`w-full py-4 text-sm font-bold tracking-[0.2em] uppercase transition-all cursor-pointer ${
