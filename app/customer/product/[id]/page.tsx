@@ -107,7 +107,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   };
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    // pb-16 reserves the 64px occupied by the PhoneFrame's absolute BottomNav,
+    // so the pinned Add-to-Bag bar sits just above it instead of behind it.
+    <div className="flex flex-col h-full bg-white pb-16">
       {/* ── Inner scroll area (owns its own scroll, so the Add-to-Bag bar
            can live outside it and always be pinned at the bottom) ── */}
       <div className="flex-1 overflow-y-auto phone-scroll relative">

@@ -35,7 +35,14 @@ export function PhoneFrame({
   );
 
   useEffect(() => {
-    function updateScale() { setScale(calcScale()); }
+    function updateScale() {
+      // Skip rescale while a text input is focused — the on-screen keyboard
+      // collapses visualViewport.height, which would otherwise shrink the
+      // whole phone frame (and make search results look like they vanished).
+      const ae = document.activeElement;
+      if (ae && (ae.tagName === "INPUT" || ae.tagName === "TEXTAREA")) return;
+      setScale(calcScale());
+    }
     updateScale();
     window.addEventListener("resize", updateScale);
     window.visualViewport?.addEventListener("resize", updateScale);
@@ -48,7 +55,7 @@ export function PhoneFrame({
   return (
     /* Outer centring shell */
     <div
-      className="flex items-center justify-center bg-[#E8E8E8] mt-12 md:mt-0 min-h-[calc(100dvh-3rem)] md:min-h-[100dvh]"
+      className="flex items-center justify-center bg-[#E8E8E8] mt-12 md:mt-0 min-h-[calc(100svh-3rem)] md:min-h-[100svh]"
     >
       {/*
         Scale wrapper: takes up exactly the scaled footprint so the flex

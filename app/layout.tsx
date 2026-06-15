@@ -54,6 +54,11 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // This is a phone-frame mockup demo — disable browser zoom so tapping a
+  // search input doesn't trigger iOS Safari's focus-zoom (inputs are < 16px)
+  // and pinch-zoom can't break the scaled phone illusion.
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
