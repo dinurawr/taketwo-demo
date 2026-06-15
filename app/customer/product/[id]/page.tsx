@@ -107,11 +107,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   };
 
   return (
-    // pb-16 reserves the 64px occupied by the PhoneFrame's absolute BottomNav,
-    // so the pinned Add-to-Bag bar sits just above it instead of behind it.
-    <div className="flex flex-col h-full bg-white pb-16">
-      {/* ── Inner scroll area (owns its own scroll, so the Add-to-Bag bar
-           can live outside it and always be pinned at the bottom) ── */}
+    // `relative` anchors the floating Add-to-Bag button (absolute, bottom-[72px])
+    // so it always sits just above the PhoneFrame's absolute BottomNav.
+    <div className="relative flex flex-col h-full bg-white">
+      {/* ── Inner scroll area — content scrolls behind the floating CTA ── */}
       <div className="flex-1 overflow-y-auto phone-scroll relative">
 
       {/* Skeleton overlay — fades out once the hero image is ready */}
@@ -186,8 +185,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         )}
       </div>
 
-      {/* ── Content panel ─────────────────────────────────── */}
-      <div className="relative -mt-6 bg-white rounded-t-[28px] pt-5 px-5">
+      {/* ── Content panel (pb-32 clears the floating Add-to-Bag CTA) ── */}
+      <div className="relative -mt-6 bg-white rounded-t-[28px] pt-5 px-5 pb-32">
         {/* Brand + Name + Price */}
         <div className="mb-3">
           <Link
@@ -432,11 +431,13 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       {/* ── Close inner scroll area ── */}
       </div>
 
-      {/* ── ADD TO BAG bar — outside the scroll area, always pinned above BottomNav ── */}
-      <div className="shrink-0 bg-white border-t border-[#EEEEEE]">
+      {/* ── Floating ADD TO BAG button — pinned 72px up so it hovers above the
+           BottomNav (h-16) with an 8px gap; wrapper ignores pointer events so
+           the content beside the button stays scrollable ── */}
+      <div className="absolute left-0 right-0 bottom-[72px] px-4 z-20 pointer-events-none">
         <button
           onClick={handleAddToCart}
-          className={`w-full py-4 text-sm font-bold tracking-[0.2em] uppercase transition-all cursor-pointer ${
+          className={`pointer-events-auto w-full py-4 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.22)] text-sm font-bold tracking-[0.2em] uppercase transition-all cursor-pointer ${
             added ? "bg-[#4A7C59] text-white" : "bg-[#111111] text-white"
           }`}
           style={{ fontFamily: "var(--font-barlow)", touchAction: "manipulation" }}

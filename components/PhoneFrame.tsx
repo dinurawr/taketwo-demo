@@ -11,9 +11,9 @@ const MOBILE_BANNER_H = 48; // DemoBanner bar height on mobile
 function calcScale() {
   const vw = window.innerWidth;
   const bannerH = vw < 768 ? MOBILE_BANNER_H : 0;
-  // Use visualViewport.height so the scale never exceeds what the CSS dvh container can fit.
-  // window.innerHeight inflates on iOS Safari when the toolbar auto-hides, causing overflow.
-  const vh = (window.visualViewport?.height ?? window.innerHeight) - bannerH;
+  // Use window.innerHeight (NOT visualViewport.height): innerHeight is stable when
+  // the iOS keyboard opens, so focusing the search bar doesn't shrink the phone.
+  const vh = window.innerHeight - bannerH;
   const sx = (vw - PAD * 2) / PHONE_W;
   const sy = (vh - PAD * 2) / PHONE_H;
   return Math.min(sx, sy, 1);
@@ -33,22 +33,27 @@ export function PhoneFrame({
   const [scale, setScale] = useState(() =>
     typeof window !== "undefined" ? calcScale() : 1
   );
+  // Gate visibility until the first client-side measure so a direct load /
+  // deep link never paints the un-scaled (zoomed-in) SSR state before the
+  // correct scale is applied.
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     function updateScale() {
-      // Skip rescale while a text input is focused — the on-screen keyboard
-      // collapses visualViewport.height, which would otherwise shrink the
-      // whole phone frame (and make search results look like they vanished).
+      // Don't rescale while a text input is focused. On Android the window
+      // shrinks for the on-screen keyboard, which would otherwise zoom the
+      // whole phone frame out the moment you tap the search bar.
       const ae = document.activeElement;
       if (ae && (ae.tagName === "INPUT" || ae.tagName === "TEXTAREA")) return;
       setScale(calcScale());
     }
     updateScale();
+    setReady(true);
     window.addEventListener("resize", updateScale);
-    window.visualViewport?.addEventListener("resize", updateScale);
+    window.addEventListener("orientationchange", updateScale);
     return () => {
       window.removeEventListener("resize", updateScale);
-      window.visualViewport?.removeEventListener("resize", updateScale);
+      window.removeEventListener("orientationchange", updateScale);
     };
   }, []);
 
@@ -67,6 +72,8 @@ export function PhoneFrame({
           height: PHONE_H * scale,
           position: "relative",
           flexShrink: 0,
+          opacity: ready ? 1 : 0,
+          transition: "opacity 0.15s ease-out",
         }}
       >
         {/* Phone shell at natural 390×844, scaled from top-left */}

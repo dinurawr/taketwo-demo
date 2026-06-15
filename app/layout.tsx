@@ -53,10 +53,12 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   width: "device-width",
+  // This is a phone-frame mockup demo — fully lock the browser zoom so the page
+  // always renders at scale 1 (consistent on any deep link / direct load),
+  // tapping a search input never triggers iOS Safari's focus-zoom (inputs are
+  // < 16px), and pinch-zoom can't break the scaled phone illusion.
   initialScale: 1,
-  // This is a phone-frame mockup demo — disable browser zoom so tapping a
-  // search input doesn't trigger iOS Safari's focus-zoom (inputs are < 16px)
-  // and pinch-zoom can't break the scaled phone illusion.
+  minimumScale: 1,
   maximumScale: 1,
   userScalable: false,
 };
