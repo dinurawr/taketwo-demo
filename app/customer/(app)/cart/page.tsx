@@ -25,7 +25,7 @@ export default function CartPage() {
         style={{ height: 716 }}
       >
         <h2 className="text-lg font-bold text-[#111111] mb-2">Your bag is empty.</h2>
-        <p className="text-sm text-[#666666] font-light mb-6">Add some pieces you love</p>
+        <p className="text-sm text-[#666666] font-light mb-6">Add some pieces you love.</p>
         <Link
           href="/customer/shop"
           className="px-8 py-3 bg-[#111111] text-white text-sm font-bold uppercase tracking-widest"
