@@ -10,6 +10,7 @@ import { products } from "@/data/products";
 import { brands } from "@/data/brands";
 import { CategoryAccordion } from "@/components/customer/CategoryAccordion";
 import { EndlessFeed } from "@/components/customer/EndlessFeed";
+import { TrendingTags } from "@/components/customer/TrendingTags";
 import { FilterDropdown } from "@/components/customer/FilterDropdown";
 import { FilterChips } from "@/components/customer/FilterChips";
 import {
@@ -353,6 +354,7 @@ function ShopGrid() {
       </motion.div>
 
       {/* ── Content per pill ───────────────────────────────── */}
+      {activePill === "for-you" && <TrendingTags title="Trending" />}
       {activePill === "for-you" && <EndlessFeed query={query} filters={filters} sort={sort} />}
       {activePill === "brands"  && <BrandsView query={query} />}
       {activePill === "men"     && <CategoryAccordion gender="men"   query={query} />}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Search, X, SlidersHorizontal } from "lucide-react";
 import { ProductCard } from "@/components/customer/ProductCard";
+import { TrendingTags } from "@/components/customer/TrendingTags";
 import { products } from "@/data/products";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
@@ -104,6 +105,9 @@ export default function SearchPage() {
           />
         </div>
       )}
+
+      {/* Trending searches — hard-edge tag row, shown before a query is typed */}
+      {query === "" && !selectedBrand && <TrendingTags />}
 
       <p className="px-5 mb-3 text-xs text-[#999999]">
         {filtered.length} result{filtered.length !== 1 ? "s" : ""}
