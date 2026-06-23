@@ -107,8 +107,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   };
 
   return (
-    <div className="flex flex-col h-full bg-white">
-      {/* ── Inner scroll area — whole page scrolls; Add-to-Bag sits inline at the end ── */}
+    <div className="relative flex flex-col h-full bg-white">
+      {/* ── Inner scroll area — content scrolls behind the floating Add-to-Bag ── */}
       <div className="flex-1 overflow-y-auto phone-scroll relative">
 
       {/* Skeleton overlay — fades out once the hero image is ready */}
@@ -128,24 +128,23 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         )}
       </AnimatePresence>
 
-      {/* ── Vertical image stack ──────────────────────────── */}
-      <div
-        className="relative overflow-y-auto snap-y snap-mandatory bg-[#F0F3EC]"
-        style={{ height: 440 }}
-      >
-        {product.images.map((img, i) => (
-          <div key={i} className="snap-start relative shrink-0" style={{ height: 440 }}>
-            <Image
-              src={img}
-              alt={`${product.name} — view ${i + 1}`}
-              fill
-              className="object-cover object-top"
-              priority={i === 0}
-              onLoad={i === 0 ? () => setHeroReady(true) : undefined}
-              onError={i === 0 ? () => setHeroReady(true) : undefined}
-            />
-          </div>
-        ))}
+      {/* ── Horizontal image slider — swipe left/right to switch views ── */}
+      <div className="relative bg-[#F0F3EC]" style={{ height: 440 }}>
+        <div className="flex h-full overflow-x-auto snap-x snap-mandatory phone-scroll">
+          {product.images.map((img, i) => (
+            <div key={i} className="snap-start relative shrink-0 w-full h-full">
+              <Image
+                src={img}
+                alt={`${product.name} — view ${i + 1}`}
+                fill
+                className="object-cover object-top"
+                priority={i === 0}
+                onLoad={i === 0 ? () => setHeroReady(true) : undefined}
+                onError={i === 0 ? () => setHeroReady(true) : undefined}
+              />
+            </div>
+          ))}
+        </div>
 
         {/* Back button — min 44px touch target */}
         <button
@@ -170,21 +169,21 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           />
         </button>
 
-        {/* Vertical page dots */}
+        {/* Horizontal page dots — bottom centre */}
         {product.images.length > 1 && (
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-1.5 z-10">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
             {product.images.map((_, i) => (
               <div
                 key={i}
-                className={`w-1.5 rounded-full ${i === 0 ? "bg-[#111111] h-4" : "bg-black/20 h-1.5"}`}
+                className={`h-1.5 rounded-full ${i === 0 ? "bg-[#111111] w-4" : "bg-black/20 w-1.5"}`}
               />
             ))}
           </div>
         )}
       </div>
 
-      {/* ── Content panel (pb-20 keeps the inline Add-to-Bag clear of the navbar) ── */}
-      <div className="relative -mt-6 bg-white rounded-t-[28px] pt-5 px-5 pb-20">
+      {/* ── Content panel (pb-32 keeps the last content clear of the floating CTA) ── */}
+      <div className="relative -mt-6 bg-white rounded-t-[28px] pt-5 px-5 pb-32">
         {/* Brand + Name + Price */}
         <div className="mb-3">
           <Link
@@ -441,19 +440,22 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </div>
         )}
 
-        {/* ── Inline ADD TO BAG — full-width black bar with hard corners ── */}
+      </div>
+
+      {/* ── Close inner scroll area ── */}
+      </div>
+
+      {/* ── Floating ADD TO BAG — pinned above the BottomNav (h-16), hard corners ── */}
+      <div className="absolute left-0 right-0 bottom-[72px] px-4 z-20 pointer-events-none">
         <button
           onClick={handleAddToCart}
-          className={`w-full py-4 text-sm font-bold tracking-[0.2em] uppercase transition-all cursor-pointer ${
+          className={`pointer-events-auto w-full py-4 shadow-[0_10px_30px_rgba(0,0,0,0.22)] text-sm font-bold tracking-[0.2em] uppercase transition-all cursor-pointer ${
             added ? "bg-[#4A7C59] text-white" : "bg-[#111111] text-white"
           }`}
           style={{ fontFamily: "var(--font-barlow)", touchAction: "manipulation" }}
         >
           {added ? "✓ ADDED TO BAG" : "ADD TO BAG"}
         </button>
-      </div>
-
-      {/* ── Close inner scroll area ── */}
       </div>
     </div>
   );
