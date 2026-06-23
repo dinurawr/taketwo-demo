@@ -8,10 +8,10 @@ export default function RolePicker() {
       {/* Logo */}
       <div className="mb-8 text-center">
         <Image
-          src="/logo.png"
+          src="/logo-mark.png"
           alt="Take Two"
-          width={280}
-          height={164}
+          width={210}
+          height={160}
           className="mx-auto"
           priority
         />
