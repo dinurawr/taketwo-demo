@@ -146,20 +146,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           ))}
         </div>
 
-        {/* Back button — min 44px touch target */}
+        {/* Back button — min 44px touch target; top-14 clears the status bar */}
         <button
           onClick={() => router.back()}
-          className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10 cursor-pointer"
+          className="absolute top-14 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10 cursor-pointer"
           style={{ touchAction: "manipulation" }}
           aria-label="Go back"
         >
           <ChevronLeft size={18} className="text-[#111111]" />
         </button>
 
-        {/* Favourite button — min 44px touch target */}
+        {/* Favourite button — min 44px touch target; top-14 clears the status bar */}
         <button
           onClick={() => toggle(product.id)}
-          className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10 cursor-pointer"
+          className="absolute top-14 right-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10 cursor-pointer"
           style={{ touchAction: "manipulation" }}
         >
           <Heart
