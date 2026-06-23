@@ -16,7 +16,7 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <motion.div
-      className="relative bg-white overflow-hidden"
+      className="relative bg-white overflow-hidden border border-[#E5E5E5]"
       whileTap={{ scale: 0.97, opacity: 0.85 }}
       transition={{ duration: 0.15 }}
     >

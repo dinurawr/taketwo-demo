@@ -52,6 +52,18 @@ body {
   --font-mono:      var(--font-geist);
 }
 
+/* Thin / minimal UI — Jaded London + Bershka inspired. Scoped to the customer
+   app (wrapper in app/customer/layout.tsx) so the data-dense vendor dashboard
+   keeps its heavier hierarchy. Shifts every weight one notch lighter + airy
+   tracking, without touching individual components. */
+/* display:contents → the wrapper applies font theming via inheritance but
+   generates no box, so it doesn't break child height chains (e.g. the PDP's
+   h-full inner-scroll + absolute floating Add-to-Bag button). */
+.ui-thin              { display: contents; font-weight: 300; letter-spacing: 0.01em; }
+.ui-thin .font-medium   { font-weight: 400; }
+.ui-thin .font-semibold { font-weight: 500; }
+.ui-thin .font-bold     { font-weight: 600; }
+
 /* Hide scrollbar for phone frame */
 .phone-scroll {
   scrollbar-width: none;

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { products } from "@/data/products";
+import { getBrand } from "@/data/brands";
 import { ProductSlider } from "@/components/customer/ProductSlider";
 import { ShopByBrand } from "@/components/customer/ShopByBrand";
 
@@ -37,6 +38,12 @@ const HERO_TEXT: Record<Tab, { line1: string; line2: string }[]> = {
     { line1: "everyday",   line2: "staples"   },
     { line1: "clean",      line2: "minimal"   },
   ],
+};
+
+// ── Selling brand per hero slide (one brand id per slide, per tab) ───────
+const HERO_BRANDS: Record<Tab, string[]> = {
+  WOMEN: ["nilo", "halcyon", "ember"],
+  MEN:   ["valley", "north-lane", "ember"],
 };
 
 // ── 2×2 category tiles per tab ───────────────────────────────────────────
@@ -108,6 +115,7 @@ export default function CustomerHome() {
 
   const images = HERO_IMAGES[activeTab];
   const totalImages = images.length;
+  const heroBrand = getBrand(HERO_BRANDS[activeTab][heroIndex]);
 
   // Reset on tab change
   useEffect(() => {
@@ -197,6 +205,36 @@ export default function CustomerHome() {
               {HERO_TEXT[activeTab][heroIndex].line2}
             </p>
           </motion.div>
+        </AnimatePresence>
+
+        {/* ── Selling brand logo — bottom-right, links to that brand's page ── */}
+        <AnimatePresence mode="wait">
+          {heroBrand && (
+            <motion.div
+              key={`hero-brand-${activeTab}-${heroIndex}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="absolute z-20"
+              style={{ bottom: 72, right: 16 }}
+            >
+              <Link
+                href={`/customer/brand/${heroBrand.id}`}
+                className="relative block bg-white shadow-[0_4px_14px_rgba(0,0,0,0.3)]"
+                style={{ width: 84, height: 36, touchAction: "manipulation" }}
+                aria-label={`Shop ${heroBrand.name}`}
+              >
+                <Image
+                  src={heroBrand.logoFile}
+                  alt={heroBrand.name}
+                  fill
+                  className="object-contain p-1.5"
+                  sizes="84px"
+                />
+              </Link>
+            </motion.div>
+          )}
         </AnimatePresence>
 
         {/* ── Wordmark centred top ───────────────────────────── */}

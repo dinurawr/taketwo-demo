@@ -107,10 +107,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   };
 
   return (
-    // `relative` anchors the floating Add-to-Bag button (absolute, bottom-[72px])
-    // so it always sits just above the PhoneFrame's absolute BottomNav.
     <div className="relative flex flex-col h-full bg-white">
-      {/* ── Inner scroll area — content scrolls behind the floating CTA ── */}
+      {/* ── Inner scroll area — content scrolls behind the floating Add-to-Bag ── */}
       <div className="flex-1 overflow-y-auto phone-scroll relative">
 
       {/* Skeleton overlay — fades out once the hero image is ready */}
@@ -130,39 +128,38 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         )}
       </AnimatePresence>
 
-      {/* ── Vertical image stack ──────────────────────────── */}
-      <div
-        className="relative overflow-y-auto snap-y snap-mandatory bg-[#F0F3EC]"
-        style={{ height: 440 }}
-      >
-        {product.images.map((img, i) => (
-          <div key={i} className="snap-start relative shrink-0" style={{ height: 440 }}>
-            <Image
-              src={img}
-              alt={`${product.name} — view ${i + 1}`}
-              fill
-              className="object-cover object-top"
-              priority={i === 0}
-              onLoad={i === 0 ? () => setHeroReady(true) : undefined}
-              onError={i === 0 ? () => setHeroReady(true) : undefined}
-            />
-          </div>
-        ))}
+      {/* ── Horizontal image slider — swipe left/right to switch views ── */}
+      <div className="relative bg-[#F0F3EC]" style={{ height: 440 }}>
+        <div className="flex h-full overflow-x-auto snap-x snap-mandatory phone-scroll">
+          {product.images.map((img, i) => (
+            <div key={i} className="snap-start relative shrink-0 w-full h-full">
+              <Image
+                src={img}
+                alt={`${product.name} — view ${i + 1}`}
+                fill
+                className="object-cover object-top"
+                priority={i === 0}
+                onLoad={i === 0 ? () => setHeroReady(true) : undefined}
+                onError={i === 0 ? () => setHeroReady(true) : undefined}
+              />
+            </div>
+          ))}
+        </div>
 
-        {/* Back button — min 44px touch target */}
+        {/* Back button — min 44px touch target; top-14 clears the status bar */}
         <button
           onClick={() => router.back()}
-          className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10 cursor-pointer"
+          className="absolute top-14 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10 cursor-pointer"
           style={{ touchAction: "manipulation" }}
           aria-label="Go back"
         >
           <ChevronLeft size={18} className="text-[#111111]" />
         </button>
 
-        {/* Favourite button — min 44px touch target */}
+        {/* Favourite button — min 44px touch target; top-14 clears the status bar */}
         <button
           onClick={() => toggle(product.id)}
-          className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10 cursor-pointer"
+          className="absolute top-14 right-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur flex items-center justify-center shadow-sm z-10 cursor-pointer"
           style={{ touchAction: "manipulation" }}
         >
           <Heart
@@ -172,20 +169,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           />
         </button>
 
-        {/* Vertical page dots */}
+        {/* Horizontal page dots — bottom centre */}
         {product.images.length > 1 && (
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col gap-1.5 z-10">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
             {product.images.map((_, i) => (
               <div
                 key={i}
-                className={`w-1.5 rounded-full ${i === 0 ? "bg-[#111111] h-4" : "bg-black/20 h-1.5"}`}
+                className={`h-1.5 rounded-full ${i === 0 ? "bg-[#111111] w-4" : "bg-black/20 w-1.5"}`}
               />
             ))}
           </div>
         )}
       </div>
 
-      {/* ── Content panel (pb-32 clears the floating Add-to-Bag CTA) ── */}
+      {/* ── Content panel (pb-32 keeps the last content clear of the floating CTA) ── */}
       <div className="relative -mt-6 bg-white rounded-t-[28px] pt-5 px-5 pb-32">
         {/* Brand + Name + Price */}
         <div className="mb-3">
@@ -326,9 +323,25 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         {/* ── 4 Accordions ──────────────────────────────────── */}
         <div className="mb-6">
           <Accordion title="Description">
-            <p className="mb-2">{product.description}</p>
-            <p className="text-[#999999]">Fabric: 100% premium cotton blend · Machine wash cold</p>
-            <p className="text-[#999999] mt-1">Made in Sri Lanka</p>
+            <p className="mb-3">{product.description}</p>
+            <div className="space-y-1.5 text-[13px]">
+              <div className="flex gap-2">
+                <span className="text-[#999999] w-24 shrink-0">Fabric</span>
+                <span className="text-[#555555]">100% premium cotton blend · Machine wash cold</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="text-[#999999] w-24 shrink-0">Made in</span>
+                <span className="text-[#555555]">Sri Lanka</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="text-[#999999] w-24 shrink-0">Model</span>
+                <span className="text-[#555555]">175 cm / 5&apos;9&quot;, wearing size {product.sizes[1] ?? product.sizes[0]}</span>
+              </div>
+              <div className="flex gap-2">
+                <span className="text-[#999999] w-24 shrink-0">Fit</span>
+                <span className="text-[#555555]">True to size · Relaxed, everyday cut</span>
+              </div>
+            </div>
           </Accordion>
 
           <Accordion title="Size Guide">
@@ -426,18 +439,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
           </div>
         )}
+
       </div>
 
       {/* ── Close inner scroll area ── */}
       </div>
 
-      {/* ── Floating ADD TO BAG button — pinned 72px up so it hovers above the
-           BottomNav (h-16) with an 8px gap; wrapper ignores pointer events so
-           the content beside the button stays scrollable ── */}
+      {/* ── Floating ADD TO BAG — pinned above the BottomNav (h-16), hard corners ── */}
       <div className="absolute left-0 right-0 bottom-[72px] px-4 z-20 pointer-events-none">
         <button
           onClick={handleAddToCart}
-          className={`pointer-events-auto w-full py-4 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.22)] text-sm font-bold tracking-[0.2em] uppercase transition-all cursor-pointer ${
+          className={`pointer-events-auto w-full py-4 shadow-[0_10px_30px_rgba(0,0,0,0.22)] text-sm font-bold tracking-[0.2em] uppercase transition-all cursor-pointer ${
             added ? "bg-[#4A7C59] text-white" : "bg-[#111111] text-white"
           }`}
           style={{ fontFamily: "var(--font-barlow)", touchAction: "manipulation" }}

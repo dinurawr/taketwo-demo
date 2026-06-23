@@ -114,7 +114,7 @@ export function EndlessFeed({ query, filters, sort = "default" }: { query: strin
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-0.5">
+          <div className="grid grid-cols-2 gap-3 px-4">
             {renderedList.map(({ key, product }) => (
               <ProductCard key={key} product={product} />
             ))}

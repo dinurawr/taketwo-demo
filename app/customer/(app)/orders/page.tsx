@@ -3,8 +3,42 @@
 import { orders } from "@/data/orders";
 import { getBrand } from "@/data/brands";
 import Image from "next/image";
+import { Truck } from "lucide-react";
 
 const CUSTOMER_ID = "u1";
+
+// ── Delivery progress stepper ───────────────────────────────────────────────
+const PROGRESS_STEPS = ["Confirmed", "Processing", "Shipped", "Delivered"] as const;
+const stepIndexByStatus: Record<string, number> = {
+  new: 1,              // confirmed + processing
+  shipping: 2,         // shipped / on its way
+  completed: 3,        // delivered
+  returning: 3,
+  pending_verdict: 3,
+  cancelled: -1,       // no tracker
+};
+
+function OrderProgress({ status }: { status: string }) {
+  const idx = stepIndexByStatus[status] ?? 0;
+  if (idx < 0) return null;
+  return (
+    <div className="mt-3 pt-3 border-t border-[#E8E8E8]">
+      <p className="text-xs font-bold text-[#111111] mb-2">Your order is confirmed!</p>
+      <div className="flex items-center gap-1">
+        {PROGRESS_STEPS.map((_, i) => (
+          <div
+            key={i}
+            className={`h-1 flex-1 ${i <= idx ? "bg-[#4A89C2]" : "bg-[#E0E0E0]"}`}
+          />
+        ))}
+      </div>
+      <div className="flex items-center gap-1.5 mt-2">
+        <Truck size={13} strokeWidth={1.8} className="text-[#4A89C2]" />
+        <span className="text-[11px] font-semibold text-[#111111]">{PROGRESS_STEPS[idx]}</span>
+      </div>
+    </div>
+  );
+}
 
 const statusLabel: Record<string, string> = {
   new: "Processing",
@@ -76,6 +110,9 @@ export default function OrdersPage() {
                   )}
                 </div>
               </div>
+
+              <OrderProgress status={order.status} />
+
               {order.status === "completed" && (
                 <button
                   className="mt-3 w-full py-2 rounded-full border-2 border-[#E8E8E8] text-xs font-semibold text-[#666666] hover:border-[#ED832B] hover:text-[#ED832B] transition-colors"

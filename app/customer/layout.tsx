@@ -7,7 +7,7 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
     <div>
       <DemoBanner />
       <PhoneFrame nav={<BottomNav />}>
-        {children}
+        <div className="ui-thin">{children}</div>
       </PhoneFrame>
     </div>
   );
