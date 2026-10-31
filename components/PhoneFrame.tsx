@@ -1,23 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const PHONE_W = 390;
 const PHONE_H = 844;
 const PAD = 24;
-const MOBILE_BANNER_H = 48; // DemoBanner bar height on mobile
-
-function calcScale() {
-  const vw = window.innerWidth;
-  const bannerH = vw < 768 ? MOBILE_BANNER_H : 0;
-  // Use window.innerHeight (NOT visualViewport.height): innerHeight is stable when
-  // the iOS keyboard opens, so focusing the search bar doesn't shrink the phone.
-  const vh = window.innerHeight - bannerH;
-  const sx = (vw - PAD * 2) / PHONE_W;
-  const sy = (vh - PAD * 2) / PHONE_H;
-  return Math.min(sx, sy, 1);
-}
 
 export function PhoneFrame({
   children,
@@ -30,15 +18,16 @@ export function PhoneFrame({
   overlay?: React.ReactNode;
   className?: string;
 }) {
+  // The centring container. We measure ITS size (not window.innerWidth/Height)
+  // to compute the scale — see the effect below for why that matters.
+  const containerRef = useRef<HTMLDivElement>(null);
   // IMPORTANT: initialise to a DETERMINISTIC value (1) that is identical on the
-  // server and on the client's first hydration render. Computing calcScale()
-  // here instead produces a server/client mismatch (server has no window, so it
-  // renders scale(1); the client renders the real scale). React refuses to patch
-  // a mismatched inline style ("won't be patched up") AND, because the initial
-  // client state already equals the measured scale, the effect's setScale() is a
-  // no-op that triggers no re-render — so the DOM stays frozen at the server's
-  // scale(1) and the whole phone renders zoomed-in/overflowing. Starting at 1
-  // (matching SSR) means the effect below always applies a *real* change.
+  // server and on the client's first hydration render. Measuring here instead
+  // produces a server/client mismatch (server has no DOM, so it renders
+  // scale(1); the client renders the real scale). React refuses to patch a
+  // mismatched inline style ("won't be patched up"), leaving the DOM frozen at
+  // scale(1) — the whole phone zoomed-in/overflowing. Starting at 1 (matching
+  // SSR) means the effect below always applies a *real* change.
   const [scale, setScale] = useState(1);
   // Gate visibility until the first client-side measure so a direct load /
   // deep link never paints the un-scaled (zoomed-in) state before the correct
@@ -46,27 +35,55 @@ export function PhoneFrame({
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    function updateScale() {
-      // Don't rescale while a text input is focused. On Android the window
-      // shrinks for the on-screen keyboard, which would otherwise zoom the
-      // whole phone frame out the moment you tap the search bar.
+    const el = containerRef.current;
+    if (!el) return;
+
+    function measure() {
+      const node = containerRef.current;
+      if (!node) return;
+      // Don't rescale while a text input is focused. On Android the viewport
+      // shrinks for the on-screen keyboard, which would otherwise zoom the whole
+      // phone frame out the moment you tap the search bar.
       const ae = document.activeElement;
       if (ae && (ae.tagName === "INPUT" || ae.tagName === "TEXTAREA")) return;
-      setScale(calcScale());
+      // Measure the CONTAINER, not window.innerWidth/innerHeight. The container's
+      // height comes from `100svh` (the *small* viewport height), which is a fixed
+      // per-device value that does NOT change as iOS Safari's address bar
+      // collapses/expands. window.innerHeight DOES change with the address bar and
+      // is read at an unreliable moment on refresh / bfcache restore / tab-return,
+      // which is exactly what left the phone stuck zoomed-in on those actions.
+      const cw = node.clientWidth;
+      const ch = node.clientHeight;
+      if (!cw || !ch) return;
+      const next = Math.min((cw - PAD * 2) / PHONE_W, (ch - PAD * 2) / PHONE_H, 1);
+      setScale(next);
+      setReady(true);
     }
-    updateScale();
-    setReady(true);
-    window.addEventListener("resize", updateScale);
-    window.addEventListener("orientationchange", updateScale);
+
+    measure();
+    // A ResizeObserver on the container fires for EVERY reason the available
+    // space changes — first paint, refresh, bfcache restore, tab-return,
+    // rotation — without depending on which window event a given browser emits.
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    // Belt-and-suspenders alongside the observer: `resize` catches viewport
+    // changes an RO occasionally coalesces, `pageshow` fires on bfcache restore
+    // (iOS tab-return / back-forward), and `orientationchange` covers rotation.
+    window.addEventListener("resize", measure);
+    window.addEventListener("pageshow", measure);
+    window.addEventListener("orientationchange", measure);
     return () => {
-      window.removeEventListener("resize", updateScale);
-      window.removeEventListener("orientationchange", updateScale);
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("pageshow", measure);
+      window.removeEventListener("orientationchange", measure);
     };
   }, []);
 
   return (
     /* Outer centring shell */
     <div
+      ref={containerRef}
       className="flex items-center justify-center bg-[#E8E8E8] mt-12 md:mt-0 min-h-[calc(100svh-3rem)] md:min-h-[100svh]"
     >
       {/*
