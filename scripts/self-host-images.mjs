@@ -26,6 +26,7 @@ const FILES = [
   "data/products.ts",
   "data/orders.ts",
   "data/seller-fixtures.ts",
+  "data/brands.ts",
   "app/customer/(app)/home/page.tsx",
 ];
 
