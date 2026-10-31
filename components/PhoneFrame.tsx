@@ -30,12 +30,19 @@ export function PhoneFrame({
   overlay?: React.ReactNode;
   className?: string;
 }) {
-  const [scale, setScale] = useState(() =>
-    typeof window !== "undefined" ? calcScale() : 1
-  );
+  // IMPORTANT: initialise to a DETERMINISTIC value (1) that is identical on the
+  // server and on the client's first hydration render. Computing calcScale()
+  // here instead produces a server/client mismatch (server has no window, so it
+  // renders scale(1); the client renders the real scale). React refuses to patch
+  // a mismatched inline style ("won't be patched up") AND, because the initial
+  // client state already equals the measured scale, the effect's setScale() is a
+  // no-op that triggers no re-render — so the DOM stays frozen at the server's
+  // scale(1) and the whole phone renders zoomed-in/overflowing. Starting at 1
+  // (matching SSR) means the effect below always applies a *real* change.
+  const [scale, setScale] = useState(1);
   // Gate visibility until the first client-side measure so a direct load /
-  // deep link never paints the un-scaled (zoomed-in) SSR state before the
-  // correct scale is applied.
+  // deep link never paints the un-scaled (zoomed-in) state before the correct
+  // scale is applied. opacity starts 0 on both server and client (no mismatch).
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
