@@ -11,6 +11,13 @@ export type Brand = {
   followerCount: number;
 };
 
+// Real brand photography (Shopify CDNs — same sources as data/products.ts).
+//   ts → Taylor Stitch · ab → Anine Bing · fb → Frankies Bikinis · fr → FARM Rio
+const ts = (f: string) => `https://cdn.shopify.com/s/files/1/0070/1922/files/${f}`;
+const ab = (f: string) => `https://cdn.shopify.com/s/files/1/0150/1528/files/${f}`;
+const fb = (f: string) => `https://cdn.shopify.com/s/files/1/0158/2548/files/${f}`;
+const fr = (f: string) => `https://cdn.shopify.com/s/files/1/0077/6673/6963/files/${f}`;
+
 export const brands: Brand[] = [
   {
     id: "valley",
@@ -20,12 +27,12 @@ export const brands: Brand[] = [
     textColor: "#fff",
     logo: "VL",
     logoFile: "/brands/valley.svg",
-    heroImage: "https://images.unsplash.com/photo-1656695230389-01185e6fbff8?w=800&q=80",
+    heroImage: ts("instock_m_q326_regenerative-cotton-tee-faded-pine_portrait_002.jpg"),
     lookbook: [
-      "https://images.unsplash.com/photo-1550995694-3f5f4a7e1bd2?w=600&q=80",
-      "https://images.unsplash.com/photo-1619603364904-c0498317e145?w=600&q=80",
-      "https://images.unsplash.com/photo-1621072156002-e2fccdc0b176?w=600&q=80",
-      "https://images.unsplash.com/photo-1626557981101-aae6f84aa6ff?w=600&q=80",
+      ts("Q426_TheOrganicCottonShopTee-PortTwist_PDP_002.jpg"),
+      ts("Q426_The_Maritime_Shirt_Jacket_in_Heather_Olive_Wool_PDP_002.jpg"),
+      ts("Q226_the-apres-short-in-coal-hemp_pdp_02_6a3f356a-9843-4992-bde6-f252c3f3e649.jpg"),
+      ts("instock_m_q226_sunset-short_portrait_002.jpg"),
     ],
     followerCount: 1247,
   },
@@ -37,12 +44,12 @@ export const brands: Brand[] = [
     textColor: "#fff",
     logo: "NL",
     logoFile: "/brands/north-lane.svg",
-    heroImage: "https://images.unsplash.com/photo-1550995694-3f5f4a7e1bd2?w=800&q=80",
+    heroImage: ts("Q426_The_Jack_in_Soil_Oxford_PDP_002.jpg"),
     lookbook: [
-      "https://images.unsplash.com/photo-1656695230389-01185e6fbff8?w=600&q=80",
-      "https://images.unsplash.com/photo-1619603364904-c0498317e145?w=600&q=80",
-      "https://images.unsplash.com/photo-1642764873649-5c228ce3fe74?w=600&q=80",
-      "https://images.unsplash.com/photo-1623658580851-3b25bf83b4ea?w=600&q=80",
+      ts("Q426_The_Carnegie_Pant_in_Faded_Black_Washed_Moleskin_PDP_002.jpg"),
+      ts("Q326_Studio_Camden_Pant_in_Washed_Indigo_Roped_Denim_PDP_02.jpg"),
+      ts("Q426_TheReddingShirt-BoulderMarlHemp_PDP_002.jpg"),
+      ts("Q426_The_Jack_in_Crescent_Plaid_Oxford_PDP_002.jpg"),
     ],
     followerCount: 876,
   },
@@ -54,12 +61,12 @@ export const brands: Brand[] = [
     textColor: "#fff",
     logo: "HC",
     logoFile: "/brands/halcyon.svg",
-    heroImage: "https://images.unsplash.com/photo-1562151270-c7d22ceb586a?w=800&q=80",
+    heroImage: fb("Frankiesbikinis-AlessiaSarong-BlueLei-Front6.jpg"),
     lookbook: [
-      "https://images.unsplash.com/photo-1603189343302-e603f7add05a?w=600&q=80",
-      "https://images.unsplash.com/photo-1574015974293-817f0ebebb74?w=600&q=80",
-      "https://images.unsplash.com/photo-1570976447640-ac859083963f?w=600&q=80",
-      "https://images.unsplash.com/photo-1572804013427-4d7ca7268217?w=600&q=80",
+      fb("Frankiesbikinis-AlessiaSarong-ScarletRose-Front5.jpg"),
+      fb("Frankiesbikinis-LucaSkirt-WinterSkies-Front.jpg"),
+      fb("Frankiesbikinis-SunshineOnePiece-Westcoast-Back.jpg"),
+      fb("Frankiesbikinis-AlessiaSarong-PinkFantasy-Front2.jpg"),
     ],
     followerCount: 2103,
   },
@@ -71,12 +78,12 @@ export const brands: Brand[] = [
     textColor: "#fff",
     logo: "NI",
     logoFile: "/brands/nilo.svg",
-    heroImage: "https://images.unsplash.com/photo-1574015974293-817f0ebebb74?w=800&q=80",
+    heroImage: ab("AB-FRAN_DRESS_-_BLACK_A-08-12685-BLK26_4034.jpg"),
     lookbook: [
-      "https://images.unsplash.com/photo-1603189343302-e603f7add05a?w=600&q=80",
-      "https://images.unsplash.com/photo-1562151270-c7d22ceb586a?w=600&q=80",
-      "https://images.unsplash.com/photo-1555689502-c4b22d76c56f?w=600&q=80",
-      "https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?w=600&q=80",
+      ab("AB-BLANCAMIDIDRESS-BLACK_A-02-12474-BLK26_0238.jpg"),
+      ab("AB-LEONOR_DRESS_-_BLACK_LACE_A-02-12777-BLK82_2146_copy.jpg"),
+      ab("AB-AMAL_TROUSER_-_BLACK_A-03-12597-BLK26_2476.jpg"),
+      ab("AB-LOU_TROUSER_-_DARK_GREY_A-03-12877-GRY40_1232.jpg"),
     ],
     followerCount: 1589,
   },
@@ -88,12 +95,12 @@ export const brands: Brand[] = [
     textColor: "#fff",
     logo: "EM",
     logoFile: "/brands/ember.svg",
-    heroImage: "https://images.unsplash.com/photo-1603189343302-e603f7add05a?w=800&q=80",
+    heroImage: ab("AB-ZEINA_TOP_-_BLACK_RECYCLED_LEATHER_A-07-12471-BLK81_1714_copy.jpg"),
     lookbook: [
-      "https://images.unsplash.com/photo-1562151270-c7d22ceb586a?w=600&q=80",
-      "https://images.unsplash.com/photo-1656695230389-01185e6fbff8?w=600&q=80",
-      "https://images.unsplash.com/photo-1574015974293-817f0ebebb74?w=600&q=80",
-      "https://images.unsplash.com/photo-1619603364904-c0498317e145?w=600&q=80",
+      ab("AB-JAMILA_TOP_-_BLACK_A-08-12796-BLK26_1688.jpg"),
+      ab("AB-MAHA_PANT_-_BLACK_A-03-12457-BLK26_4262.jpg"),
+      ab("AB-PAOLA_TROUSER_-_BURGUNDY_A-03-12834-BGN27_2041_copy.jpg"),
+      fr("344142_01.jpg"),
     ],
     followerCount: 734,
   },

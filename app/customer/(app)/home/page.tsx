@@ -11,18 +11,23 @@ import { ShopByBrand } from "@/components/customer/ShopByBrand";
 
 type Tab = "WOMEN" | "MEN";
 
-// ── Hero images (3 per tab, cycle every 4 s) ─────────────────────────────
+// Real brand photography (same Shopify CDNs as data/products.ts).
+const ts = (f: string) => `https://cdn.shopify.com/s/files/1/0070/1922/files/${f}`;
+const ab = (f: string) => `https://cdn.shopify.com/s/files/1/0150/1528/files/${f}`;
+const fb = (f: string) => `https://cdn.shopify.com/s/files/1/0158/2548/files/${f}`;
+
+// ── Hero images (3 per tab) — matched to HERO_BRANDS below so the brand logo
+//    chip on each slide belongs to the label shown in it. ───────────────────
 const HERO_IMAGES: Record<Tab, string[]> = {
   WOMEN: [
-    // B&W editorial woman — initial image on Women tab
-    "https://images.unsplash.com/photo-1574015974293-817f0ebebb74?w=800&q=80",
-    "https://images.unsplash.com/photo-1562151270-c7d22ceb586a?w=800&q=80",
-    "https://images.unsplash.com/photo-1603189343302-e603f7add05a?w=800&q=80",
+    ab("AB-FRAN_DRESS_-_BLACK_A-08-12685-BLK26_4034.jpg"),            // Nilo
+    fb("Frankiesbikinis-SunshineOnePiece-Westcoast-Front.jpg"),      // Halcyon
+    ab("AB-ZEINA_TOP_-_BLACK_RECYCLED_LEATHER_A-07-12471-BLK81_1705_copy.jpg"), // Ember
   ],
   MEN: [
-    "https://images.unsplash.com/photo-1656695230389-01185e6fbff8?w=800&q=80",
-    "https://images.unsplash.com/photo-1550995694-3f5f4a7e1bd2?w=800&q=80",
-    "https://images.unsplash.com/photo-1619603364904-c0498317e145?w=800&q=80",
+    ts("instock_m_q326_regenerative-cotton-tee-faded-pine_portrait_002.jpg"), // Valley
+    ts("Q426_The_Carnegie_Pant_in_Faded_Black_Washed_Moleskin_PDP_001.jpg"),  // North Lane
+    ts("instock_m_q326_long-sleeve-polo-vintage-white-knit-stripe_portrait_002.jpg"), // Ember
   ],
 };
 
@@ -46,12 +51,7 @@ const HERO_BRANDS: Record<Tab, string[]> = {
   MEN:   ["valley", "north-lane", "ember"],
 };
 
-// ── 2×2 category tiles per tab ───────────────────────────────────────────
-// Real catalogue photography (same Shopify CDNs as data/products.ts).
-const ts = (f: string) => `https://cdn.shopify.com/s/files/1/0070/1922/files/${f}`;
-const ab = (f: string) => `https://cdn.shopify.com/s/files/1/0150/1528/files/${f}`;
-const fb = (f: string) => `https://cdn.shopify.com/s/files/1/0158/2548/files/${f}`;
-
+// ── 2×2 category tiles per tab (ts/ab/fb helpers defined above) ──────────
 const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
   WOMEN: [
     {
