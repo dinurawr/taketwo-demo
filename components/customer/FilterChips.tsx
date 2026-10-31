@@ -67,6 +67,24 @@ export function FilterChips({ filters, onFiltersChange, options }: FilterChipsPr
   return (
     <div className="flex items-center gap-2 px-4 pb-3 overflow-x-auto scrollbar-none">
       <AnimatePresence initial={false}>
+        {/* Gender chip */}
+        {filters.gender && (
+          <Chip
+            key="gender"
+            label={filters.gender === "men" ? "Men" : "Women"}
+            onRemove={() => onFiltersChange({ ...filters, gender: null })}
+          />
+        )}
+
+        {/* New In chip */}
+        {filters.newOnly && (
+          <Chip
+            key="new-only"
+            label="New In"
+            onRemove={() => onFiltersChange({ ...filters, newOnly: false })}
+          />
+        )}
+
         {/* Category chips */}
         {filters.categories.map((v) => (
           <Chip

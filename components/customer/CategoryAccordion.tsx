@@ -16,18 +16,21 @@ type Group = {
 };
 
 const MEN_GROUPS: Group[] = [
-  { key: "new-in",  label: "New Arrivals" },
-  { key: "tops",    label: "Tops" },
-  { key: "bottoms", label: "Bottoms" },
-  { key: "shorts",  label: "Shorts" },
+  { key: "new-in",   label: "New Arrivals" },
+  { key: "shirts",   label: "Shirts" },
+  { key: "tees",     label: "Tees" },
+  { key: "knitwear", label: "Knitwear" },
+  { key: "trousers", label: "Trousers" },
+  { key: "shorts",   label: "Shorts" },
 ];
 
 const WOMEN_GROUPS: Group[] = [
-  { key: "new-in",  label: "New Arrivals" },
-  { key: "dresses", label: "Dresses" },
-  { key: "tops",    label: "Tops" },
-  { key: "bottoms", label: "Bottoms" },
-  { key: "swim",    label: "Swim" }, // synthetic
+  { key: "new-in",   label: "New Arrivals" },
+  { key: "dresses",  label: "Dresses" },
+  { key: "tops",     label: "Tops" },
+  { key: "knitwear", label: "Knitwear" },
+  { key: "trousers", label: "Trousers" },
+  { key: "swim",     label: "Swim" }, // synthetic: rolls up the Swim category
 ];
 
 function getProductsForGroup(gender: Gender, group: Group, query: string): Product[] {
@@ -36,6 +39,11 @@ function getProductsForGroup(gender: Gender, group: Group, query: string): Produ
   if (group.key === "swim") {
     // Synthetic — rolls up all swim category products
     list = products.filter((p) => p.category === "Swim");
+  } else if (group.key === "new-in") {
+    // "New Arrivals" is the isNew flag (not a categoryGroup), gender-matched
+    list = products.filter(
+      (p) => p.isNew && p.category === (gender === "men" ? "Men" : "Women")
+    );
   } else {
     // Gender-filtered + categoryGroup match
     list = products.filter((p) => {
