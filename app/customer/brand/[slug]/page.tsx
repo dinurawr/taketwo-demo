@@ -7,7 +7,7 @@ import { ChevronLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { useFollows } from "@/lib/follows-store";
 import { getBrand } from "@/data/brands";
-import { products, categoryLabel } from "@/data/products";
+import { products, categoryLabel, orderedCategoryGroups } from "@/data/products";
 import type { Product } from "@/data/products";
 import { ProductCard } from "@/components/customer/ProductCard";
 
@@ -34,18 +34,17 @@ export default function BrandStorefront({
     (p) => p.brand === brand.id && p.category !== "Children"
   );
 
-  // Group products by category label (merges swim variants into one "Swim & Beach" section).
-  // Ordered: New Arrivals first, then alphabetical by label.
+  // "New Arrivals" comes from the isNew flag; everything else is grouped by garment
+  // type (Shirts, Tees, Trousers, … in GARMENT_ORDER). New pieces appear only in
+  // New Arrivals so they aren't listed twice.
   const grouped = brandProducts.reduce<Record<string, Product[]>>((acc, p) => {
-    const label = categoryLabel(p.categoryGroup);
-    (acc[label] ??= []).push(p);
+    const key = p.isNew ? "new-in" : p.categoryGroup;
+    (acc[key] ??= []).push(p);
     return acc;
   }, {});
-  const sections = Object.entries(grouped).sort(([a], [b]) => {
-    if (a === "New Arrivals") return -1;
-    if (b === "New Arrivals") return 1;
-    return a.localeCompare(b);
-  });
+  const sections = orderedCategoryGroups(Object.keys(grouped)).map(
+    (key) => [categoryLabel(key), grouped[key]] as [string, Product[]]
+  );
 
   return (
     <div className="flex flex-col bg-white pb-24">

@@ -1,11 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 48">
-  <text
-    x="70" y="34"
-    font-family="Arial, Helvetica, sans-serif"
-    font-size="30"
-    font-weight="300"
-    letter-spacing="8"
-    text-anchor="middle"
-    fill="#6B8F71"
-  >nilo</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 91 30" width="91" height="30"><g fill="none" stroke="#5A7F61" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="15" r="10.25"/><path transform="translate(39 4.5)" d="M0.75 16 V7.2 M0.75 11 C0.75 8.2 2.5 7 4.6 7 C7 7 8.25 8.4 8.25 11 V16"/><path transform="translate(57 4.5)" d="M0.75 16 V7.2"/><path transform="translate(67.5 4.5)" d="M0.75 16 V0"/><path transform="translate(78 4.5)" d="M0.7000000000000002 11.5 A4.3 4.3 0 1 0 9.3 11.5 A4.3 4.3 0 1 0 0.7000000000000002 11.5 Z"/></g><g fill="#5A7F61" stroke="none"><circle cx="14" cy="15" r="3"/><circle cx="57.75" cy="2.4" r="1.05"/></g></svg>

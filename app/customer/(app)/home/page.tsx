@@ -6,6 +6,7 @@ import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { products } from "@/data/products";
 import { getBrand } from "@/data/brands";
+import { DROPS } from "@/data/drops";
 import { ProductSlider } from "@/components/customer/ProductSlider";
 import { ShopByBrand } from "@/components/customer/ShopByBrand";
 
@@ -16,84 +17,52 @@ const ts = (f: string) => `https://cdn.shopify.com/s/files/1/0070/1922/files/${f
 const ab = (f: string) => `https://cdn.shopify.com/s/files/1/0150/1528/files/${f}`;
 const fb = (f: string) => `https://cdn.shopify.com/s/files/1/0158/2548/files/${f}`;
 
-// ── Hero images (3 per tab) — matched to HERO_BRANDS below so the brand logo
-//    chip on each slide belongs to the label shown in it. ───────────────────
-const HERO_IMAGES: Record<Tab, string[]> = {
-  WOMEN: [
-    ab("AB-FRAN_DRESS_-_BLACK_A-08-12685-BLK26_4034.jpg"),            // Nilo
-    fb("Frankiesbikinis-SunshineOnePiece-Westcoast-Front.jpg"),      // Halcyon
-    ab("AB-ZEINA_TOP_-_BLACK_RECYCLED_LEATHER_A-07-12471-BLK81_1705_copy.jpg"), // Ember
-  ],
-  MEN: [
-    ts("instock_m_q326_regenerative-cotton-tee-faded-pine_portrait_002.jpg"), // Valley
-    ts("Q426_The_Carnegie_Pant_in_Faded_Black_Washed_Moleskin_PDP_001.jpg"),  // North Lane
-    ts("instock_m_q326_long-sleeve-polo-vintage-white-knit-stripe_portrait_002.jpg"), // Ember
-  ],
-};
-
-// ── Editorial text overlay per hero slide (The Iconic "winter foundations" style) ──
-const HERO_TEXT: Record<Tab, { line1: string; line2: string }[]> = {
-  WOMEN: [
-    { line1: "effortless", line2: "everyday"  },
-    { line1: "new",        line2: "arrivals"  },
-    { line1: "summer",     line2: "edit"      },
-  ],
-  MEN: [
-    { line1: "essential",  line2: "pieces"    },
-    { line1: "everyday",   line2: "staples"   },
-    { line1: "clean",      line2: "minimal"   },
-  ],
-};
-
-// ── Selling brand per hero slide (one brand id per slide, per tab) ───────
-const HERO_BRANDS: Record<Tab, string[]> = {
-  WOMEN: ["nilo", "halcyon", "ember"],
-  MEN:   ["valley", "north-lane", "ember"],
-};
+// The hero carousel is the brand drops (data/drops.ts): one slide per drop, each with
+// its own display font, a "New drop" kicker, and a link through to the brand.
 
 // ── 2×2 category tiles per tab (ts/ab/fb helpers defined above) ──────────
 const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
   WOMEN: [
     {
       label: "New In",
-      image: ab("AB-BLANCAMIDIDRESS-BLACK_A-02-12474-BLK26_0231.jpg"),
+      image: ab("MOBILE_4_e327e11b-93a8-46b1-bec0-ab209dc07536.jpg"),
       cat: "new-in",
     },
     {
       label: "Dresses",
-      image: ab("AB-FRAN_DRESS_-_BLACK_A-08-12685-BLK26_4015.jpg"),
+      image: fb("DLC26-Tile1-StevieDress-Shopoholic.jpg"),
       cat: "dresses",
     },
     {
       label: "Swim",
-      image: fb("Frankiesbikinis-SunshineOnePiece-Westcoast-Front.jpg"),
+      image: fb("Fall-27-Tile-2.jpg"),
       cat: "swim",
     },
     {
-      label: "Bottoms",
-      image: ab("AB-AMAL_TROUSER_-_BLACK_A-03-12597-BLK26_2468.jpg"),
-      cat: "bottoms",
+      label: "Trousers",
+      image: ab("MOBILE_6_fd6af479-4e77-4f32-90cd-4b186819f3be.jpg"),
+      cat: "trousers",
     },
   ],
   MEN: [
     {
       label: "New In",
-      image: ts("regenerative-cotton-tee-in-faded-pine-2608_001.jpg"),
+      image: ts("instock_m_q326_regenerative-cotton-tee-saffron_portrait_002.jpg"),
       cat: "new-in",
     },
     {
-      label: "Bottoms",
-      image: ts("Q426_The_Carnegie_Pant_in_Faded_Black_Washed_Moleskin_PDP_001.jpg"),
-      cat: "bottoms",
+      label: "Trousers",
+      image: ts("Q326_the-emlen-pant-khaki-herringbone_pdp_compressed_03.jpg"),
+      cat: "trousers",
     },
     {
-      label: "Tops",
-      image: ts("Q426_The_Jack_in_Soil_Oxford_PDP_001.jpg"),
-      cat: "tops",
+      label: "Shirts",
+      image: ts("Q326_the-jack-marsh-check-oxford_pdp_compressed_02.jpg"),
+      cat: "shirts",
     },
     {
       label: "Shorts",
-      image: ts("apres-short-in-coal-hemp-2605_001.jpg"),
+      image: ts("instock_m_q226_sunset-short_portrait_003.jpg"),
       cat: "shorts",
     },
   ],
@@ -114,9 +83,14 @@ export default function CustomerHome() {
       .slice(0, 10);
   }, [activeTab]);
 
-  const images = HERO_IMAGES[activeTab];
-  const totalImages = images.length;
-  const heroBrand = getBrand(HERO_BRANDS[activeTab][heroIndex]);
+  const drops = DROPS[activeTab];
+  const totalImages = drops.length;
+  const drop = drops[heroIndex] ?? drops[0];
+  const heroBrand = getBrand(drop.brandId);
+  const dropPieces = useMemo(
+    () => products.filter((p) => p.brand === drop.brandId).length,
+    [drop.brandId]
+  );
 
   // Reset on tab change
   useEffect(() => {
@@ -160,17 +134,19 @@ export default function CustomerHome() {
             }
           }}
         >
-          {images.map((src, i) => (
+          {drops.map((d, i) => (
             <div
-              key={`${activeTab}-${i}`}
+              key={`${activeTab}-${d.id}`}
               className="relative shrink-0 h-full"
               style={{ width: `${100 / totalImages}%` }}
             >
               <Image
-                src={src}
-                alt={`${activeTab} fashion ${i + 1}`}
+                src={d.image}
+                alt={`${getBrand(d.brandId)?.name ?? ""} — ${d.name}`}
                 fill
-                className="object-cover object-top pointer-events-none select-none"
+                sizes="390px"
+                className="object-cover pointer-events-none select-none"
+                style={{ objectPosition: d.focus ?? "50% 15%" }}
                 priority={i === 0}
                 draggable={false}
               />
@@ -180,31 +156,53 @@ export default function CustomerHome() {
 
         {/* Gradient overlay — top scrim for wordmark + bottom scrim for text/dots */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-transparent via-40% to-transparent pointer-events-none" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-black/65 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-black/75 via-black/30 to-transparent pointer-events-none" />
 
-        {/* ── Editorial text overlay — fades with each slide ── */}
+        {/* ── Drop overlay — kicker, drop name (in the brand's own face), CTA ── */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={`hero-text-${activeTab}-${heroIndex}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            key={`hero-drop-${activeTab}-${drop.id}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="absolute left-0 right-0 pointer-events-none px-5"
-            style={{ bottom: 68 }}
+            style={{ bottom: 52 }}
           >
             <p
-              className="text-white leading-none italic"
-              style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400, fontSize: 42 }}
+              className="inline-flex items-center gap-2 text-white text-[10px] font-semibold uppercase tracking-[0.22em] mb-3"
+              style={{ fontFamily: "var(--font-nunito)" }}
             >
-              {HERO_TEXT[activeTab][heroIndex].line1}
+              <span className="bg-white text-[#111] px-2 py-1 tracking-[0.18em]">New drop</span>
+              <span className="text-white/85">
+                {drop.kicker} · {dropPieces} pieces
+              </span>
             </p>
-            <p
-              className="text-white leading-none italic pl-10"
-              style={{ fontFamily: "var(--font-cormorant)", fontWeight: 400, fontSize: 42 }}
+            <h2
+              className="text-white"
+              style={{
+                fontFamily: drop.type.family,
+                fontSize: drop.type.size,
+                fontWeight: drop.type.weight,
+                fontStyle: drop.type.italic ? "italic" : "normal",
+                textTransform: drop.type.uppercase ? "uppercase" : "none",
+                letterSpacing: `${drop.type.tracking ?? 0}em`,
+                lineHeight: drop.type.leading ?? 0.95,
+                textShadow: "0 2px 18px rgba(0,0,0,0.28)",
+              }}
             >
-              {HERO_TEXT[activeTab][heroIndex].line2}
-            </p>
+              {drop.name}
+            </h2>
+            {heroBrand && (
+              <Link
+                href={`/customer/brand/${heroBrand.id}`}
+                className="pointer-events-auto inline-flex items-center gap-1.5 mt-3 text-white text-[11px] font-semibold uppercase tracking-[0.2em] border-b border-white/70 pb-0.5"
+                style={{ fontFamily: "var(--font-nunito)", touchAction: "manipulation" }}
+              >
+                Shop the drop
+                <span aria-hidden>→</span>
+              </Link>
+            )}
           </motion.div>
         </AnimatePresence>
 
@@ -212,7 +210,7 @@ export default function CustomerHome() {
         <AnimatePresence mode="wait">
           {heroBrand && (
             <motion.div
-              key={`hero-brand-${activeTab}-${heroIndex}`}
+              key={`hero-brand-${activeTab}-${drop.id}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -268,12 +266,12 @@ export default function CustomerHome() {
 
         {/* Hero image dots — padded for 44px hit area */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-1">
-          {images.map((_, i) => (
+          {drops.map((d, i) => (
             <button
-              key={i}
+              key={d.id}
               onClick={() => setHeroIndex(i)}
               className="p-3 cursor-pointer"
-              aria-label={`Hero image ${i + 1}`}
+              aria-label={`Drop ${i + 1}: ${d.name}`}
               style={{ touchAction: "manipulation" }}
             >
               <div className={`rounded-full transition-all ${
@@ -306,6 +304,7 @@ export default function CustomerHome() {
                 alt={tile.label}
                 fill
                 className="object-cover"
+                style={{ objectPosition: "50% 22%" }}
                 sizes="195px"
               />
               {/* Bottom gradient only — preserves image colours, keeps label readable */}

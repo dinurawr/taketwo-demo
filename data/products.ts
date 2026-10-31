@@ -11,7 +11,10 @@ export type Product = {
   name: string;
   brand: string;
   category: "Men" | "Women" | "Children" | "Swim";
+  /** Garment type: shirts | tees | knitwear | tops | trousers | shorts | dresses | swim */
   categoryGroup: string;
+  /** Flags a "New In" piece (a flag, not a category, so it sits alongside its garment type). */
+  isNew?: boolean;
   price: number; // LKR
   image: string;
   images: string[];
@@ -33,7 +36,8 @@ export const products: Product[] = [
     name: "Valley Regenerative Cotton Tee",
     brand: "valley",
     category: "Men",
-    categoryGroup: "new-in",
+    categoryGroup: "tees",
+    isNew: true,
     price: 6500,
     image: ts("regenerative-cotton-tee-in-faded-pine-2608_001.jpg"),
     images: [ts("regenerative-cotton-tee-in-faded-pine-2608_001.jpg"), ts("instock_m_q326_regenerative-cotton-tee-faded-pine_portrait_002.jpg")],
@@ -54,7 +58,8 @@ export const products: Product[] = [
     name: "North Lane Washed Oxford Shirt",
     brand: "north-lane",
     category: "Men",
-    categoryGroup: "new-in",
+    categoryGroup: "shirts",
+    isNew: true,
     price: 13500,
     image: ts("Q426_The_Jack_in_Soil_Oxford_PDP_001.jpg"),
     images: [ts("Q426_The_Jack_in_Soil_Oxford_PDP_001.jpg"), ts("Q426_The_Jack_in_Soil_Oxford_PDP_002.jpg")],
@@ -74,7 +79,8 @@ export const products: Product[] = [
     name: "Ember Knit Stripe Polo",
     brand: "ember",
     category: "Men",
-    categoryGroup: "new-in",
+    categoryGroup: "knitwear",
+    isNew: true,
     price: 11500,
     image: ts("long-sleeve-polo-in-vintage-white-knit-stripe-2607_001.jpg"),
     images: [ts("long-sleeve-polo-in-vintage-white-knit-stripe-2607_001.jpg"), ts("instock_m_q326_long-sleeve-polo-vintage-white-knit-stripe_portrait_002.jpg")],
@@ -98,7 +104,8 @@ export const products: Product[] = [
     name: "Nilo Blanca Midi Dress",
     brand: "nilo",
     category: "Women",
-    categoryGroup: "new-in",
+    categoryGroup: "dresses",
+    isNew: true,
     price: 18500,
     image: ab("AB-BLANCAMIDIDRESS-BLACK_A-02-12474-BLK26_0231.jpg"),
     images: [ab("AB-BLANCAMIDIDRESS-BLACK_A-02-12474-BLK26_0231.jpg"), ab("AB-BLANCAMIDIDRESS-BLACK_A-02-12474-BLK26_0238.jpg")],
@@ -117,7 +124,8 @@ export const products: Product[] = [
     name: "Ember Draped Slip Dress",
     brand: "ember",
     category: "Women",
-    categoryGroup: "new-in",
+    categoryGroup: "dresses",
+    isNew: true,
     price: 22000,
     image: ab("AB-FRAN_DRESS_-_BURGUNDY_A-08-12685-BGN27_1986_copy.jpg"),
     images: [ab("AB-FRAN_DRESS_-_BURGUNDY_A-08-12685-BGN27_1986_copy.jpg"), ab("AB-FRAN_DRESS_-_BURGUNDY_A-08-12685-BGN27_2005_copy.jpg")],
@@ -137,7 +145,8 @@ export const products: Product[] = [
     name: "Valley Collared Shirt Dress",
     brand: "valley",
     category: "Women",
-    categoryGroup: "new-in",
+    categoryGroup: "dresses",
+    isNew: true,
     price: 14500,
     image: ab("AB-JUNE_TRUCKER_COLLAR_DRESS_-_BLACK_A-02-12808-BLK1_2061.jpg"),
     images: [ab("AB-JUNE_TRUCKER_COLLAR_DRESS_-_BLACK_A-02-12808-BLK1_2061.jpg"), ab("AB-JUNE_TRUCKER_COLLAR_DRESS_-_BLACK_A-02-12808-BLK1_2086.jpg")],
@@ -161,7 +170,7 @@ export const products: Product[] = [
     name: "Valley Heavyweight Shop Tee",
     brand: "valley",
     category: "Men",
-    categoryGroup: "tops",
+    categoryGroup: "tees",
     price: 5800,
     image: ts("Q426_TheOrganicCottonShopTee-PortTwist_PDP_001.jpg"),
     images: [ts("Q426_TheOrganicCottonShopTee-PortTwist_PDP_001.jpg"), ts("Q426_TheOrganicCottonShopTee-PortTwist_PDP_002.jpg")],
@@ -182,7 +191,7 @@ export const products: Product[] = [
     name: "Valley Wool Shirt Jacket",
     brand: "valley",
     category: "Men",
-    categoryGroup: "tops",
+    categoryGroup: "shirts",
     price: 16500,
     image: ts("Q426_The_Maritime_Shirt_Jacket_in_Heather_Olive_Wool_PDP_001.jpg"),
     images: [ts("Q426_The_Maritime_Shirt_Jacket_in_Heather_Olive_Wool_PDP_001.jpg"), ts("Q426_The_Maritime_Shirt_Jacket_in_Heather_Olive_Wool_PDP_002.jpg")],
@@ -245,7 +254,7 @@ export const products: Product[] = [
     name: "North Lane Moleskin Trouser",
     brand: "north-lane",
     category: "Men",
-    categoryGroup: "bottoms",
+    categoryGroup: "trousers",
     price: 15500,
     image: ts("Q426_The_Carnegie_Pant_in_Faded_Black_Washed_Moleskin_PDP_001.jpg"),
     images: [ts("Q426_The_Carnegie_Pant_in_Faded_Black_Washed_Moleskin_PDP_001.jpg"), ts("Q426_The_Carnegie_Pant_in_Faded_Black_Washed_Moleskin_PDP_002.jpg")],
@@ -265,7 +274,7 @@ export const products: Product[] = [
     name: "North Lane Sashiko Trouser",
     brand: "north-lane",
     category: "Men",
-    categoryGroup: "bottoms",
+    categoryGroup: "trousers",
     price: 16500,
     image: ts("Q326_Studio_Camden_Pant_in_Rinsed_Indigo_Sashiko_PDP_01.jpg"),
     images: [ts("Q326_Studio_Camden_Pant_in_Rinsed_Indigo_Sashiko_PDP_01.jpg"), ts("Q326_Studio_Camden_Pant_in_Washed_Indigo_Roped_Denim_PDP_02.jpg")],
@@ -284,7 +293,7 @@ export const products: Product[] = [
     name: "North Lane Herringbone Trouser",
     brand: "north-lane",
     category: "Men",
-    categoryGroup: "bottoms",
+    categoryGroup: "trousers",
     price: 14800,
     image: ts("emlen-pant-in-khaki-herringbone-2608_001.jpg"),
     images: [ts("emlen-pant-in-khaki-herringbone-2608_001.jpg"), ts("Q326_the-emlen-pant-khaki-herringbone_pdp_compressed_02.jpg")],
@@ -304,7 +313,7 @@ export const products: Product[] = [
     name: "North Lane Hemp Overshirt",
     brand: "north-lane",
     category: "Men",
-    categoryGroup: "tops",
+    categoryGroup: "shirts",
     price: 13500,
     image: ts("Q426_TheReddingShirt-BoulderMarlHemp_PDP_001.jpg"),
     images: [ts("Q426_TheReddingShirt-BoulderMarlHemp_PDP_001.jpg"), ts("Q426_TheReddingShirt-BoulderMarlHemp_PDP_002.jpg")],
@@ -323,7 +332,7 @@ export const products: Product[] = [
     name: "North Lane Plaid Oxford Shirt",
     brand: "north-lane",
     category: "Men",
-    categoryGroup: "tops",
+    categoryGroup: "shirts",
     price: 12800,
     image: ts("Q426_The_Jack_in_Crescent_Plaid_Oxford_PDP_001.jpg"),
     images: [ts("Q426_The_Jack_in_Crescent_Plaid_Oxford_PDP_001.jpg"), ts("Q426_The_Jack_in_Crescent_Plaid_Oxford_PDP_002.jpg")],
@@ -346,7 +355,7 @@ export const products: Product[] = [
     name: "Halcyon Cotton Sarong — Blue Lei",
     brand: "halcyon",
     category: "Swim",
-    categoryGroup: "beach-cover-up",
+    categoryGroup: "swim",
     price: 6200,
     image: fb("Frankiesbikinis-AlessiaSarong-BlueLei-Front2.jpg"),
     images: [fb("Frankiesbikinis-AlessiaSarong-BlueLei-Front2.jpg"), fb("Frankiesbikinis-AlessiaSarong-BlueLei-Front6.jpg")],
@@ -365,7 +374,7 @@ export const products: Product[] = [
     name: "Halcyon Cotton Sarong — Pink Fantasy",
     brand: "halcyon",
     category: "Swim",
-    categoryGroup: "beach-cover-up",
+    categoryGroup: "swim",
     price: 4800,
     image: fb("Frankiesbikinis-AlessiaSarong-PinkFantasy-Front2.jpg"),
     images: [fb("Frankiesbikinis-AlessiaSarong-PinkFantasy-Front2.jpg"), fb("Frankiesbikinis-AlessiaSarong-PinkFantasy-Detail.jpg")],
@@ -384,7 +393,7 @@ export const products: Product[] = [
     name: "Halcyon Cotton Sarong — Scarlet Rose",
     brand: "halcyon",
     category: "Swim",
-    categoryGroup: "beach-cover-up",
+    categoryGroup: "swim",
     price: 5500,
     image: fb("Frankiesbikinis-AlessiaSarong-ScarletRose-Front4.jpg"),
     images: [fb("Frankiesbikinis-AlessiaSarong-ScarletRose-Front4.jpg"), fb("Frankiesbikinis-AlessiaSarong-ScarletRose-Front5.jpg")],
@@ -403,7 +412,7 @@ export const products: Product[] = [
     name: "Halcyon Wrap Knit Beach Skirt",
     brand: "halcyon",
     category: "Swim",
-    categoryGroup: "beach-dresses",
+    categoryGroup: "swim",
     price: 7800,
     image: fb("Frankiesbikinis-LucaSkirt-WinterSkies-Front3.jpg"),
     images: [fb("Frankiesbikinis-LucaSkirt-WinterSkies-Front3.jpg"), fb("Frankiesbikinis-LucaSkirt-WinterSkies-Front.jpg")],
@@ -422,7 +431,7 @@ export const products: Product[] = [
     name: "Halcyon Satin Bikini Set",
     brand: "halcyon",
     category: "Swim",
-    categoryGroup: "bikinis",
+    categoryGroup: "swim",
     price: 6500,
     image: fb("Frankiesbikinis-IrelandTop-ScarletRose-Front.jpg"),
     images: [fb("Frankiesbikinis-IrelandTop-ScarletRose-Front.jpg"), fb("Frankiesbikinis-DoveBottom-ScarletRose-Back.jpg")],
@@ -442,7 +451,7 @@ export const products: Product[] = [
     name: "Halcyon Sunshine One-Piece",
     brand: "halcyon",
     category: "Swim",
-    categoryGroup: "bikinis",
+    categoryGroup: "swim",
     price: 8900,
     image: fb("Frankiesbikinis-SunshineOnePiece-Westcoast-Front.jpg"),
     images: [fb("Frankiesbikinis-SunshineOnePiece-Westcoast-Front.jpg"), fb("Frankiesbikinis-SunshineOnePiece-Westcoast-Back.jpg")],
@@ -504,7 +513,7 @@ export const products: Product[] = [
     name: "Nilo Tailored Wide-Leg Trouser",
     brand: "nilo",
     category: "Women",
-    categoryGroup: "bottoms",
+    categoryGroup: "trousers",
     price: 17500,
     image: ab("AB-AMAL_TROUSER_-_BLACK_A-03-12597-BLK26_2468.jpg"),
     images: [ab("AB-AMAL_TROUSER_-_BLACK_A-03-12597-BLK26_2468.jpg"), ab("AB-AMAL_TROUSER_-_BLACK_A-03-12597-BLK26_2476.jpg")],
@@ -523,7 +532,7 @@ export const products: Product[] = [
     name: "Nilo Pinstripe Wide-Leg Trouser",
     brand: "nilo",
     category: "Women",
-    categoryGroup: "bottoms",
+    categoryGroup: "trousers",
     price: 16500,
     image: ab("AB-THOMAS_TROUSER_-_BLACK_AND_WHITE_PINSTRIPE_A-03-12454-STR23_3975.jpg"),
     images: [ab("AB-THOMAS_TROUSER_-_BLACK_AND_WHITE_PINSTRIPE_A-03-12454-STR23_3975.jpg"), ab("AB-THOMAS_TROUSER_-_BLACK_AND_WHITE_PINSTRIPE_A-03-12454-STR23_3966.jpg")],
@@ -543,7 +552,7 @@ export const products: Product[] = [
     name: "Nilo Relaxed Trouser",
     brand: "nilo",
     category: "Women",
-    categoryGroup: "bottoms",
+    categoryGroup: "trousers",
     price: 15500,
     image: ab("AB-LOU_TROUSER_-_DARK_GREY_A-03-12877-GRY40_1201.jpg"),
     images: [ab("AB-LOU_TROUSER_-_DARK_GREY_A-03-12877-GRY40_1201.jpg"), ab("AB-LOU_TROUSER_-_DARK_GREY_A-03-12877-GRY40_1232.jpg")],
@@ -563,7 +572,7 @@ export const products: Product[] = [
     name: "Nilo Knit Co-ord Top",
     brand: "nilo",
     category: "Women",
-    categoryGroup: "sets",
+    categoryGroup: "knitwear",
     price: 12500,
     image: ab("AB-BLANCA_TOP_-_BLACK_A-07-12468-BLK26_2493.jpg"),
     images: [ab("AB-BLANCA_TOP_-_BLACK_A-07-12468-BLK26_2493.jpg"), ab("AB-BLANCA_TOP_-_BLACK_A-07-12468-BLK26_2512.jpg")],
@@ -624,7 +633,7 @@ export const products: Product[] = [
     name: "Ember Tailored Trouser",
     brand: "ember",
     category: "Women",
-    categoryGroup: "bottoms",
+    categoryGroup: "trousers",
     price: 13500,
     image: ab("AB-MAHA_PANT_-_BLACK_A-03-12457-BLK26_4302.jpg"),
     images: [ab("AB-MAHA_PANT_-_BLACK_A-03-12457-BLK26_4302.jpg"), ab("AB-MAHA_PANT_-_BLACK_A-03-12457-BLK26_4262.jpg")],
@@ -643,7 +652,7 @@ export const products: Product[] = [
     name: "Ember Burgundy Wide-Leg Trouser",
     brand: "ember",
     category: "Women",
-    categoryGroup: "bottoms",
+    categoryGroup: "trousers",
     price: 14500,
     image: ab("AB-PAOLA_TROUSER_-_BURGUNDY_A-03-12834-BGN27_2014_copy_2.jpg"),
     images: [ab("AB-PAOLA_TROUSER_-_BURGUNDY_A-03-12834-BGN27_2014_copy_2.jpg"), ab("AB-PAOLA_TROUSER_-_BURGUNDY_A-03-12834-BGN27_2041_copy.jpg")],
@@ -663,7 +672,7 @@ export const products: Product[] = [
     name: "Ember Indigo Knit Polo",
     brand: "ember",
     category: "Men",
-    categoryGroup: "tops",
+    categoryGroup: "knitwear",
     price: 9500,
     image: ts("long-sleeve-polo-in-indigo-knit-stripe-2507_001.jpg"),
     images: [ts("long-sleeve-polo-in-indigo-knit-stripe-2507_001.jpg"), ts("instock_m_q325_long_sleeve_polo_indigo_stripe_portrait_002.jpg")],
@@ -736,28 +745,43 @@ export function getProductsByBrand(brandId: string) {
 /** Friendly display label for a categoryGroup key. Shared by brand page + CategoryAccordion. */
 const CATEGORY_LABELS: Record<string, string> = {
   "new-in": "New Arrivals",
+  shirts: "Shirts",
+  tees: "Tees",
+  knitwear: "Knitwear",
   tops: "Tops",
-  bottoms: "Bottoms",
+  trousers: "Trousers",
   shorts: "Shorts",
   dresses: "Dresses",
-  sets: "Sets",
-  "beach-cover-up": "Swim & Beach",
-  "beach-dresses": "Swim & Beach",
-  bikinis: "Swim & Beach",
-  "rock-revival": "Rock Revival",
+  swim: "Swim",
 };
+
+/** Display order for garment types (shop chips, brand page, category accordion). */
+export const GARMENT_ORDER = [
+  "shirts",
+  "tees",
+  "knitwear",
+  "tops",
+  "trousers",
+  "shorts",
+  "dresses",
+  "swim",
+];
 
 export function categoryLabel(key: string): string {
   return CATEGORY_LABELS[key] ?? key.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-/** Order categoryGroup keys deterministically: new-in first, then alphabetical by label. */
+/** Order categoryGroup keys deterministically: new-in first, then GARMENT_ORDER, then alphabetical. */
 export function orderedCategoryGroups(keys: string[]): string[] {
   const unique = Array.from(new Set(keys));
+  const rank = (k: string) => {
+    const i = GARMENT_ORDER.indexOf(k);
+    return i === -1 ? GARMENT_ORDER.length : i;
+  };
   return unique.sort((a, b) => {
     if (a === "new-in") return -1;
     if (b === "new-in") return 1;
-    return categoryLabel(a).localeCompare(categoryLabel(b));
+    return rank(a) - rank(b) || categoryLabel(a).localeCompare(categoryLabel(b));
   });
 }
 

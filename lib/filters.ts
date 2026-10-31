@@ -1,18 +1,30 @@
 import type { Product } from "@/data/products";
+import { GARMENT_ORDER } from "@/data/products";
 
 export type Filters = {
-  categories: string[];             // categoryGroup values: "tops", "dresses", etc.
+  categories: string[];             // categoryGroup values: "shirts", "dresses", etc.
   sizes: string[];                  // "S", "M", "L", etc.
   colors: string[];                 // hex values
   priceRange: [number, number] | null; // null = no constraint
+  newOnly: boolean;                 // true = only products flagged isNew
+  gender: Gender | null;            // null = all genders
 };
+
+export type Gender = "men" | "women";
 
 export const EMPTY_FILTERS: Filters = {
   categories: [],
   sizes: [],
   colors: [],
   priceRange: null,
+  newOnly: false,
+  gender: null,
 };
+
+/** Women's shop includes the Swim range (category "Swim"). */
+function matchesGender(p: Product, gender: Gender): boolean {
+  return gender === "men" ? p.category === "Men" : p.category === "Women" || p.category === "Swim";
+}
 
 export type FilterOption = {
   value: string;
@@ -72,7 +84,11 @@ export function deriveFilterOptions(productList: Product[]): DerivedFilterOption
 
   const categories = [...catMap.entries()]
     .map(([key, count]) => ({ value: key, label: toLabel(key), count }))
-    .sort((a, b) => a.label.localeCompare(b.label));
+    .sort((a, b) => {
+      const ai = GARMENT_ORDER.indexOf(a.value);
+      const bi = GARMENT_ORDER.indexOf(b.value);
+      return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi) || a.label.localeCompare(b.label);
+    });
 
   const sizes = [...sizeMap.entries()]
     .map(([value, count]) => ({ value, label: value, count }))
@@ -97,6 +113,8 @@ export function deriveFilterOptions(productList: Product[]): DerivedFilterOption
 
 export function applyFilters(productList: Product[], filters: Filters): Product[] {
   return productList.filter((p) => {
+    if (filters.gender && !matchesGender(p, filters.gender)) return false;
+    if (filters.newOnly && !p.isNew) return false;
     if (filters.categories.length > 0 && !filters.categories.includes(p.categoryGroup)) {
       return false;
     }
@@ -116,6 +134,8 @@ export function applyFilters(productList: Product[], filters: Filters): Product[
 
 export function hasActiveFilters(filters: Filters): boolean {
   return (
+    filters.gender !== null ||
+    filters.newOnly ||
     filters.categories.length > 0 ||
     filters.sizes.length > 0 ||
     filters.colors.length > 0 ||
@@ -127,5 +147,7 @@ export function activeFilterCount(filters: Filters): number {
   let count =
     filters.categories.length + filters.sizes.length + filters.colors.length;
   if (filters.priceRange) count++;
+  if (filters.newOnly) count++;
+  if (filters.gender) count++;
   return count;
 }

@@ -6,13 +6,14 @@ import { Search, Sparkles, User, Heart, Tag, ChevronRight, SlidersHorizontal, Li
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { products } from "@/data/products";
+import { products, GARMENT_ORDER } from "@/data/products";
 import { brands } from "@/data/brands";
 import { CategoryAccordion } from "@/components/customer/CategoryAccordion";
 import { EndlessFeed } from "@/components/customer/EndlessFeed";
 import { TrendingTags } from "@/components/customer/TrendingTags";
 import { FilterDropdown } from "@/components/customer/FilterDropdown";
 import { FilterChips } from "@/components/customer/FilterChips";
+import { QuickFilters } from "@/components/customer/QuickFilters";
 import {
   type Filters,
   EMPTY_FILTERS,
@@ -31,11 +32,24 @@ const PILLS: { id: Pill; label: string; icon: React.ReactNode }[] = [
   { id: "women",   label: "Women",    icon: <Heart     size={13} strokeWidth={1.8} /> },
 ];
 
-function deriveInitialPill(gender: string): Pill {
+function deriveInitialPill(gender: string, cat: string): Pill {
+  // A category deep-link (?cat=shirts) lands on the filterable For You feed.
+  if (cat) return "for-you";
   if (gender === "men")   return "men";
   if (gender === "women") return "women";
   if (gender === "swim")  return "women";
   return "for-you";
+}
+
+/** Turn ?cat= / ?gender= deep-link params into a pre-applied Filters object. */
+function filtersFromParams(cat: string, gender: string): Filters {
+  if (!cat) return EMPTY_FILTERS;
+  const next: Filters = { ...EMPTY_FILTERS };
+  if (gender === "men" || gender === "women") next.gender = gender;
+  // "swim" is also the legacy gender value; as a ?cat= it is the swim garment type.
+  if (cat === "new-in") next.newOnly = true;
+  else if (GARMENT_ORDER.includes(cat)) next.categories = [cat];
+  return next;
 }
 
 // ── Brand directory ───────────────────────────────────────────────────────────
@@ -178,10 +192,22 @@ function SortSheet({
 function ShopGrid() {
   const params     = useSearchParams();
   const initGender = params.get("gender") ?? "";
+  const initCat    = params.get("cat") ?? "";
 
-  const [activePill, setActivePill] = useState<Pill>(() => deriveInitialPill(initGender));
+  const [activePill, setActivePill] = useState<Pill>(() => deriveInitialPill(initGender, initCat));
   const [query, setQuery]           = useState("");
-  const [filters, setFilters]       = useState<Filters>(EMPTY_FILTERS);
+  const [filters, setFilters]       = useState<Filters>(() => filtersFromParams(initCat, initGender));
+
+  // Re-sync when the deep-link params change while the page stays mounted
+  // (e.g. tapping "View all" inside the shop's own accordion).
+  const paramsKey = `${initGender}|${initCat}`;
+  const lastParamsKey = useRef(paramsKey);
+  useEffect(() => {
+    if (lastParamsKey.current === paramsKey) return;
+    lastParamsKey.current = paramsKey;
+    setActivePill(deriveInitialPill(initGender, initCat));
+    setFilters(filtersFromParams(initCat, initGender));
+  }, [paramsKey, initGender, initCat]);
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOpen, setSortOpen]     = useState(false);
   const [sort, setSort]             = useState<SortOption>("default");
@@ -354,6 +380,9 @@ function ShopGrid() {
       </motion.div>
 
       {/* ── Content per pill ───────────────────────────────── */}
+      {activePill === "for-you" && (
+        <QuickFilters filters={filters} onFiltersChange={setFilters} options={filterOptions} />
+      )}
       {activePill === "for-you" && <TrendingTags title="Trending" />}
       {activePill === "for-you" && <EndlessFeed query={query} filters={filters} sort={sort} />}
       {activePill === "brands"  && <BrandsView query={query} />}
