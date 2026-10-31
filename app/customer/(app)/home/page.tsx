@@ -47,52 +47,53 @@ const HERO_BRANDS: Record<Tab, string[]> = {
 };
 
 // ── 2×2 category tiles per tab ───────────────────────────────────────────
-// Pexels CDN helper for tile images
-const px = (id: number) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop`;
+// Real catalogue photography (same Shopify CDNs as data/products.ts).
+const ts = (f: string) => `https://cdn.shopify.com/s/files/1/0070/1922/files/${f}`;
+const ab = (f: string) => `https://cdn.shopify.com/s/files/1/0150/1528/files/${f}`;
+const fb = (f: string) => `https://cdn.shopify.com/s/files/1/0158/2548/files/${f}`;
 
 const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
   WOMEN: [
     {
       label: "New In",
-      image: px(15758653),
+      image: ab("AB-BLANCAMIDIDRESS-BLACK_A-02-12474-BLK26_0231.jpg"),
       cat: "new-in",
     },
     {
       label: "Dresses",
-      image: px(1008206),
+      image: ab("AB-FRAN_DRESS_-_BLACK_A-08-12685-BLK26_4015.jpg"),
       cat: "dresses",
     },
     {
       label: "Swim",
-      image: px(8760433),
+      image: fb("Frankiesbikinis-SunshineOnePiece-Westcoast-Front.jpg"),
       cat: "swim",
     },
     {
       label: "Bottoms",
-      image: px(7202826),
+      image: ab("AB-AMAL_TROUSER_-_BLACK_A-03-12597-BLK26_2468.jpg"),
       cat: "bottoms",
     },
   ],
   MEN: [
     {
       label: "New In",
-      image: px(5029685),
+      image: ts("regenerative-cotton-tee-in-faded-pine-2608_001.jpg"),
       cat: "new-in",
     },
     {
       label: "Bottoms",
-      image: px(9464625),
+      image: ts("Q426_The_Carnegie_Pant_in_Faded_Black_Washed_Moleskin_PDP_001.jpg"),
       cat: "bottoms",
     },
     {
       label: "Tops",
-      image: px(32778907),
+      image: ts("Q426_The_Jack_in_Soil_Oxford_PDP_001.jpg"),
       cat: "tops",
     },
     {
       label: "Shorts",
-      image: px(18178103),
+      image: ts("apres-short-in-coal-hemp-2605_001.jpg"),
       cat: "shorts",
     },
   ],

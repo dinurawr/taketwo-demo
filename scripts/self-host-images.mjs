@@ -1,30 +1,39 @@
 #!/usr/bin/env node
 /**
- * Self-host the catalogue images.
+ * Self-host every catalogue / demo image.
  *
- * data/products.ts references real product photography on cdn.shopify.com via
- * the ts()/ab()/fb() helpers. Hotlinking works, but to make the images
- * un-break-able you can mirror them into /public and point the catalogue at
- * the local copies. Run once, locally (your own network):
+ * The catalogue (data/products.ts) and the home tiles, order history and
+ * vendor fixtures reference real product photography on public Shopify CDNs
+ * via the ts()/ab()/fb()/fr() helpers. Hotlinking works, but to make the
+ * images un-break-able you can mirror them into /public and point everything
+ * at the local copies. Run once, locally (your own network):
  *
  *     node scripts/self-host-images.mjs
  *
- * It downloads every image into public/products/, rewrites data/products.ts to
- * use /products/<file> paths, and drops the now-unused helpers. Re-run safe:
- * already-downloaded files are skipped. Requires Node 18+ (global fetch).
+ * It downloads every referenced image into public/products/, rewrites each
+ * source file to use /products/<file> paths, and drops the now-unused helpers.
+ * Re-run safe: already-downloaded files are skipped. Requires Node 18+.
  */
 import { readFile, writeFile, mkdir, access } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const PRODUCTS_TS = join(ROOT, "data", "products.ts");
 const OUT_DIR = join(ROOT, "public", "products");
 
+// Source files that reference images via the ts/ab/fb/fr helpers.
+const FILES = [
+  "data/products.ts",
+  "data/orders.ts",
+  "data/seller-fixtures.ts",
+  "app/customer/(app)/home/page.tsx",
+];
+
 const PREFIX = {
-  ts: "https://cdn.shopify.com/s/files/1/0070/1922/files/",
-  ab: "https://cdn.shopify.com/s/files/1/0150/1528/files/",
-  fb: "https://cdn.shopify.com/s/files/1/0158/2548/files/",
+  ts: "https://cdn.shopify.com/s/files/1/0070/1922/files/", // Taylor Stitch
+  ab: "https://cdn.shopify.com/s/files/1/0150/1528/files/", // Anine Bing
+  fb: "https://cdn.shopify.com/s/files/1/0158/2548/files/", // Frankies Bikinis
+  fr: "https://cdn.shopify.com/s/files/1/0077/6673/6963/files/", // FARM Rio
 };
 
 const exists = (p) => access(p).then(() => true).catch(() => false);
@@ -48,18 +57,22 @@ async function download(url, dest, tries = 4) {
 
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
-  let src = await readFile(PRODUCTS_TS, "utf8");
 
-  const calls = [...src.matchAll(/\b(ts|ab|fb)\("([^"]+)"\)/g)];
-  const unique = new Map(); // token -> {url, file, local}
-  for (const m of calls) {
-    const token = m[0], helper = m[1], fn = m[2];
-    if (unique.has(token)) continue;
-    const file = safeName(fn);
-    unique.set(token, { url: PREFIX[helper] + fn, file, local: "/products/" + file });
+  // 1. Collect every unique image across all source files.
+  const sources = new Map(); // relPath -> text
+  const unique = new Map();  // token -> {helper, fn, url, file, local}
+  for (const rel of FILES) {
+    const text = await readFile(join(ROOT, rel), "utf8");
+    sources.set(rel, text);
+    for (const m of text.matchAll(/\b(ts|ab|fb|fr)\("([^"]+)"\)/g)) {
+      const token = m[0], helper = m[1], fn = m[2];
+      if (unique.has(token)) continue;
+      const file = safeName(fn);
+      unique.set(token, { helper, fn, url: PREFIX[helper] + fn, file, local: "/products/" + file });
+    }
   }
 
-  console.log(`Found ${unique.size} unique images. Downloading to ${OUT_DIR} ...`);
+  console.log(`Found ${unique.size} unique images across ${FILES.length} files. Downloading to ${OUT_DIR} ...`);
   let done = 0, skipped = 0, failed = 0;
   for (const { url, file } of unique.values()) {
     const dest = join(OUT_DIR, file);
@@ -75,18 +88,21 @@ async function main() {
   }
 
   if (failed) {
-    console.error(`\n${failed} image(s) failed — products.ts NOT rewritten. Re-run to retry.`);
+    console.error(`\n${failed} image(s) failed — no files rewritten. Re-run to retry.`);
     process.exit(1);
   }
 
-  // Rewrite tokens -> local paths, then drop the now-unused helper lines.
-  for (const [token, info] of unique) src = src.split(token).join(`"${info.local}"`);
-  src = src.replace(/^const (ts|ab|fb) = \(f: string\) =>[\s\S]*?;\n/gm, "");
-  src = src.replace(/^\/\/ {3}ts → Taylor Stitch[\s\S]*?node scripts\/self-host-images\.mjs\n/m, "");
-  await writeFile(PRODUCTS_TS, src);
+  // 2. Rewrite each file: tokens -> local paths, then drop unused helper lines.
+  for (const [rel, textOrig] of sources) {
+    let text = textOrig;
+    for (const [token, info] of unique) text = text.split(token).join(`"${info.local}"`);
+    // Remove the ts/ab/fb/fr helper const definitions (now unused).
+    text = text.replace(/^const (ts|ab|fb|fr) = \(f: string\) =>[^\n]*\n/gm, "");
+    if (text !== textOrig) await writeFile(join(ROOT, rel), text);
+  }
 
   console.log(`\nDone: ${done} downloaded, ${skipped} already present.`);
-  console.log("data/products.ts now points at /products/*. You can remove the");
+  console.log("All source files now point at /products/*. You can remove the");
   console.log('cdn.shopify.com entry from next.config.ts if you like, then commit public/products/.');
 }
 

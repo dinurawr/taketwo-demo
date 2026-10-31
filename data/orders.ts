@@ -32,6 +32,13 @@ export type Order = {
   returnReason?: string;
 };
 
+// Real product photography (Shopify CDNs — same as data/products.ts).
+//   ts → Taylor Stitch · ab → Anine Bing · fb → Frankies Bikinis · fr → FARM Rio
+const ts = (f: string) => `https://cdn.shopify.com/s/files/1/0070/1922/files/${f}`;
+const ab = (f: string) => `https://cdn.shopify.com/s/files/1/0150/1528/files/${f}`;
+const fb = (f: string) => `https://cdn.shopify.com/s/files/1/0158/2548/files/${f}`;
+const fr = (f: string) => `https://cdn.shopify.com/s/files/1/0077/6673/6963/files/${f}`;
+
 export const orders: Order[] = [
   // ─── New Orders ────────────────────────────────────────
   {
@@ -49,7 +56,7 @@ export const orders: Order[] = [
         color: "Cream",
         price: 14545,
         quantity: 1,
-        image: "/products/pexels-cottonbro-6626418.jpg",
+        image: ts("Q426_The_Maritime_Shirt_Jacket_in_Heather_Olive_Wool_PDP_001.jpg"),
       },
     ],
     total: 14545,
@@ -72,7 +79,7 @@ export const orders: Order[] = [
         color: "Black",
         price: 12595,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1603252109303-2751441dd157?w=200&q=80",
+        image: ts("Q426_The_Jack_in_Soil_Oxford_PDP_001.jpg"),
       },
       {
         productId: "northlane-cargo-pants",
@@ -82,7 +89,7 @@ export const orders: Order[] = [
         color: "Olive",
         price: 21500,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=200&q=80",
+        image: ts("Q426_The_Carnegie_Pant_in_Faded_Black_Washed_Moleskin_PDP_001.jpg"),
       },
     ],
     total: 34095,
@@ -105,7 +112,7 @@ export const orders: Order[] = [
         color: "Marigold",
         price: 16800,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=200&q=80",
+        image: fb("Frankiesbikinis-AlessiaSarong-PinkFantasy-Front2.jpg"),
       },
     ],
     total: 16800,
@@ -129,7 +136,7 @@ export const orders: Order[] = [
         color: "White",
         price: 6500,
         quantity: 2,
-        image: "https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?w=200&q=80",
+        image: ab("AB-BLANCA_TOP_-_BLACK_A-07-12468-BLK26_2493.jpg"),
       },
     ],
     total: 13000,
@@ -153,7 +160,7 @@ export const orders: Order[] = [
         color: "Red",
         price: 42000,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1551537482-f2075a1d41f2?w=200&q=80",
+        image: ab("AB-ZEINA_TOP_-_BLACK_RECYCLED_LEATHER_A-07-12471-BLK81_1705_copy.jpg"),
       },
     ],
     total: 42000,
@@ -177,7 +184,7 @@ export const orders: Order[] = [
         color: "Cream",
         price: 24500,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=200&q=80",
+        image: fb("Frankiesbikinis-LucaSkirt-WinterSkies-Front3.jpg"),
       },
     ],
     total: 24500,
@@ -202,7 +209,7 @@ export const orders: Order[] = [
         color: "Light Wash",
         price: 19500,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=200&q=80",
+        image: ab("AB-AMAL_TROUSER_-_BLACK_A-03-12597-BLK26_2468.jpg"),
       },
     ],
     total: 19500,
@@ -226,7 +233,7 @@ export const orders: Order[] = [
         color: "Ivory",
         price: 11800,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1625910513060-af33b73a4cd3?w=200&q=80",
+        image: ts("long-sleeve-polo-in-vintage-white-knit-stripe-2607_001.jpg"),
       },
     ],
     total: 11800,
@@ -251,7 +258,7 @@ export const orders: Order[] = [
         color: "Beige",
         price: 35000,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80",
+        image: ts("Q426_The_Maritime_Shirt_Jacket_in_Heather_Olive_Wool_PDP_002.jpg"),
       },
     ],
     total: 35000,
@@ -275,7 +282,7 @@ export const orders: Order[] = [
         color: "Rust",
         price: 9800,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=200&q=80",
+        image: fb("Frankiesbikinis-AlessiaSarong-ScarletRose-Front4.jpg"),
       },
     ],
     total: 9800,
@@ -300,7 +307,7 @@ export const orders: Order[] = [
         color: "Camel",
         price: 48000,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=200&q=80",
+        image: ab("AB-JUNE_TRUCKER_COLLAR_DRESS_-_BLACK_A-02-12808-BLK1_2061.jpg"),
       },
     ],
     total: 48000,
@@ -324,7 +331,7 @@ export const orders: Order[] = [
         color: "Blush",
         price: 16800,
         quantity: 1,
-        image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=200&q=80",
+        image: fb("Frankiesbikinis-AlessiaSarong-PinkFantasy-Front2.jpg"),
       },
     ],
     total: 16800,
@@ -344,9 +351,9 @@ const VALLEY_PRODUCT_POOL = [
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: ["Cream", "Stone"],
     images: [
-      "/products/pexels-cottonbro-6626418.jpg",
-      "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=400&q=80",
-      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=400&q=80",
+      ts("Q426_The_Maritime_Shirt_Jacket_in_Heather_Olive_Wool_PDP_001.jpg"),
+      ts("Q426_The_Maritime_Shirt_Jacket_in_Heather_Olive_Wool_PDP_002.jpg"),
+      ts("Q426_TheOrganicCottonShopTee-PortTwist_PDP_001.jpg"),
     ],
   },
   {
@@ -356,9 +363,9 @@ const VALLEY_PRODUCT_POOL = [
     sizes: ["XS", "S", "M", "L", "XL"],
     colors: ["Natural", "Olive"],
     images: [
-      "/products/pexels-cottonbro-6616673.jpg",
-      "https://images.unsplash.com/photo-1603252109303-2751441dd157?w=400&q=80",
-      "https://images.unsplash.com/photo-1551232864-3f0890e580d9?w=400&q=80",
+      ts("regenerative-cotton-tee-in-faded-pine-2608_001.jpg"),
+      ts("Q426_The_Jack_in_Soil_Oxford_PDP_001.jpg"),
+      ts("Q426_TheReddingShirt-BoulderMarlHemp_PDP_001.jpg"),
     ],
   },
   {
@@ -368,9 +375,9 @@ const VALLEY_PRODUCT_POOL = [
     sizes: ["S/M", "L/XL", "One Size"],
     colors: ["White", "Sand"],
     images: [
-      "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&q=80",
-      "https://images.unsplash.com/photo-1571513722275-4b41940f54b8?w=400&q=80",
-      "https://images.unsplash.com/photo-1564584217132-2271feaeb3c5?w=400&q=80",
+      fb("Frankiesbikinis-AlessiaSarong-PinkFantasy-Front2.jpg"),
+      fb("Frankiesbikinis-AlessiaSarong-BlueLei-Front2.jpg"),
+      fb("Frankiesbikinis-LucaSkirt-WinterSkies-Front3.jpg"),
     ],
   },
 ];
@@ -493,14 +500,14 @@ orders.push(...generateValleyOrders());
 
 // ─── Serendib Style orders ───────────────────────────────────────────────────
 const SS_PRODUCT_POOL = [
-  { id: "ss-silk-wrap-dress",    name: "Serendib Silk Wrap Dress", price: 8900,  sizes: ["XS","S","M","L"],        colors: ["Ivory","Teal","Terracotta"],       images: ["/products/pexels-cottonbro-6626418.jpg","/products/pexels-ron-lach-9464625.jpg"] },
-  { id: "ss-linen-set",          name: "Linen Two-piece Set",       price: 14800, sizes: ["XS","S","M","L"],        colors: ["Natural","Sage","Sand"],           images: ["/products/pexels-cottonbro-6616673.jpg","/products/pexels-tima-miroshnichenko-7202792.jpg"] },
-  { id: "ss-batik-coord",        name: "Batik Crop Co-ord",         price: 11200, sizes: ["XS","S","M","L"],        colors: ["Indigo","Rust","Forest"],          images: ["/products/pexels-ron-lach-9464625.jpg","/products/pexels-prayoon-sajeev-1486107-2897529.jpg"] },
-  { id: "ss-lotus-maxi",         name: "Lotus Embroidered Maxi",    price: 12500, sizes: ["S","M","L"],             colors: ["White","Blush","Midnight"],        images: ["/products/pexels-prayoon-sajeev-1486107-2897529.jpg","/products/pexels-cottonbro-6626418.jpg"] },
-  { id: "ss-handloom-wrap-dress",name: "Handloom Wrap Dress",        price: 10800, sizes: ["S","M","L"],             colors: ["Ochre","Slate","Cream"],           images: ["/products/pexels-tima-miroshnichenko-7202792.jpg","/products/pexels-ron-lach-9464625.jpg"] },
-  { id: "ss-linen-shirt-dress",  name: "Linen Shirt Dress",          price: 8400,  sizes: ["S","M","L","XL"],       colors: ["White","Khaki","Dusty Rose"],      images: ["/products/pexels-cottonbro-6626418.jpg","/products/pexels-cottonbro-6616673.jpg"] },
-  { id: "ss-embroidered-crop",   name: "Embroidered Crop Top",       price: 5200,  sizes: ["XS","S","M","L"],       colors: ["White","Black","Coral"],           images: ["/products/pexels-ron-lach-9464625.jpg","/products/pexels-tima-miroshnichenko-7202792.jpg"] },
-  { id: "ss-linen-trousers",     name: "Wide-leg Linen Trousers",    price: 7200,  sizes: ["XS","S","M","L","XL"],  colors: ["Natural","Black","Sage"],          images: ["/products/pexels-prayoon-sajeev-1486107-2897529.jpg","/products/pexels-cottonbro-6616673.jpg"] },
+  { id: "ss-silk-wrap-dress",    name: "Serendib Silk Wrap Dress", price: 8900,  sizes: ["XS","S","M","L"],        colors: ["Ivory","Teal","Terracotta"],       images: [fr("farm-rio-slip-midi-dress_373437.jpg"),fr("362098_01.jpg")] },
+  { id: "ss-linen-set",          name: "Linen Two-piece Set",       price: 14800, sizes: ["XS","S","M","L"],        colors: ["Natural","Sage","Sand"],           images: [fr("332114_01_b72fe535-f0c8-468a-8c44-4812b7f52eeb.jpg"),fr("farm-rio-tropical-tea-pleated-midi-skirt_375169.jpg")] },
+  { id: "ss-batik-coord",        name: "Batik Crop Co-ord",         price: 11200, sizes: ["XS","S","M","L"],        colors: ["Indigo","Rust","Forest"],          images: [fr("362509_02.jpg"),fr("farm-rio-bloom-in-between-belted-mini-skirt_372950_2.jpg")] },
+  { id: "ss-lotus-maxi",         name: "Lotus Embroidered Maxi",    price: 12500, sizes: ["S","M","L"],             colors: ["White","Blush","Midnight"],        images: [fr("328615_01.jpg"),fr("344142_01.jpg")] },
+  { id: "ss-handloom-wrap-dress",name: "Handloom Wrap Dress",        price: 10800, sizes: ["S","M","L"],             colors: ["Ochre","Slate","Cream"],           images: [fr("362098_01.jpg"),fr("374280_01.jpg")] },
+  { id: "ss-linen-shirt-dress",  name: "Linen Shirt Dress",          price: 8400,  sizes: ["S","M","L","XL"],       colors: ["White","Khaki","Dusty Rose"],      images: [fr("farm-rio-slip-midi-dress_373437.jpg"),fr("368965_01.jpg")] },
+  { id: "ss-embroidered-crop",   name: "Embroidered Crop Top",       price: 5200,  sizes: ["XS","S","M","L"],       colors: ["White","Black","Coral"],           images: [fr("368965_01.jpg"),fr("337790_03_f1a7d196-fba6-45b9-8004-a1979fab3cdb.jpg")] },
+  { id: "ss-linen-trousers",     name: "Wide-leg Linen Trousers",    price: 7200,  sizes: ["XS","S","M","L","XL"],  colors: ["Natural","Black","Sage"],          images: [fr("farm-rio-tropical-tea-trousers_372953.jpg"),fr("farm-rio-tropical-tea-pleated-midi-skirt_375169.jpg")] },
 ];
 
 const SS_CUSTOMER_POOL = [
