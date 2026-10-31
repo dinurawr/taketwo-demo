@@ -1,15 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Geist,
-  Bodoni_Moda,
-  Barlow_Condensed,
-  Nunito,
-  Anton,
-  Fraunces,
-  Bricolage_Grotesque,
-  DM_Serif_Display,
-  Space_Grotesk,
-} from "next/font/google";
+import { Geist, Bodoni_Moda, Barlow_Condensed, Nunito } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-store";
 import { FavoritesProvider } from "@/lib/favorites-store";
@@ -62,43 +52,22 @@ const barlowCondensed = Barlow_Condensed({
  *   Ember → Anton (bold statement)        Nilo → Fraunces italic (considered)
  *   Valley → Bricolage (warm everyday)    Halcyon → DM Serif Display italic (sun-soaked)
  *   North Lane → Space Grotesk (modern minimal)
+ *
+ * Loaded with a plain Google Fonts stylesheet instead of next/font/google:
+ * Next 15.5's next/font/google loader (webpack AND Turbopack) can't parse the new
+ * fonts.gstatic.com/l/font?kit=… URLs Google now serves, so a fresh production
+ * build fails ("queries have exactly one entry"). A <link> is fetched by the
+ * browser at runtime, so nothing is downloaded or parsed at build time. The CSS
+ * variables (--font-drop-*) are defined in globals.css.
  */
-const anton = Anton({
-  variable: "--font-drop-anton",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
-
-const fraunces = Fraunces({
-  variable: "--font-drop-fraunces",
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  style: ["italic"],
-  display: "swap",
-});
-
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-drop-bricolage",
-  subsets: ["latin"],
-  weight: ["600", "800"],
-  display: "swap",
-});
-
-const dmSerif = DM_Serif_Display({
-  variable: "--font-drop-dmserif",
-  subsets: ["latin"],
-  weight: "400",
-  style: ["italic"],
-  display: "swap",
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-drop-space",
-  subsets: ["latin"],
-  weight: ["500", "700"],
-  display: "swap",
-});
+const DROP_FONTS_HREF =
+  "https://fonts.googleapis.com/css2" +
+  "?family=Anton" +
+  "&family=Bricolage+Grotesque:wght@600;800" +
+  "&family=DM+Serif+Display:ital@1" +
+  "&family=Fraunces:ital,wght@1,400;1,600" +
+  "&family=Space+Grotesk:wght@500;700" +
+  "&display=swap";
 
 export const metadata: Metadata = {
   title: "Take Two — Vendor Demo",
@@ -124,8 +93,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href={DROP_FONTS_HREF} />
+      </head>
       <body
-        className={`${geist.variable} ${nunito.variable} ${bodoniModa.variable} ${barlowCondensed.variable} ${anton.variable} ${fraunces.variable} ${bricolage.variable} ${dmSerif.variable} ${spaceGrotesk.variable} font-sans antialiased`}
+        className={`${geist.variable} ${nunito.variable} ${bodoniModa.variable} ${barlowCondensed.variable} font-sans antialiased`}
       >
         <CartProvider>
           <FavoritesProvider>

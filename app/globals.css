@@ -50,6 +50,15 @@ body {
   --font-fraunces:  var(--font-bodoni);
   --font-dancing:   var(--font-bodoni);
   --font-mono:      var(--font-geist);
+
+  /* Homepage drop display faces (data/drops.ts) — loaded via the Google Fonts
+     <link> in layout.tsx. Namespaced "drop" because --font-fraunces above is a
+     legacy alias for Bodoni. Each has a sensible system fallback. */
+  --font-drop-anton:     "Anton", Impact, "Arial Narrow Bold", sans-serif;
+  --font-drop-fraunces:  "Fraunces", Georgia, serif;
+  --font-drop-bricolage: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --font-drop-dmserif:   "DM Serif Display", Georgia, serif;
+  --font-drop-space:     "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Thin / minimal UI — Jaded London + Bershka inspired. Scoped to the customer
