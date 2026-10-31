@@ -13,12 +13,15 @@ export const SELLER = {
 };
 
 // ─── IMAGES (5 available, rotated) ────────────────────────────────────────────
+// Real colourful women's photography (FARM Rio) — fits Serendib's vibrant,
+// tropical-print aesthetic. Same Shopify CDN as the customer catalogue.
+const fr = (f: string) => `https://cdn.shopify.com/s/files/1/0077/6673/6963/files/${f}`;
 const IMGS = [
-  "/products/pexels-cottonbro-6626418.jpg",
-  "/products/pexels-cottonbro-6616673.jpg",
-  "/products/pexels-ron-lach-9464625.jpg",
-  "/products/pexels-prayoon-sajeev-1486107-2897529.jpg",
-  "/products/pexels-tima-miroshnichenko-7202792.jpg",
+  fr("farm-rio-slip-midi-dress_373437.jpg"),
+  fr("374280_01.jpg"),
+  fr("368965_01.jpg"),
+  fr("farm-rio-tropical-tea-trousers_372953.jpg"),
+  fr("362509_02.jpg"),
 ];
 const img = (i: number) => IMGS[i % IMGS.length];
 
