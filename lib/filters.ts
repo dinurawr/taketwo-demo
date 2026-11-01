@@ -34,6 +34,7 @@ export type FilterOption = {
 };
 
 export type DerivedFilterOptions = {
+  genders: FilterOption[];
   categories: FilterOption[];
   sizes: FilterOption[];
   colors: FilterOption[];
@@ -102,7 +103,13 @@ export function deriveFilterOptions(productList: Product[]): DerivedFilterOption
     .map((c) => ({ value: c.hex, label: c.name, count: c.count, hex: c.hex }))
     .sort((a, b) => a.label.localeCompare(b.label));
 
+  const genders: FilterOption[] = [
+    { value: "men", label: "Men", count: productList.filter((p) => matchesGender(p, "men")).length },
+    { value: "women", label: "Women", count: productList.filter((p) => matchesGender(p, "women")).length },
+  ];
+
   return {
+    genders,
     categories,
     sizes,
     colors,

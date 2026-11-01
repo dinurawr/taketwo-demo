@@ -4,10 +4,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, Check } from "lucide-react";
 import { PriceRangeSlider } from "@/components/customer/PriceRangeSlider";
-import type { Filters, FilterOption, DerivedFilterOptions } from "@/lib/filters";
+import type { Filters, FilterOption, DerivedFilterOptions, Gender } from "@/lib/filters";
 import { EMPTY_FILTERS } from "@/lib/filters";
 
-type SubPanel = "category" | "size" | "colour" | "price" | null;
+type SubPanel = "gender" | "category" | "size" | "colour" | "price" | null;
 
 interface FilterDropdownProps {
   isOpen: boolean;
@@ -75,6 +75,11 @@ export function FilterDropdown({
   const handleBack = () => setSubPanel(null);
 
   // Toggle helpers
+  // Gender is single-select (Men | Women); tapping the selected one clears it.
+  const toggleGender = (v: string) => {
+    onFiltersChange({ ...filters, gender: filters.gender === v ? null : (v as Gender) });
+  };
+
   const toggleCategory = (v: string) => {
     const cats = filters.categories.includes(v)
       ? filters.categories.filter((c) => c !== v)
@@ -114,6 +119,7 @@ export function FilterDropdown({
   };
 
   const mainMenuRows: { id: SubPanel; label: string }[] = [
+    { id: "gender",   label: "Gender" },
     { id: "category", label: "Category" },
     { id: "size",     label: "Size" },
     { id: "colour",   label: "Colour" },
@@ -218,6 +224,7 @@ export function FilterDropdown({
                         className="flex-1 text-center text-[12px] font-bold uppercase tracking-[0.18em] text-[#111]"
                         style={{ fontFamily: "var(--font-barlow)" }}
                       >
+                        {subPanel === "gender"   && "Gender"}
                         {subPanel === "category" && "Category"}
                         {subPanel === "size"     && "Size"}
                         {subPanel === "colour"   && "Colour"}
@@ -234,6 +241,16 @@ export function FilterDropdown({
 
                     {/* Sub-panel content */}
                     <div className="flex-1 overflow-y-auto">
+                      {subPanel === "gender" &&
+                        options.genders.map((opt) => (
+                          <OptionRow
+                            key={opt.value}
+                            option={opt}
+                            selected={filters.gender === opt.value}
+                            onToggle={() => toggleGender(opt.value)}
+                          />
+                        ))}
+
                       {subPanel === "category" &&
                         options.categories.map((opt) => (
                           <OptionRow
