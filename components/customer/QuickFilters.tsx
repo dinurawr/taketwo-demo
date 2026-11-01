@@ -1,6 +1,6 @@
 "use client";
 
-import { Sparkles } from "lucide-react";
+import { PackagePlus } from "lucide-react";
 import type { Filters, DerivedFilterOptions } from "@/lib/filters";
 
 // Garment quick-filter chips (New In · Shirts · Tees · Knitwear · Trousers · Swim …).
@@ -52,7 +52,7 @@ export function QuickFilters({
           className={`${chipBase} ${filters.newOnly ? on : off}`}
           style={{ touchAction: "manipulation" }}
         >
-          <Sparkles size={12} strokeWidth={2} />
+          <PackagePlus size={12} strokeWidth={2} />
           New In
         </button>
         {options.categories.map((c) => {
