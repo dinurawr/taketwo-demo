@@ -1,68 +1,36 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Bodoni_Moda, Barlow_Condensed, Nunito } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/lib/cart-store";
 import { FavoritesProvider } from "@/lib/favorites-store";
 import { FollowsProvider } from "@/lib/follows-store";
 
 /**
- * Four-family type system:
+ * Type system (CSS variables are defined in globals.css):
  *
  * Geist            → all functional UI: body, product cards, prices, buttons, nav labels
  * Nunito           → pill tabs + filter chips only (SF Pro Rounded equivalent)
  * Bodoni Moda      → editorial moments only: brand storefront hero, lookbook captions
  * Barlow Condensed → TAKETWO wordmark + impact uppercase display labels only
+ * Drop faces       → homepage drop titles only (data/drops.ts), one per brand:
+ *                    Anton (Ember), Fraunces italic (Nilo), Bricolage Grotesque (Valley),
+ *                    DM Serif Display italic (Halcyon), Space Grotesk (North Lane)
  *
- * Backwards-compat aliases in globals.css map old --font-* variables to the
- * new stack so existing component inline styles keep working.
- */
-
-const geist = Geist({
-  variable: "--font-geist",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-  display: "swap",
-});
-
-const bodoniModa = Bodoni_Moda({
-  variable: "--font-bodoni",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  style: ["normal", "italic"],
-  display: "swap",
-});
-
-const nunito = Nunito({
-  variable: "--font-nunito",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  display: "swap",
-});
-
-const barlowCondensed = Barlow_Condensed({
-  variable: "--font-barlow",
-  subsets: ["latin"],
-  weight: ["700", "800", "900"],
-  display: "swap",
-});
-
-/**
- * Drop display faces — one per brand, used ONLY for the homepage drop titles
- * (see data/drops.ts). Each matches the brand's personality:
- *   Ember → Anton (bold statement)        Nilo → Fraunces italic (considered)
- *   Valley → Bricolage (warm everyday)    Halcyon → DM Serif Display italic (sun-soaked)
- *   North Lane → Space Grotesk (modern minimal)
- *
- * Loaded with a plain Google Fonts stylesheet instead of next/font/google:
+ * All nine families load from ONE Google Fonts stylesheet <link>, not next/font/google.
  * Next 15.5's next/font/google loader (webpack AND Turbopack) can't parse the new
- * fonts.gstatic.com/l/font?kit=… URLs Google now serves, so a fresh production
- * build fails ("queries have exactly one entry"). A <link> is fetched by the
- * browser at runtime, so nothing is downloaded or parsed at build time. The CSS
- * variables (--font-drop-*) are defined in globals.css.
+ * fonts.gstatic.com/l/font?kit=… URLs Google now serves, so any build that has to
+ * fetch fonts fresh (e.g. a Vercel build-cache miss) fails — it broke production
+ * deploys twice. A <link> is fetched by the browser at runtime, so nothing is
+ * downloaded or parsed at build time.
  */
-const DROP_FONTS_HREF =
+const FONTS_HREF =
   "https://fonts.googleapis.com/css2" +
-  "?family=Anton" +
+  // UI
+  "?family=Geist:wght@300..900" +
+  "&family=Nunito:wght@500..700" +
+  "&family=Bodoni+Moda:ital,wght@0,400..900;1,400..900" +
+  "&family=Barlow+Condensed:wght@700;800;900" +
+  // Drop display faces
+  "&family=Anton" +
   "&family=Bricolage+Grotesque:wght@600;800" +
   "&family=DM+Serif+Display:ital@1" +
   "&family=Fraunces:ital,wght@1,400;1,600" +
@@ -96,11 +64,9 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="stylesheet" href={DROP_FONTS_HREF} />
+        <link rel="stylesheet" href={FONTS_HREF} />
       </head>
-      <body
-        className={`${geist.variable} ${nunito.variable} ${bodoniModa.variable} ${barlowCondensed.variable} font-sans antialiased`}
-      >
+      <body className="font-sans antialiased">
         <CartProvider>
           <FavoritesProvider>
             <FollowsProvider>{children}</FollowsProvider>

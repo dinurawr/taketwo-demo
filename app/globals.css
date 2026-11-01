@@ -42,6 +42,13 @@ body {
   color: #111111;
   -webkit-font-smoothing: antialiased;
 
+  /* Core type system — loaded by the Google Fonts <link> in layout.tsx (not
+     next/font, which breaks fresh production builds). Each has a system fallback. */
+  --font-geist:  "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-nunito: "Nunito", ui-rounded, "SF Pro Rounded", system-ui, sans-serif;
+  --font-bodoni: "Bodoni Moda", "Playfair Display", Didot, Georgia, serif;
+  --font-barlow: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+
   /* Backwards-compat aliases — old --font-* names mapped to the new stack.
      --font-barlow is NOT aliased: the real Barlow Condensed is loaded in
      layout.tsx and resolves directly (restored for the TAKETWO wordmark). */
