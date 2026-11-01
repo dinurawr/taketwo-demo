@@ -2,7 +2,7 @@
 
 import { Suspense, useState, useMemo, useEffect, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { Search, Sparkles, User, Heart, Tag, ChevronRight, SlidersHorizontal, ListFilter, Check, X } from "lucide-react";
+import { Search, ChevronRight, SlidersHorizontal, ListFilter, Check, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -10,27 +10,22 @@ import { products, GARMENT_ORDER } from "@/data/products";
 import { brands } from "@/data/brands";
 import { CategoryAccordion } from "@/components/customer/CategoryAccordion";
 import { EndlessFeed } from "@/components/customer/EndlessFeed";
-import { TrendingTags } from "@/components/customer/TrendingTags";
 import { FilterDropdown } from "@/components/customer/FilterDropdown";
 import { FilterChips } from "@/components/customer/FilterChips";
 import { QuickFilters } from "@/components/customer/QuickFilters";
+import { BrandChips } from "@/components/customer/BrandChips";
 import {
   type Filters,
   EMPTY_FILTERS,
   deriveFilterOptions,
   applyFilters,
-  hasActiveFilters,
   activeFilterCount,
 } from "@/lib/filters";
 
+// Which view the shop is showing. The header has two chip rows — row 1 (For you +
+// garment types) drives "for-you"; row 2's "All brands" chip drives "brands". The
+// men / women accordion views are only reached by ?gender= deep links.
 type Pill = "for-you" | "brands" | "men" | "women";
-
-const PILLS: { id: Pill; label: string; icon: React.ReactNode }[] = [
-  { id: "for-you", label: "For you",  icon: <Sparkles size={13} strokeWidth={1.8} /> },
-  { id: "brands",  label: "Brands",   icon: <Tag       size={13} strokeWidth={1.8} /> },
-  { id: "men",     label: "Men",      icon: <User      size={13} strokeWidth={1.8} /> },
-  { id: "women",   label: "Women",    icon: <Heart     size={13} strokeWidth={1.8} /> },
-];
 
 function deriveInitialPill(gender: string, cat: string): Pill {
   // A category deep-link (?cat=shirts) lands on the filterable For You feed.
@@ -233,6 +228,14 @@ function ShopGrid() {
 
   const showFilterUI = activePill === "for-you";
   const filterBadge  = activeFilterCount(filters);
+  // "For you" is lit when the full feed is showing (no garment / New In picked).
+  const forYouActive = activePill === "for-you" && filters.categories.length === 0 && !filters.newOnly;
+  // Filters that aren't represented by a chip in row 1 / row 2.
+  const hasSecondaryFilters =
+    filters.gender !== null ||
+    filters.sizes.length > 0 ||
+    filters.colors.length > 0 ||
+    filters.priceRange !== null;
 
   // ── Auto-hide header on scroll ──────────────────────────
   const [headerHidden, setHeaderHidden] = useState(false);
@@ -337,9 +340,29 @@ function ShopGrid() {
           </div>
         </div>
 
-        {/* Active filter chips */}
+        {/* Row 1 — For you + garment types (shirts, tees, … swim) */}
+        <QuickFilters
+          filters={filters}
+          onFiltersChange={setFilters}
+          options={filterOptions}
+          forYouActive={forYouActive}
+          onForYou={() => {
+            setActivePill("for-you");
+            setFilters((f) => ({ ...f, categories: [], newOnly: false }));
+          }}
+          onSelect={() => setActivePill("for-you")}
+        />
+
+        {/* Row 2 — brands */}
+        <BrandChips
+          directoryActive={activePill === "brands"}
+          onDirectory={() => setActivePill(activePill === "brands" ? "for-you" : "brands")}
+        />
+
+        {/* Removable chips for the filters that have no chip of their own above
+            (gender, size, colour, price). Only appears while one is set. */}
         <AnimatePresence initial={false}>
-          {showFilterUI && hasActiveFilters(filters) && (
+          {showFilterUI && hasSecondaryFilters && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
@@ -355,35 +378,9 @@ function ShopGrid() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Category pills */}
-        <div className="flex items-center gap-2 px-4 pt-3 pb-4 overflow-x-auto scrollbar-none">
-          {PILLS.map(pill => {
-            const active = activePill === pill.id;
-            return (
-              <button
-                key={pill.id}
-                onClick={() => setActivePill(pill.id)}
-                className={`flex items-center gap-1.5 px-4 py-2 flex-shrink-0 text-[12px] font-semibold transition-all cursor-pointer border ${
-                  active
-                    ? "bg-[#111111] text-white border-[#111111]"
-                    : "bg-white text-[#111] border-[#111]"
-                }`}
-                style={{ touchAction: "manipulation", fontFamily: "var(--font-nunito)" }}
-              >
-                {pill.icon}
-                {pill.label}
-              </button>
-            );
-          })}
-        </div>
       </motion.div>
 
-      {/* ── Content per pill ───────────────────────────────── */}
-      {activePill === "for-you" && (
-        <QuickFilters filters={filters} onFiltersChange={setFilters} options={filterOptions} />
-      )}
-      {activePill === "for-you" && <TrendingTags title="Trending" />}
+      {/* ── Content per view ───────────────────────────────── */}
       {activePill === "for-you" && <EndlessFeed query={query} filters={filters} sort={sort} />}
       {activePill === "brands"  && <BrandsView query={query} />}
       {activePill === "men"     && <CategoryAccordion gender="men"   query={query} />}

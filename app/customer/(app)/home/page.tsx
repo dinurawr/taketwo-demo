@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -70,10 +70,26 @@ const TILES: Record<Tab, { label: string; image: string; cat: string }[]> = {
 
 const TABS: Tab[] = ["WOMEN", "MEN"];
 
+// Hero auto-advance: a slide holds for AUTO_MS; once the user touches the hero
+// (swipe, tap, dot, tab) auto-advance is paused and only resumes PAUSE_MS after the
+// last touch, so a swipe never collides with an automatic slide change.
+const AUTO_MS = 4000;
+const PAUSE_MS = 5000;
+
 export default function CustomerHome() {
   const [activeTab, setActiveTab] = useState<Tab>("WOMEN");
   const [heroIndex, setHeroIndex] = useState(0);
   const prefersReducedMotion = useReducedMotion();
+
+  // When the user last touched the hero, and whether a drag is in progress.
+  const lastTouchRef = useRef(0);
+  const draggingRef = useRef(false);
+  // Bumped on every touch so the auto-advance timer below restarts from "now".
+  const [touchTick, setTouchTick] = useState(0);
+  const noteTouch = useCallback(() => {
+    lastTouchRef.current = Date.now();
+    setTouchTick((t) => t + 1);
+  }, []);
 
   // Products for the "New In" slider — filtered to active tab's gender, newest 10
   const sliderProducts = useMemo(() => {
@@ -97,14 +113,23 @@ export default function CustomerHome() {
     setHeroIndex(0);
   }, [activeTab]);
 
-  // Auto-advance every 4 s (respects prefers-reduced-motion)
+  // Auto-advance (respects prefers-reduced-motion). Re-armed after every slide change
+  // and every touch: if the user touched recently the delay is stretched so the next
+  // advance lands PAUSE_MS after their last touch; otherwise it's the normal AUTO_MS.
   useEffect(() => {
     if (prefersReducedMotion) return;
-    const interval = setInterval(() => {
+    const sinceTouch = Date.now() - lastTouchRef.current;
+    const delay = Math.max(AUTO_MS, PAUSE_MS - sinceTouch);
+    const id = setTimeout(() => {
+      // Mid-drag when the timer fires (very long swipe): hold off another beat.
+      if (draggingRef.current) {
+        noteTouch();
+        return;
+      }
       setHeroIndex((i) => (i + 1) % totalImages);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [activeTab, prefersReducedMotion, totalImages]);
+    }, delay);
+    return () => clearTimeout(id);
+  }, [heroIndex, touchTick, activeTab, prefersReducedMotion, totalImages, noteTouch]);
 
   const currentTiles = TILES[activeTab];
 
@@ -125,7 +150,15 @@ export default function CustomerHome() {
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.18}
+          // Any touch on the hero pauses auto-advance (restarts the PAUSE_MS wait)
+          onPointerDown={noteTouch}
+          onDragStart={() => {
+            draggingRef.current = true;
+            noteTouch();
+          }}
           onDragEnd={(_, info) => {
+            draggingRef.current = false;
+            noteTouch();
             const threshold = 50;
             if (info.offset.x < -threshold && heroIndex < totalImages - 1) {
               setHeroIndex((i) => i + 1);
@@ -236,6 +269,17 @@ export default function CustomerHome() {
           )}
         </AnimatePresence>
 
+        {/* ── "tt" mark, top-left, in white over the photo (other tab pages draw the
+            black version from the shared layout) ───────────── */}
+        <Image
+          src="/tt-mark.png"
+          alt="Take Two"
+          width={26}
+          height={26}
+          className="absolute pointer-events-none select-none"
+          style={{ left: 20, top: 57, filter: "brightness(0) invert(1)" }}
+        />
+
         {/* ── Wordmark centred top ───────────────────────────── */}
         <div className="absolute left-0 right-0 flex justify-center pointer-events-none" style={{ top: 48 }}>
           <p
@@ -251,7 +295,10 @@ export default function CustomerHome() {
           {TABS.map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => {
+                setActiveTab(tab);
+                noteTouch();
+              }}
               className={`min-h-[44px] px-1 flex items-center cursor-pointer text-[15px] font-bold tracking-[0.20em] transition-all ${
                 activeTab === tab
                   ? "text-white border-b-2 border-white"
@@ -269,7 +316,10 @@ export default function CustomerHome() {
           {drops.map((d, i) => (
             <button
               key={d.id}
-              onClick={() => setHeroIndex(i)}
+              onClick={() => {
+                setHeroIndex(i);
+                noteTouch();
+              }}
               className="p-3 cursor-pointer"
               aria-label={`Drop ${i + 1}: ${d.name}`}
               style={{ touchAction: "manipulation" }}

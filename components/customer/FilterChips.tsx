@@ -48,13 +48,6 @@ export function FilterChips({ filters, onFiltersChange, options }: FilterChipsPr
   const colorLabel = (hex: string) =>
     options.colors.find((c) => c.value === hex)?.label ?? hex;
 
-  // Look up a category label from value
-  const categoryLabel = (val: string) =>
-    options.categories.find((c) => c.value === val)?.label ?? val;
-
-  const removeCategory = (v: string) =>
-    onFiltersChange({ ...filters, categories: filters.categories.filter((c) => c !== v) });
-
   const removeSize = (v: string) =>
     onFiltersChange({ ...filters, sizes: filters.sizes.filter((s) => s !== v) });
 
@@ -76,23 +69,8 @@ export function FilterChips({ filters, onFiltersChange, options }: FilterChipsPr
           />
         )}
 
-        {/* New In chip */}
-        {filters.newOnly && (
-          <Chip
-            key="new-only"
-            label="New In"
-            onRemove={() => onFiltersChange({ ...filters, newOnly: false })}
-          />
-        )}
-
-        {/* Category chips */}
-        {filters.categories.map((v) => (
-          <Chip
-            key={`cat-${v}`}
-            label={categoryLabel(v)}
-            onRemove={() => removeCategory(v)}
-          />
-        ))}
+        {/* Category + New In selections are shown (as active chips) in the shop's
+            garment row, so they aren't repeated here. */}
 
         {/* Size chips */}
         {filters.sizes.map((v) => (
